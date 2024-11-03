@@ -4,6 +4,10 @@ import random
 # cards = ['Princess', 'Countess', 'King','Prince','Prince','Handmaid','Handmaid','Baron','Baron','Priest','Priest','Guard','Guard','Guard','Guard','Guard']
 
 def new_game():
+    """
+    Starts a new game by resetting cards to have the entire deck, and resets cards_drawn to empty since no cards have been drawn yet.
+    :return: cards_drawn, cards
+    """
     cards_drawn = []
     cards = ['Princess', 'Countess', 'King', 'Prince', 'Prince', 'Handmaid', 'Handmaid', 'Baron', 'Baron', 'Priest',
              'Priest', 'Guard', 'Guard', 'Guard', 'Guard', 'Guard']
@@ -12,12 +16,24 @@ def new_game():
 
 
 def current_deck(cards, cards_drawn):
+    """
+
+    :param cards:
+    :param cards_drawn:
+    :return: cards that are in play
+    """
     for card in cards:
         if card in cards_drawn:
             cards.remove(card)
     return cards
 
 def draw_a_card(cards_drawn, cards):
+    """
+
+    :param cards_drawn:
+    :param cards:
+    :return: card that is drawn
+    """
     i = random.randint(0, 15)
     card = cards[i]
     cards_drawn.append(card)
@@ -31,8 +47,8 @@ def play_card():
 
 def player_is_out_of_the_round(player_out, players):
     """
-
-    :return:
+    removes a player who is out of the round from the players list, and returns the players who are still in that round
+    :return: players who are still in the round
     """
     players = players.remove(player_out)
     return players

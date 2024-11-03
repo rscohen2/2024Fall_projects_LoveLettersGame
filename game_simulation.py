@@ -41,7 +41,7 @@ def player_is_out_of_the_round(player_out, players):
 if __name__ == '__main__':
     players = [1,2,3,4]
     cards_drawn, cards = new_game()
-    print(len(cards))
+    # print(len(cards))
 
     for player in players:
         cards = current_deck(cards, cards_drawn)

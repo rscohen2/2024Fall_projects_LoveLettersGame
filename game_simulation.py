@@ -23,6 +23,21 @@ def draw_a_card(cards_drawn, cards):
     cards_drawn.append(card)
     return card
 
+def play_card():
+    """
+
+    :return:
+    """
+
+def player_is_out_of_the_round(player_out, players):
+    """
+
+    :return:
+    """
+    players = players.remove(player_out)
+    return players
+
+
 if __name__ == '__main__':
     players = [1,2,3,4]
     cards_drawn, cards = new_game()

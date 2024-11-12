@@ -61,6 +61,8 @@ def player_is_out_of_the_round(player_out, players):
     return players
 
 def choose_opponent(opponents):
+    # TODO: check if opponent has handmaid card, then remove them from opponents list?
+
     opponent = random.choice(opponents)
     return opponent
 
@@ -106,6 +108,8 @@ class Princess(Card):
         player_is_out_of_the_round(player, players)
         card_played = 'Princess'
         update_cards_played(card_played, cards_played)
+        # TODO: sort of standardize the output for play_card for each card?
+
 
 
 
@@ -143,6 +147,7 @@ class Prince(Card):
 class Handmaid(Card):
     def __init__(self, value):
         self.__value = 2
+    #make it so that they cannot be chosen as the opponent
 
     pass
 
@@ -150,6 +155,12 @@ class Handmaid(Card):
 class Baron(Card):
     def __init__(self, value):
         self.__value = 4
+    def play_card(self, Player.players_hand, opponent, opponents_hand):
+        opp_card = opponents_hand[0]
+        your_card = players_hand[0]
+        if your_card.value > opp_card.value:
+            player_is_out_of_the_round(opponent, players)
+        return players
 
     pass
 
@@ -157,6 +168,7 @@ class Baron(Card):
 class Priest(Card):
     def __init__(self, value):
         self.__value = 5
+    #encode player knowledge somehow? like AI that was used in chess sim Dr. W made
 
     pass
 
@@ -224,6 +236,8 @@ class Player1(Player):
 
 
 class Player2(Player):
+    # TODO: write strat 2
+
     def strategy_2(self):
         return
 
@@ -233,6 +247,8 @@ class Player2(Player):
     pass
 
 class Player3(Player):
+    # TODO: write strat 3?
+
     def strategy_3(self):
 
     def __init__(self, strategy):
@@ -243,6 +259,12 @@ class Player3(Player):
         # pre-calculate and store these values for randomization of turns:
         # r, p, s = self.strategy
         # self.randmax = r + p + s
+
+
+# TODO: write functions for identifying/keeping track of the round winner
+
+# TODO: compare results of rounds and analyze our monte carlo sim results
+
 
 if __name__ == '__main__':
     players = [1,2,3,4]

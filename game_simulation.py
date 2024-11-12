@@ -111,6 +111,8 @@ class Princess(Card):
 
 
 class Countess(Card):
+    self = None
+
     def __init__(self, value, card_type):
         super().__init__(card_type)
         self.__value = self.card_values['Countess']
@@ -120,6 +122,7 @@ class Countess(Card):
         print("Countess card played!")
         card_played = 'Countess'
         update_cards_played(card_played, cards_played)
+        return card_played
 
 
 
@@ -160,6 +163,7 @@ class Priest(Card):
 
 class Guard(Card):
     self = None
+    #this is because I am using it later in the players strategy class bit but don't think I am doing this right
 
     def __init__(self, __value):
         self.__value = self.card_values['Guard']
@@ -192,11 +196,14 @@ class Player:
         self.ties = 0
         self.opponents = Counter()
         self.choices = Counter()
+        self.player = None
+        self.players_hand = None
 
-    def check_hand_for_countess(self.players_hand):
+    def check_hand_for_countess(self, cards_played):
         if 'Countess' in players_hand:
             if 'King' or 'Prince' in players_hand:
-                move = Countess.play_card()
+                move = Countess.play_card(Countess.self, self.player, players, cards_played)
+                return move
 
 
 class Player1(Player):
@@ -206,6 +213,7 @@ class Player1(Player):
         super().__init__(strategy)
         self.strategy = self.strategy_1
         self.players_hand = self.players_hand
+        self.player = 'player1'
     def strategy_1(self, opponents_hand):
         if 'Guard' in self.players_hand:
             opponent = choose_opponent(players)

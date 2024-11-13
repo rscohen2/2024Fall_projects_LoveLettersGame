@@ -126,7 +126,7 @@ class Countess(Card):
         print("Countess card played!")
         card_played = 'Countess'
         update_cards_played(card_played, cards_played)
-        return card_played
+        # return card_played
 
 
 
@@ -144,6 +144,15 @@ class Prince(Card):
         super().__init__(card_type)
         self.__value = self.card_values['Prince']
     #TODO: choose a player to discard his or her hand
+    def play_card(self, player, players, cards_played, opponents_hand):
+        print("Prince card played!")
+        #reset opponents hand, and put their cards in the discard pile (cards_played?)
+        for card in opponents_hand:
+            opponents_hand.remove(card)
+            cards_played.append(card)
+        card_played = 'Prince'
+        update_cards_played(card_played, cards_played)
+
 
     pass
 

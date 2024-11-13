@@ -60,9 +60,12 @@ def player_is_out_of_the_round(player_out, players):
     players = players.remove(player_out)
     return players
 
-def choose_opponent(opponents):
+def choose_opponent(opponents, opponent_card_in_play):
     # TODO: check if opponent has handmaid card, then remove them from opponents list?
-
+    for opponent in opponents:
+        if opponent_card_in_play == 'Handmaid':
+    # TODO: implement opponent_card_in_play somehow in the player class??
+            opponents.remove(opponent)
     opponent = random.choice(opponents)
     return opponent
 

@@ -73,6 +73,10 @@ def update_cards_played(card_played, cards_played):
     cards_played.append(card_played)
     return cards_played, cards_played
 
+def clear_cards_in_play(cards_in_play):
+    cards_in_play = []
+    return cards_in_play
+
 
 class Card:
     # Define card values within the Card class
@@ -91,6 +95,7 @@ class Card:
     def __init__(self, card_type, color=None, location=None):
         self.card_type = card_type
         self.__value = None
+        self.player = None
 
     @property
     def value(self):
@@ -102,15 +107,17 @@ class Card:
 
 class Princess(Card):
     def __init__(self, value):
+        super().__init__(player)
         self.__value = self.card_values['Princess']
 
-    def play_card(self, player, players, cards_played):
+    def play_card(self, player, players, cards_played, cards_in_play):
         # Princess-specific play logic
         print("Princess card played!")
         # Trigger player elimination if the Princess is played
         player_is_out_of_the_round(player, players)
         card_played = 'Princess'
         update_cards_played(card_played, cards_played)
+        cards_in_play.append(card_played)
         # TODO: sort of standardize the output for play_card for each card?
 
 
@@ -124,12 +131,13 @@ class Countess(Card):
         super().__init__(card_type)
         self.__value = self.card_values['Countess']
 
-    def play_card(self, player, players, cards_played):
+    def play_card(self, player, players, cards_played, cards_in_play):
         # Princess-specific play logic
         print("Countess card played!")
         card_played = 'Countess'
-        update_cards_played(card_played, cards_played)
-        # return card_played
+        update_cards_played(card_played, cards_played, cards_in_play)
+        cards_in_play.append(card_played)
+        return cards_played
 
 
 
@@ -147,7 +155,7 @@ class Prince(Card):
         super().__init__(card_type)
         self.__value = self.card_values['Prince']
     #TODO: choose a player to discard his or her hand
-    def play_card(self, player, players, cards_played, opponents_hand):
+    def play_card(self, player, players, cards_played, opponents_hand, cards_in_play):
         print("Prince card played!")
         #reset opponents hand, and put their cards in the discard pile (cards_played?)
         for card in opponents_hand:
@@ -155,6 +163,8 @@ class Prince(Card):
             cards_played.append(card)
         card_played = 'Prince'
         update_cards_played(card_played, cards_played)
+        cards_in_play.append(card_played)
+
 
 
     pass
@@ -164,6 +174,10 @@ class Handmaid(Card):
     def __init__(self, value, card_type):
         super().__init__(card_type)
         self.__value = self.card_values['Handmaid']
+    def play_card(self, player, players, cards_played, cards_in_play):
+        card_played = 'Handmaid'
+        update_cards_played(card_played, cards_played)
+        cards_in_play.append(card_played)
 
     #TODO: make it so that they cannot be chosen as the opponent (for this round only)
 
@@ -175,7 +189,7 @@ class Baron(Card):
         super().__init__(card_type)
         self.__value = self.card_values['Baron']
 
-    def play_card(self, Player.players_hand, opponent, opponents_hand):
+    def play_card(self, Player.players_hand, opponent, opponents_hand, cards_in_play):
     """ Compare card values with an opponent. If they have a lower value, they are out of the round
     (double check that it's just the opponent and not whoever has the lower value is out of the round?)
     """
@@ -185,6 +199,9 @@ class Baron(Card):
             player_is_out_of_the_round(opponent, players)
             card_played = 'Baron'
             update_cards_played(card_played, cards_played)
+            card_played = 'Prince'
+            update_cards_played(card_played, cards_played)
+            cards_in_play.append(card_played)
 
     #TODO: how to add the opponent and players_hand from the PLayer class here? but also can't just switch order bc other things from cards needed in player class...
 
@@ -208,7 +225,7 @@ class Guard(Card):
     def __init__(self, __value):
         self.__value = self.card_values['Guard']
 
-    def play_card(self, guess, opponents_hand, opponent):
+    def play_card(self, guess, opponents_hand, opponent, cards_played, players):
         for card in opponents_hand:
             if card == guess:
             players = player_is_out_of_the_round(opponent, players)
@@ -255,6 +272,7 @@ class Player1(Player):
         self.strategy = self.strategy_1
         self.players_hand = self.players_hand
         self.player = 'player1'
+        self.opponents = ['player2', 'player3']
     def strategy_1(self, opponents_hand):
         if 'Guard' in self.players_hand:
             opponent = choose_opponent(players)
@@ -266,12 +284,15 @@ class Player1(Player):
 
 class Player2(Player):
     # TODO: write strat 2
+    def __init__(self, strategy):
+        super().__init__(strategy)
+        self.strategy = self.strategy_2
+        self.players_hand = self.players_hand
+        self.player = 'player2'
+        self.opponents = ['player1', 'player3']
 
     def strategy_2(self):
         return
-
-    def __init__(self, strategy):
-        self.strategy = self.strategy_2()
 
     pass
 
@@ -281,7 +302,11 @@ class Player3(Player):
     def strategy_3(self):
 
     def __init__(self, strategy):
-        self.strategy = self.strategy_3()
+        super().__init__(strategy)
+        self.strategy = self.strategy_3
+        self.players_hand = self.players_hand
+        self.player = 'player3'
+        self.opponents = ['player1', 'player2']
 
     pass
 

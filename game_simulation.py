@@ -122,6 +122,16 @@ def winner():
 
     # else:
 
+#check if there is already a clear winner before implementing a round
+def game_play_until_winner():
+    if len(players) != 1 or len(cards) != 0: #if no winner yet
+        round()
+    #recursion of rounds until a winner is identified for that game
+    else:
+        winner = winner()
+    return winner
+
+
 
 
 
@@ -399,12 +409,14 @@ if __name__ == '__main__':
 
     deal_cards()
 
-    #check if there is already a clear winner before implementing a round
-    if len(players) != 1 or len(cards) != 0: #if no winner yet
-        round()
-    #recursion of rounds until a winner is identified for that game
-    else:
-        winner = winner()
+    winners = []
+
+    winner = game_play_until_winner()
+
+    winners.append(winner)
+
+
+
 
 
 

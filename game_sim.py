@@ -1,6 +1,8 @@
 
 import random
 import Counter
+import cards
+import players
 
 # cards = ['Princess', 'Countess', 'King','Prince','Prince','Handmaid','Handmaid','Baron','Baron','Priest','Priest','Guard','Guard','Guard','Guard','Guard']
 

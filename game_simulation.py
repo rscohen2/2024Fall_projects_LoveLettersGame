@@ -15,6 +15,20 @@ def new_game():
 
     return cards_drawn, cards
 
+def deal_cards():
+    Player1.players_hand = []
+    card_drawn = draw_a_card(cards_drawn, cards)
+    Player1.players_hand.append(card_drawn)
+
+    Player2.players_hand = []
+    card_drawn = draw_a_card(cards_drawn, cards)
+    Player2.players_hand.append(card_drawn)
+
+    Player3.players_hand = []
+    card_drawn = draw_a_card(cards_drawn, cards)
+    Player3.players_hand.append(card_drawn)
+
+
 
 def current_deck(cards, cards_drawn):
     """
@@ -380,19 +394,9 @@ if __name__ == '__main__':
     cards_drawn, cards = new_game()
     # print(len(cards))
 
-    Player1.players_hand = []
-    card_drawn = draw_a_card(cards_drawn, cards)
-    Player1.players_hand.append(card_drawn)
-
-    Player2.players_hand = []
-    card_drawn = draw_a_card(cards_drawn, cards)
-    Player2.players_hand.append(card_drawn)
-
-    Player3.players_hand = []
-    card_drawn = draw_a_card(cards_drawn, cards)
-    Player3.players_hand.append(card_drawn)
-
     cards = current_deck(cards, cards_drawn)
+
+    deal_cards()
 
     #player 1 goes first
 

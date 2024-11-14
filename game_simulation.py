@@ -358,7 +358,6 @@ class Player1(Player):
 
 
 class Player2(Player):
-    # TODO: write strat 2, always guess Princess if guard card
     def __init__(self, strategy):
         super().__init__(strategy)
         self.strategy = self.strategy_2
@@ -366,8 +365,6 @@ class Player2(Player):
         self.player = 'player2'
         self.opponents = ['player1', 'player3']
         self.card_knowledge = {'player1':[], 'player3':[]}
-
-    # TODO : What if they don't have a guard card -- choose randomly to play
 
     def strategy_2(self):
         if 'Guard' in self.players_hand:

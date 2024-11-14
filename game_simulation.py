@@ -350,7 +350,7 @@ class Player1(Player):
             return move
         #        return players_hand, opponents_hand, cards_in_play, cards_played
         else:
-            i = random.randint(0, 15)
+            i = random.randint(0, 2)
             card_to_play = Player1.players_hand[i]
             move = play_card(card_to_play, opponents_hand, opponent)
             return move
@@ -378,7 +378,7 @@ class Player2(Player):
             return move
         #        return players_hand, opponents_hand, cards_in_play, cards_played
         else:
-            i = random.randint(0, 15)
+            i = random.randint(0, 2)
             card_to_play = Player2.players_hand[i]
             move = play_card(card_to_play, opponents_hand, opponent)
             return move
@@ -387,9 +387,6 @@ class Player2(Player):
     pass
 
 class Player3(Player):
-    # TODO: write strat 3?
-
-    def strategy_3(self):
 
     def __init__(self, strategy):
         super().__init__(strategy)
@@ -399,8 +396,12 @@ class Player3(Player):
         self.opponents = ['player1', 'player2']
         self.card_knowledge = {'player1':[], 'player2':[]}
 
+    def strategy_3(self):
+        i = random.randint(0, 2)
+        card_to_play = Player3.players_hand[i]
+        move = play_card(card_to_play, opponents_hand, opponent)
+        return move
 
-    pass
 
         # pre-calculate and store these values for randomization of turns:
         # r, p, s = self.strategy

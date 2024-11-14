@@ -117,9 +117,12 @@ def winner():
             if player.players_hand.card_value > current_max_value
             current_max_value = player.players_hand.card_value
             #can we access who that player is from the class structure above
+            winner = current_max_value
+            return winner
+
     # else:
 
-=
+
 
 
 #player knowledge of cards as a dictionary ex: {player1:, player2:,player3}
@@ -382,7 +385,6 @@ class Player3(Player):
         # self.randmax = r + p + s
 
 
-# TODO: write functions for identifying/keeping track of the round winner
 
 # TODO: compare results of rounds and analyze our monte carlo sim results
 
@@ -406,7 +408,7 @@ if __name__ == '__main__':
         round()
     #recursion of rounds until a winner is identified for that game
     else:
-        winner()
+        winner = winner()
 
 
 

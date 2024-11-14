@@ -83,6 +83,31 @@ def player_turn(player, player.strategy):
     move = player.strategy(self, opponents_hand)
 
 
+def round()
+    for player in players:
+        player_turn(player, player.strategy)
+
+
+def winner():
+    if len(players) == 1:
+        return players[0]
+
+    elif len(current_deck) = 0:
+        ending_hands = {}
+
+        # players[0] > players [1]
+        for player in players:
+            ending_hands.append(player: player.players_hand.card_value)
+            current_max_value = 0
+        for player in ending_hands:
+            if player.players_hand.card_value > current_max_value
+            current_max_value = player.players_hand.card_value
+            #can we access who that player is from the class structure above
+    # else:
+
+=
+
+
 #player knowledge of cards as a dictionary ex: {player1:, player2:,player3}
 
 
@@ -372,29 +397,17 @@ if __name__ == '__main__':
     #player 1 goes first
 
     # player_turn(Player1, Player1.strategy_1)
-    for player in players:
-        player_turn(player, player.strategy)
+    # for player in players:
+    #     player_turn(player, player.strategy)
+    if len(players) != 1 or len(cards) != 0: #if no winner yet
+        round()
+    #recursion of rounds until a winner is identified for that game
+    else:
+        winner()
 
 
-    def winner():
-        if len(players) == 1:
-            return players[0]
-
-        elif len(current_deck) = 0:
-            ending_hands = {}
-
-            # players[0] > players [1]
-            for player in players:
-                ending_hands.append(player: player.players_hand.card_value)
-                current_max_value = 0
-            for player in ending_hands:
-                if player.players_hand.card_value > current_max_value
-                current_max_value = player.players_hand.card_value
-                #can we access who that player is from the class structure above
-        # else:
 
 
-    
 
 
 

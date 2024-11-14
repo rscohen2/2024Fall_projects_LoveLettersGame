@@ -399,11 +399,7 @@ if __name__ == '__main__':
 
     deal_cards()
 
-    #player 1 goes first
-
-    # player_turn(Player1, Player1.strategy_1)
-    # for player in players:
-    #     player_turn(player, player.strategy)
+    #check if there is already a clear winner before implementing a round
     if len(players) != 1 or len(cards) != 0: #if no winner yet
         round()
     #recursion of rounds until a winner is identified for that game

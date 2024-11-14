@@ -77,6 +77,14 @@ def clear_cards_in_play(cards_in_play):
     cards_in_play = []
     return cards_in_play
 
+def player_turn(player, player.strategy):
+    card_drawn = draw_a_card(cards_drawn, cards)
+    player.players_hand.append(card_drawn)
+    move = player.strategy(self, opponents_hand)
+
+
+#player knowledge of cards as a dictionary ex: {player1:, player2:,player3}
+
 
 class Card:
     # Define card values within the Card class
@@ -146,6 +154,12 @@ class King(Card):
         super().__init__(card_type)
         self.__value = self.card_values['King']
     #TODO: trade hands with an opponent of choice
+    def play_card(self, player, players, cards_played, opponents_hand, cards_in_play, opponent):
+        player.card_knowledge[opponent].append(opponents_hand)
+        opponent.card_knowledge[player].append(players_hand)
+        player.players_hand = opponents_hand
+        opponent.players_hand = players_hand
+        return players_hand, opponents_hand, cards_in_play, cards_played
 
     pass
 
@@ -273,23 +287,35 @@ class Player1(Player):
         self.players_hand = self.players_hand
         self.player = 'player1'
         self.opponents = ['player2', 'player3']
+        self.card_knowledge = {'player2':[], 'player3':[]}
+        self.players_hand = []
     def strategy_1(self, opponents_hand):
         if 'Guard' in self.players_hand:
-            opponent = choose_opponent(players)
+            opponent = choose_opponent(self.opponents, opponent_card_in_play)
             opponents_hand = players_hand(opponent)
             guess = cards.unique().count().max() #guess the most frequent card left in deck?
             move = Guard.play_card(Guard.self, guess, opponents_hand, opponent)
             return move
+        #        return players_hand, opponents_hand, cards_in_play, cards_played
+        else:
+            i = random.randint(0, 15)
+            card_to_play = Player1.players_hand[i]
+            move = play_card(card_to_play, opponents_hand, opponent)
+            return move
+
 
 
 class Player2(Player):
-    # TODO: write strat 2
+    # TODO: write strat 2, always guess Princess if guard card
     def __init__(self, strategy):
         super().__init__(strategy)
         self.strategy = self.strategy_2
         self.players_hand = self.players_hand
         self.player = 'player2'
         self.opponents = ['player1', 'player3']
+        self.card_knowledge = {'player1':[], 'player3':[]}
+
+    # TODO : What if they don't have a guard card -- choose randomly to play
 
     def strategy_2(self):
         return
@@ -307,6 +333,8 @@ class Player3(Player):
         self.players_hand = self.players_hand
         self.player = 'player3'
         self.opponents = ['player1', 'player2']
+        self.card_knowledge = {'player1':[], 'player2':[]}
+
 
     pass
 
@@ -327,12 +355,48 @@ if __name__ == '__main__':
     cards_drawn, cards = new_game()
     # print(len(cards))
 
+    Player1.players_hand = []
+    card_drawn = draw_a_card(cards_drawn, cards)
+    Player1.players_hand.append(card_drawn)
+
+    Player2.players_hand = []
+    card_drawn = draw_a_card(cards_drawn, cards)
+    Player2.players_hand.append(card_drawn)
+
+    Player3.players_hand = []
+    card_drawn = draw_a_card(cards_drawn, cards)
+    Player3.players_hand.append(card_drawn)
+
+    cards = current_deck(cards, cards_drawn)
+
+    #player 1 goes first
+
+    # player_turn(Player1, Player1.strategy_1)
     for player in players:
-        players_hand = []
-        cards = current_deck(cards, cards_drawn)
-        card_drawn = draw_a_card(cards_drawn, cards)
-        print(card_drawn)
-        players_hand.append(card_drawn)
+        player_turn(player, player.strategy)
+
+
+    def winner():
+        if len(players) == 1:
+            return players[0]
+
+        elif len(current_deck) = 0:
+            ending_hands = {}
+
+            # players[0] > players [1]
+            for player in players:
+                ending_hands.append(player: player.players_hand.card_value)
+                current_max_value = 0
+            for player in ending_hands:
+                if player.players_hand.card_value > current_max_value
+                current_max_value = player.players_hand.card_value
+                #can we access who that player is from the class structure above
+        # else:
+
+
+    
+
+
 
 
 

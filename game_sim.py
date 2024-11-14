@@ -18,6 +18,10 @@ def new_game():
     return cards_drawn, cards
 
 def deal_cards():
+    """
+    Deals cards randomly to each player prior to the first round
+    :return:
+    """
     Player1.players_hand = []
     card_drawn = draw_a_card(cards_drawn, cards)
     Player1.players_hand.append(card_drawn)
@@ -34,7 +38,7 @@ def deal_cards():
 
 def current_deck(cards, cards_drawn):
     """
-
+    keep track of the current deck, removing cards_played (discard pile) and cards_drawn (currently in players hands)
     :param cards:
     :param cards_drawn:
     :return: cards that are in play
@@ -45,12 +49,17 @@ def current_deck(cards, cards_drawn):
     return cards
 
 def players_hand(player):
+    """
+    keep track of the players current hand
+    :param player:
+    :return:
+    """
     players_hand = []
     return players_hand
 
 def draw_a_card(cards_drawn, cards, players_hand):
     """
-
+    Draws a card randomly from the current deck
     :param cards_drawn:
     :param cards:
     :return: card that is drawn
@@ -77,6 +86,12 @@ def player_is_out_of_the_round(player_out, players):
     return players
 
 def choose_opponent(opponents, opponent_card_in_play):
+    """
+    Randomly choose an opponent to have your card's effect apply to
+    :param opponents:
+    :param opponent_card_in_play:
+    :return:
+    """
     # TODO: check if opponent has handmaid card, then remove them from opponents list?
     for opponent in opponents:
         if opponent_card_in_play == 'Handmaid':

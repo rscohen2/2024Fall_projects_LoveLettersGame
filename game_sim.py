@@ -130,6 +130,7 @@ def winner():
         # players[0] > players [1]
         for player in players:
             ending_hands.append(player: player.players_hand.card_value)
+            #TODO : find correct syntax for adding to dict, its not the above pseudo code
             current_max_value = 0
         for player in ending_hands:
             if player.players_hand.card_value > current_max_value

@@ -166,4 +166,4 @@ if __name__ == '__main__':
         winner = game_play_until_winner()
         winners.append(winner)
 
-    #TODO: instead of just winner list count number of times each player wins
+    #TODO: instead of just winner list count number of times each player wins and graph stat convergence etc

@@ -370,6 +370,18 @@ class Player2(Player):
     # TODO : What if they don't have a guard card -- choose randomly to play
 
     def strategy_2(self):
+        if 'Guard' in self.players_hand:
+            opponent = choose_opponent(self.opponents, opponent_card_in_play)
+            opponents_hand = players_hand(opponent)
+            guess = 'Princess' #guess the most frequent card left in deck?
+            move = Guard.play_card(Guard.self, guess, opponents_hand, opponent)
+            return move
+        #        return players_hand, opponents_hand, cards_in_play, cards_played
+        else:
+            i = random.randint(0, 15)
+            card_to_play = Player2.players_hand[i]
+            move = play_card(card_to_play, opponents_hand, opponent)
+            return move
         return
 
     pass

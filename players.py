@@ -4,13 +4,13 @@ class Player:
     player_count = 0  # Initialize count of all players.
     all_players = []  # automatically track all players
 
-    def __init__(self, strategy):
+    def __init__(self, strategy, name):
         Player.player_count += 1
         Player.all_players.append(self)
 
 
-
-        self.strategy = None
+        self.name = name
+        self.strategy = strategy
         # self.randmax = None
         self.players_hand = []
         # track player stats:
@@ -21,6 +21,20 @@ class Player:
         self.choices = Counter()
         self.player = None
         self.players_hand = None
+
+    def strategy_1(self, opponents_hand):
+        if 'Guard' in self.players_hand:
+            opponent = choose_opponent(self.opponents, opponent_card_in_play)
+            opponents_hand = players_hand(opponent)
+            guess = cards.unique().count().max()  # guess the most frequent card left in deck?
+            move = Guard.play_card(Guard.self, guess, opponents_hand, opponent)
+            return move
+        #        return players_hand, opponents_hand, cards_in_play, cards_played
+        else:
+            i = random.randint(0, 2)
+            card_to_play = Player1.players_hand[i]
+            move = play_card(card_to_play, opponents_hand, opponent)
+            return move
 
     def check_hand_for_countess(self, cards_played):
         if 'Countess' in players_hand:
@@ -35,32 +49,31 @@ class Player1(Player):
     def __init__(self, strategy):
         super().__init__(strategy)
         self.strategy = self.strategy_1
-        self.players_hand = self.players_hand
         self.player = 'player1'
         self.opponents = ['player2', 'player3']
         self.card_knowledge = {'player2':[], 'player3':[]}
         self.players_hand = []
-    def strategy_1(self, opponents_hand):
-        if 'Guard' in self.players_hand:
-            opponent = choose_opponent(self.opponents, opponent_card_in_play)
-            opponents_hand = players_hand(opponent)
-            guess = cards.unique().count().max() #guess the most frequent card left in deck?
-            move = Guard.play_card(Guard.self, guess, opponents_hand, opponent)
-            return move
-        #        return players_hand, opponents_hand, cards_in_play, cards_played
-        else:
-            i = random.randint(0, 2)
-            card_to_play = Player1.players_hand[i]
-            move = play_card(card_to_play, opponents_hand, opponent)
-            return move
+# def strategy_1(self, opponents_hand):
+#     if 'Guard' in self.players_hand:
+#         opponent = choose_opponent(self.opponents, opponent_card_in_play)
+#         opponents_hand = players_hand(opponent)
+#         guess = cards.unique().count().max() #guess the most frequent card left in deck?
+#         move = Guard.play_card(Guard.self, guess, opponents_hand, opponent)
+#         return move
+#     #        return players_hand, opponents_hand, cards_in_play, cards_played
+#     else:
+#         i = random.randint(0, 2)
+#         card_to_play = Player1.players_hand[i]
+#         move = play_card(card_to_play, opponents_hand, opponent)
+#         return move
 
 
 
 class Player2(Player):
     def __init__(self, strategy):
         super().__init__(strategy)
-        self.strategy = self.strategy_2
-        self.players_hand = self.players_hand
+        self.strategy = strategy_2
+        self.players_hand = []
         self.player = 'player2'
         self.opponents = ['player1', 'player3']
         self.card_knowledge = {'player1':[], 'player3':[]}

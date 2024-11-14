@@ -12,10 +12,10 @@ class Card:
 
     # chatgpt helped me figure out how to organize the values here and add them correctly to the classes below
 
-    def __init__(self, card_type, color=None, location=None):
-        self.card_type = card_type
-        self.__value = None
-        self.player = None
+    def __init__(self):
+        # self.card_type = card_type
+        # self.__value = value
+        # self.player = None
 
     @property
     def value(self):
@@ -26,8 +26,8 @@ class Card:
 
 
 class Princess(Card):
-    def __init__(self, value):
-        super().__init__(player)
+    def __init__(self):
+        super().__init__()
         self.__value = self.card_values['Princess']
 
     def play_card(self, player, players, cards_played, cards_in_play):
@@ -157,4 +157,6 @@ class Guard(Card):
             players = player_is_out_of_the_round(opponent, players)
             card_played = 'Guard'
             update_cards_played(card_played, cards_played)
+            #TODO move update_cards_played to Card class instead of subclass
+            #correct properties of another class instead of parameters for the current game state
 

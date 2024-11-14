@@ -91,10 +91,11 @@ def clear_cards_in_play(cards_in_play):
     cards_in_play = []
     return cards_in_play
 
-def player_turn(player, player.strategy):
+def player_turn(player, Player.strategy):
     card_drawn = draw_a_card(cards_drawn, cards)
     player.players_hand.append(card_drawn)
     move = player.strategy(self, opponents_hand)
+    return move
 
 
 def round()
@@ -311,7 +312,7 @@ class Player:
 
 
 
-        self.strategy = strategy
+        self.strategy = None
         # self.randmax = None
         self.players_hand = []
         # track player stats:

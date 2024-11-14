@@ -388,7 +388,6 @@ class Player3(Player):
 
 
 if __name__ == '__main__':
-    players = [1,2,3,4]
     # control = Player('control')
 
     cards_drawn, cards = new_game()

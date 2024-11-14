@@ -411,9 +411,9 @@ if __name__ == '__main__':
 
     winners = []
 
-    winner = game_play_until_winner()
-
-    winners.append(winner)
+    for i in range(1,10000):
+        winner = game_play_until_winner()
+        winners.append(winner)
 
 
 

@@ -3,8 +3,7 @@ import random
 import Counter
 from cards import *
 from players import *
-import game
-
+from game import *
 
 if __name__ == '__main__':
     # control = Player('control')

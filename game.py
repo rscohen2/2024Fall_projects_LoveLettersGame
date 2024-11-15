@@ -119,7 +119,7 @@ def player_turn(player, Player.strategy):
     return move
 
 
-def round()
+def round():
     for player in players:
         player_turn(player, player.strategy)
 

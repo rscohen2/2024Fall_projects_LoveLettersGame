@@ -2,7 +2,7 @@
 import random
 import Counter
 from cards import *
-import players
+from players import *
 import game
 
 

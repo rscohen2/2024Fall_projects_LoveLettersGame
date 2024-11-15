@@ -10,15 +10,6 @@ class Game:
         cards = current_deck(cards, cards_drawn)
         deal_cards()
 
-    def deal_cards(self):
-        """
-        Deals cards randomly to each player prior to the first round
-        :return:
-        """
-        for player in self.players:
-            player.players_hand = []
-            card_drawn = draw_a_card(cards_drawn, cards)
-            player.players_hand.append(card_drawn)
 def new_game():
     """
     Starts a new game by resetting cards to have the entire deck, and resets cards_drawn to empty since no cards have been drawn yet.
@@ -30,22 +21,22 @@ def new_game():
 
     return cards_drawn, cards
 
-def deal_cards():
-    """
-    Deals cards randomly to each player prior to the first round
-    :return:
-    """
-    Player.players_hand = []
-    card_drawn = draw_a_card(cards_drawn, cards)
-    Player1.players_hand.append(card_drawn)
-
-    # Player2.players_hand = []
-    # card_drawn = draw_a_card(cards_drawn, cards)
-    # Player2.players_hand.append(card_drawn)
-    #
-    # Player3.players_hand = []
-    # card_drawn = draw_a_card(cards_drawn, cards)
-    # Player3.players_hand.append(card_drawn)
+# def deal_cards():
+#     """
+#     Deals cards randomly to each player prior to the first round
+#     :return:
+#     """
+#     Player.players_hand = []
+#     card_drawn = draw_a_card(cards_drawn, cards)
+#     Player1.players_hand.append(card_drawn)
+#
+#     # Player2.players_hand = []
+#     # card_drawn = draw_a_card(cards_drawn, cards)
+#     # Player2.players_hand.append(card_drawn)
+#     #
+#     # Player3.players_hand = []
+#     # card_drawn = draw_a_card(cards_drawn, cards)
+#     # Player3.players_hand.append(card_drawn)
 
 
 
@@ -82,6 +73,17 @@ def draw_a_card(cards_drawn, cards, players_hand):
     cards_drawn.append(card_drawn)
     players_hand.append(card_drawn)
     return card_drawn, cards_drawn, players_hand
+
+
+def deal_cards(self):
+    """
+    Deals cards randomly to each player prior to the first round
+    :return:
+    """
+    for player in self.players:
+        player.players_hand = []
+        card_drawn = draw_a_card(cards_drawn, cards)
+        player.players_hand.append(card_drawn)
 
 # def play_card():
 #     """

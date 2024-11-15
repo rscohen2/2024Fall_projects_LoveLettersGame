@@ -34,10 +34,10 @@ class Princess(Card):
         # Princess-specific play logic
         print("Princess card played!")
         # Trigger player elimination if the Princess is played
-        player_is_out_of_the_round(player, players)
+        # player_is_out_of_the_round(player, players)
         card_played = 'Princess'
-        update_cards_played(card_played, cards_played)
-        cards_in_play.append(card_played)
+        # update_cards_played(card_played, cards_played)
+        # cards_in_play.append(card_played)
         # TODO: sort of standardize the output for play_card for each card?
 
 

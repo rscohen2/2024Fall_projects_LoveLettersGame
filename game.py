@@ -1,3 +1,5 @@
+from players import *
+
 class Game:
     def __init__(self, players):
         self.players = players
@@ -32,7 +34,7 @@ def deal_cards():
     Deals cards randomly to each player prior to the first round
     :return:
     """
-    Player1.players_hand = []
+    Player.players_hand = []
     card_drawn = draw_a_card(cards_drawn, cards)
     Player1.players_hand.append(card_drawn)
 

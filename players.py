@@ -25,6 +25,9 @@ class Player:
         self.player = None
         self.players_hand = None
 
+
+    #TODO : incoporate the strategies into one function?
+
     def strategy_1(self, opponents_hand):
         if 'Guard' in self.players_hand:
             opponent = choose_opponent(self.opponents, opponent_card_in_play)

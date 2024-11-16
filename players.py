@@ -6,6 +6,11 @@ from game import *
 class Player:
     """A competitor in the game."""
 
+    players_hand = None
+    players = None
+    opponents = None
+    card_knowledge = None
+    card_played = None
     player_count = 0  # Initialize count of all players.
     all_players = []  # automatically track all players
 
@@ -27,7 +32,7 @@ class Player:
         self.player = None
         # self.players_hand = None
         self.card_knowledge = None
-        self.card_in_play = None
+        self.card_played = None
 
 
     #TODO : incoporate the strategies into one function?

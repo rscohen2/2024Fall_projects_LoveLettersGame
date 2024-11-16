@@ -3,6 +3,11 @@ from cards import *
 
 class Game:
 
+    card_played = None
+    cards_in_play = []
+    players = None
+    cards_played = None
+
     def __init__(self, players):
         self.players = players
         # game.players[2] --> a player object
@@ -10,7 +15,8 @@ class Game:
         # print(len(cards))
         self.cards = current_deck(self.cards, self.cards_drawn)
         deal_cards()
-
+        self.cards_played = None
+        self.cards_in_play = None
 
 def new_game():
     """

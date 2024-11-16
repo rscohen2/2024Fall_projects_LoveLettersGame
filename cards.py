@@ -1,3 +1,6 @@
+from players import *
+from game import *
+
 class Card:
     # Define card values within the Card class
     card_values = {
@@ -23,6 +26,9 @@ class Card:
 
     def do_something(self, what_to_do):
         pass
+    def general_play_card(self):
+        update_cards_played(card_played, cards_played)
+
 
 
 class Princess(Card):
@@ -30,14 +36,14 @@ class Princess(Card):
         super().__init__()
         self.__value = self.card_values['Princess']
 
-    def play_card(self, player, players, cards_played, cards_in_play):
+    def play_card(self):
         # Princess-specific play logic
         print("Princess card played!")
         # Trigger player elimination if the Princess is played
-        # player_is_out_of_the_round(player, players)
+        player_is_out_of_the_round(Player, Players)
         card_played = 'Princess'
         # update_cards_played(card_played, cards_played)
-er345        # TODO: sort of standardize the output for play_card for each card?
+        # TODO: sort of standardize the output for play_card for each card?
 
 
 

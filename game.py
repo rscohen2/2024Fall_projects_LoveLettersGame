@@ -2,13 +2,15 @@ from players import *
 from cards import *
 
 class Game:
+
     def __init__(self, players):
         self.players = players
         # game.players[2] --> a player object
-        cards_drawn, cards = new_game()
+        self.cards_drawn, self.cards = new_game()
         # print(len(cards))
-        cards = current_deck(cards, cards_drawn)
+        self.cards = current_deck(self.cards, self.cards_drawn)
         deal_cards()
+
 
 def new_game():
     """
@@ -106,6 +108,15 @@ def list_opponents(players, current_player):
 
     opponents = players.remove(current_player)
     return opponents
+
+def choose_opponent(opponents, opponent_card_in_play):
+    # TODO: check if opponent has handmaid card, then remove them from opponents list?
+    for opponent in opponents:
+        if opponent_card_in_play == 'Handmaid':
+    # TODO: implement opponent_card_in_play somehow in the player class??
+            opponents.remove(opponent)
+    opponent = random.choice(opponents)
+    return opponent
 
 def update_cards_played(card_played, cards_played):
     cards_played.append(card_played)

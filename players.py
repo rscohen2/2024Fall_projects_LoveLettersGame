@@ -1,5 +1,7 @@
 from random import random
 
+from game import *
+
 
 class Player:
     """A competitor in the game."""
@@ -24,6 +26,8 @@ class Player:
         self.choices = Counter()
         self.player = None
         self.players_hand = None
+        self.card_knowledge = None
+        self.card_in_play = None
 
 
     #TODO : incoporate the strategies into one function?
@@ -32,7 +36,7 @@ class Player:
         if 'Guard' in self.players_hand:
             opponent = choose_opponent(self.opponents, opponent_card_in_play)
             opponents_hand = players_hand(opponent)
-            guess = cards.unique().count().max()  # guess the most frequent card left in deck?
+            guess = Game.cards.unique().count().max()  # guess the most frequent card left in deck?
             move = Guard.play_card(Guard.self, guess, opponents_hand, opponent)
             return move
         #        return players_hand, opponents_hand, cards_in_play, cards_played

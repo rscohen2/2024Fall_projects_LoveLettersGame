@@ -37,8 +37,7 @@ class Princess(Card):
         # player_is_out_of_the_round(player, players)
         card_played = 'Princess'
         # update_cards_played(card_played, cards_played)
-        # cards_in_play.append(card_played)
-        # TODO: sort of standardize the output for play_card for each card?
+er345        # TODO: sort of standardize the output for play_card for each card?
 
 
 

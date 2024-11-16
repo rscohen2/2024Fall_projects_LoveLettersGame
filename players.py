@@ -25,7 +25,7 @@ class Player:
         self.opponents = Counter()
         self.choices = Counter()
         self.player = None
-        self.players_hand = None
+        # self.players_hand = None
         self.card_knowledge = None
         self.card_in_play = None
 
@@ -42,7 +42,7 @@ class Player:
         #        return players_hand, opponents_hand, cards_in_play, cards_played
         else:
             i = random.randint(0, 2)
-            card_to_play = Player1.players_hand[i]
+            card_to_play = self.players_hand[i]
             move = play_card(card_to_play, opponents_hand, opponent)
             return move
 

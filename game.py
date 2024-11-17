@@ -1,8 +1,14 @@
 from players import *
 from cards import *
 
+
+
+
+
 class Game:
 
+    current_deck = None
+    cards = None
     card_played = None
     cards_in_play = []
     players = None
@@ -14,9 +20,39 @@ class Game:
         self.cards_drawn, self.cards = new_game()
         # print(len(cards))
         self.cards = current_deck(self.cards, self.cards_drawn)
-        deal_cards()
+        deal_cards(self)
         self.cards_played = None
         self.cards_in_play = None
+
+    @classmethod
+    def game_play_until_winner(cls):
+        if len(Game.players) != 1 or len(Game.cards) != 0:  # if no winner yet
+            round()
+        # recursion of rounds until a winner is identified for that game
+        else:
+            winner = Game.winner()
+        return winner
+
+    @classmethod
+    def winner(cls):
+        if len(Player.players) == 1:
+            return Player.players[0]
+
+        elif len(Game.current_deck) == 0:
+            ending_hands = {}
+            for player in Player.players:
+                ending_hands[player].append(Player.players_hand.card_value)
+
+                # TODO : find correct syntax for adding to dict, its not the above pseudo code
+                current_max_value = 0
+                for player in ending_hands:
+                    if player.players_hand.card_value > current_max_value
+                        current_max_value = player.players_hand.card_value
+                    # can we access who that player is from the class structure above
+                    winner = current_max_value
+                    return winner
+
+
 
 def new_game():
     """

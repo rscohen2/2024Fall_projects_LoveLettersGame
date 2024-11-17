@@ -19,7 +19,9 @@ class Card:
     # chatgpt helped me figure out how to organize the values here and add them correctly to the classes below
 
     def __init__(self):
-        # self.card_type = card_type
+        self.__value = None
+
+    # self.card_type = card_type
         # self.__value = value
         # self.player = None
 

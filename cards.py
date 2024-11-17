@@ -1,4 +1,4 @@
-from game import choose_opponent, update_cards_played, Game
+from game import choose_opponent, update_cards_played, Game, player_is_out_of_the_round
 from players import *
 from game import *
 from players import Player
@@ -113,26 +113,22 @@ class Baron(Card):
         self.__value = self.card_values['Baron']
 
     def play_card(self):
-    """ Compare card values with an opponent. If they have a lower value, they are out of the round
+        """ Compare card values with an opponent. If they have a lower value, they are out of the round
     (double check that it's just the opponent and not whoever has the lower value is out of the round?)
     """
         opponent = choose_opponent(Player.opponents, Game.cards_in_play)
         opponents_hand = opponent.players_hand
         opp_card = opponents_hand[0]
-        your_card = players_hand[0]
+        your_card = Player.players_hand[0]
         if your_card.value > opp_card.value:
             player_is_out_of_the_round(opponent, Player.players)
             card_played = 'Baron'
-            card_played = 'Prince'
-
-    #TODO: how to add the opponent and players_hand from the PLayer class here? but also can't just switch order bc other things from cards needed in player class...
-
+            return Player.players
 
 
 
 class Priest(Card):
     def __init__(self, value, card_type):
-        super().__init__(card_type)
         self.__value = self.card_values['Priest']
 
     #TODO: encode player knowledge somehow? like AI that was used in chess sim Dr. W made (since you look at a hand)
@@ -141,18 +137,16 @@ class Priest(Card):
 
 
 class Guard(Card):
-    self = None
-    #this is because I am using it later in the players strategy class bit but don't think I am doing this right
-    #TODO: figure out the correct way to use self above?
+
     def __init__(self, __value):
         self.__value = self.card_values['Guard']
 
-    def play_card(self, guess, opponents_hand, opponent, cards_played, players):
-        for card in opponents_hand:
+    def play_card(self, guess):
+        opponent = choose_opponent(Player.opponents, Game.cards_in_play)
+        for card in opponent.players_hand:
             if card == guess:
-            players = player_is_out_of_the_round(opponent, players)
+                Player.players = player_is_out_of_the_round(opponent, Player.players)
             card_played = 'Guard'
-            update_cards_played(card_played, cards_played)
-            #TODO move update_cards_played to Card class instead of subclass
+
             #correct properties of another class instead of parameters for the current game state
 

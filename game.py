@@ -46,7 +46,7 @@ class Game:
                 # TODO : find correct syntax for adding to dict, its not the above pseudo code
                 current_max_value = 0
                 for player in ending_hands:
-                    if player.players_hand.card_value > current_max_value
+                    if player.players_hand.card_value > current_max_value:
                         current_max_value = player.players_hand.card_value
                     # can we access who that player is from the class structure above
                     winner = current_max_value
@@ -168,7 +168,7 @@ def clear_cards_in_play(cards_in_play):
     cards_in_play = []
     return cards_in_play
 
-def player_turn(player, Player.strategy):
+def player_turn(player, Player):
     card_drawn = draw_a_card(cards_drawn, cards)
     player.players_hand.append(card_drawn)
     move = player.strategy(self, opponents_hand)
@@ -180,30 +180,30 @@ def round():
         player_turn(player, player.strategy)
 
 
-def winner():
-    if len(players) == 1:
-        return players[0]
+# def winner():
+#     if len(players) == 1:
+#         return players[0]
+#
+#     elif len(current_deck) = 0:
+#         ending_hands = {}
+#
+#         # players[0] > players [1]
+#         for player in players:
+#             ending_hands.append(player: player.players_hand.card_value)
+#             #TODO : find correct syntax for adding to dict, its not the above pseudo code
+#             current_max_value = 0
+#             for player in ending_hands:
+#                 if player.players_hand.card_value > current_max_value:
+#                 current_max_value = player.players_hand.card_value
+#                 #can we access who that player is from the class structure above
+#                 winner = current_max_value
+#                 return winner
 
-    elif len(current_deck) = 0:
-        ending_hands = {}
-
-        # players[0] > players [1]
-        for player in players:
-            ending_hands.append(player: player.players_hand.card_value)
-            #TODO : find correct syntax for adding to dict, its not the above pseudo code
-            current_max_value = 0
-        for player in ending_hands:
-            if player.players_hand.card_value > current_max_value
-            current_max_value = player.players_hand.card_value
-            #can we access who that player is from the class structure above
-            winner = current_max_value
-            return winner
-
-#check if there is already a clear winner before implementing a round
-def game_play_until_winner():
-    if len(players) != 1 or len(cards) != 0: #if no winner yet
-        round()
-    #recursion of rounds until a winner is identified for that game
-    else:
-        winner = winner()
-    return winner
+# #check if there is already a clear winner before implementing a round
+# def game_play_until_winner():
+#     if len(players) != 1 or len(cards) != 0: #if no winner yet
+#         round()
+#     #recursion of rounds until a winner is identified for that game
+#     else:
+#         winner = winner()
+#     return winner

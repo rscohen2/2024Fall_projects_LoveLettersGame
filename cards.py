@@ -109,7 +109,7 @@ class Prince(Card):
 
 class Handmaid(Card):
     """ When you play the handmaid card, you cannot be chosen for any opponent's card actions during this round."""
-    def __init__(self, value, card_type):
+    def __init__(self):
         self.__value = self.card_values['Handmaid']
     def play_card(self):
         card_played = 'Handmaid'
@@ -118,9 +118,8 @@ class Handmaid(Card):
 
 
 class Baron(Card):
-        """ Compare card values with an opponent. Whoever has the lower value is out of the round.
-    """
-    def __init__(self, value, card_type):
+    """ Compare card values with an opponent. Whoever has the lower value is out of the round."""
+    def __init__(self):
         self.__value = self.card_values['Baron']
 
     def play_card(self):

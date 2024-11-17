@@ -80,6 +80,7 @@ class Player:
                 return move
 
 
+
 # class Player1(Player):
 #     #strat for player 1
 #     # def __init__(self, self.strategy, players_hand = None):

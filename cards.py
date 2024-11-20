@@ -30,6 +30,10 @@ class Card:
         return self.__value
 
     def general_play_card(self):
+        """
+        This function updates the cards played in the Player and Game class, and also keeps track of cards_in_play using the Game class.
+        :return:
+        """
         update_cards_played(Player.card_played, Game.cards_played)
         Game.cards_in_play.append(Game.card_played)
 

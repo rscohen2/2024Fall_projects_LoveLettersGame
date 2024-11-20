@@ -1,41 +1,89 @@
 from random import random
 
 from game import *
+from cards import *
 
 
 class Player:
     """A competitor in the game."""
-
+    # TODO: Leave these in? Put in the game class?
     players_hand = None
-    players = None
+    players = None # TODO: what is difference between this and all_players?
     opponents = None
     card_knowledge = None
     card_played = None
-    player_count = 0  # Initialize count of all players.
-    all_players = []  # automatically track all players
+    player_count = 0  # Initialize count of all players. # TODO: moved up to game class?
+    all_players = []  # automatically track all players # TODO: moved up to game class?
 
     def __init__(self, strategy, name):
-        Player.player_count += 1
-        Player.all_players.append(self)
-
-
+        Player.player_count += 1 # TODO: add this to the game class
+        Player.all_players.append(self) # TODO: add this to the game class
         self.name = name
         self.strategy = strategy
         # self.randmax = None
         self.players_hand = []
         # track player stats:
-        self.wins = 0
-        self.losses = 0
-        self.ties = 0
+        # self.wins = 0 --> for game class?
+        # self.losses = 0 --> for game class?
+        # self.ties = 0 --> for game class?
         self.opponents = Counter()
         self.choices = Counter()
         self.player = None
         # self.players_hand = None
         self.card_knowledge = None
+        self.card_played = None #TODO: Do we need this naming convention or can we call it card_selected for clarity?
+        self.player_remaining = True # when new player is created, they are remaining
+        self.player_protected = False # player becomes protected only after playing "handmaiden"
+
+    # TODO: We need a card index
+    # TODO: for Guard card subclass, add target (opponent) to parameters
+
+    def checkGuard(self):
+        for card in self.players_hand:
+            if "Guard" in type(card):
+                return(card)
+    def chooseRandomCard(self):
+        card = self.players_hand[random.randint(0,len(self.players_hand))]
+        return(card)
+    def playStrategy1(self):
+        result = ""
+        while len(result) == 0:
+            result = self.checkGuard()
+            result = self.chooseRandomCard()
+        return (result)
+    def playStrategy2(self):
+        return(self.chooseRandomCard())
+    def card_to_play(self):
+        if self.name == "Player 1":
+            cardSelected = self.playStrategy1()
+        if self.name == "Player 2":
+            cardSelected = self.playStrategy2()
+        if self.name == "Player 3":
+            cardSelected = self.playStrategy3()
+        self.card_played = cardSelected
+        return(cardSelected)
+    def play_card(self, cardIndex, cardTarget):
+        #Depending on how we revise the parameters for cards, we will want to add
+        #more logic here. I.E. if "Guard" in type(cardIndex) then take cardTarget
+        #for first parameter and choose random name from list of cards for
+        #parameter 2. If a card only has one parameter, like a target,
+        #we'll want to account for that.
+        # if "Guard" in type(cardIndex):
+        #   cards_avail = ["Baron", "Handmaiden",etc...]
+        #   cardIndex.play_card(cardTarget, cards_avail[random.randint(0,len(cards_avail))
+        # else if "Handmaiden" in type(cardIndex):
+        #   self.player_protected =True
+        #   OR, PENDING CHANGES
+        #   cardIndex.play_card(self)
+        #
+        try:
+            cardIndex.play_card(cardTarget)
+        except:
+            cardIndex.play_card()
+        self.players_hand = [card for card in self.players_hand if card != self.card_played]
         self.card_played = None
 
-
-    #TODO : incoporate the strategies into one function?
+  '''  #TODO : incoporate the strategies into one function?
 
     def strategy_1(self, opponents_hand):
         if 'Guard' in self.players_hand:
@@ -152,4 +200,4 @@ class Player:
 #
 #         # pre-calculate and store these values for randomization of turns:
 #         # r, p, s = self.strategy
-#         # self.randmax = r + p + s
+#         # self.randmax = r + p + s '''

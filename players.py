@@ -35,6 +35,7 @@ class Player:
         self.player_remaining = True # when new player is created, they are remaining
         self.player_protected = False # player becomes protected only after playing "handmaiden"
 
+
     # TODO: We need a card index
     # TODO: for Guard card subclass, add target (opponent) to parameters
 

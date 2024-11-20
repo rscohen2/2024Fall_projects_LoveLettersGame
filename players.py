@@ -83,7 +83,7 @@ class Player:
         self.players_hand = [card for card in self.players_hand if card != self.card_played]
         self.card_played = None
 
-    #TODO : incoporate the strategies into one function?
+    #TODO : incorporate the strategies into one function?
 '''
     def strategy_1(self, opponents_hand):
         if 'Guard' in self.players_hand:

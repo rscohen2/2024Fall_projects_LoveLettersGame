@@ -63,6 +63,19 @@ class Player:
             cardSelected = self.playStrategy3()
         self.card_played = cardSelected
         return(cardSelected)
+
+    # moved to instance function
+    def choose_opponent(self, current_player):
+        available_opponent = []
+        for player in self.players:
+            if player != current_player and player.player_remaining and not player.player_protected:
+                available_opponent.append(player)
+
+        if available_opponent:
+            return random.choice(available_opponent) # TODO: maybe we can modify this later when we are going to consider card knowledge?
+
+        return None
+
     def play_card(self, cardIndex, cardTarget):
         #Depending on how we revise the parameters for cards, we will want to add
         #more logic here. I.E. if "Guard" in type(cardIndex) then take cardTarget

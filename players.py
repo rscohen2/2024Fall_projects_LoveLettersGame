@@ -64,7 +64,7 @@ class Player:
         self.card_played = cardSelected
         return(cardSelected)
 
-    # moved to instance function
+    # Becca: I moved this here as I think that's what Andrew meant?
     def choose_opponent(self, current_player):
         available_opponent = []
         for player in self.players:

@@ -1,3 +1,9 @@
+from game import choose_opponent, update_cards_played, Game, player_is_out_of_the_round
+from players import *
+from game import *
+from players import Player
+
+
 class Card:
     # Define card values within the Card class
     card_values = {
@@ -13,7 +19,9 @@ class Card:
     # chatgpt helped me figure out how to organize the values here and add them correctly to the classes below
 
     def __init__(self):
-        # self.card_type = card_type
+        self.__value = None
+
+    # self.card_type = card_type
         # self.__value = value
         # self.player = None
 
@@ -21,142 +29,145 @@ class Card:
     def value(self):
         return self.__value
 
-    def do_something(self, what_to_do):
-        pass
+    def general_play_card(self):
+        """
+        This function updates the cards played in the Player and Game class, and also keeps track of cards_in_play using the Game class.
+        :return:
+        """
+        update_cards_played(Player.card_played, Game.cards_played)
+        Game.cards_in_play.append(Game.card_played)
 
 
 class Princess(Card):
+    """
+    The Princess card is the highest value card. If you play or discard the Princess card, you lose the game.
+    If you have the Princess card in your hand at the end of the round, you could win since it has the highest value.
+    """
     def __init__(self):
         super().__init__()
         self.__value = self.card_values['Princess']
 
-    def play_card(self, player, players, cards_played, cards_in_play):
+    def play_card(self):
         # Princess-specific play logic
         print("Princess card played!")
-        # Trigger player elimination if the Princess is played
-        # player_is_out_of_the_round(player, players)
+        # Trigger player elimination if the Princess is played or discarded
+        player_is_out_of_the_round(Player, Game.players)
         card_played = 'Princess'
-        # update_cards_played(card_played, cards_played)
-        # cards_in_play.append(card_played)
-        # TODO: sort of standardize the output for play_card for each card?
 
 
 
 
 
 class Countess(Card):
+    """
+    You must play the Countess card if you have a king or prince in your hand.
+    """
     self = None
 
     def __init__(self, value, card_type):
-        super().__init__(card_type)
         self.__value = self.card_values['Countess']
 
-    def play_card(self, player, players, cards_played, cards_in_play):
-        # Princess-specific play logic
-        print("Countess card played!")
-        card_played = 'Countess'
-        update_cards_played(card_played, cards_played, cards_in_play)
-        cards_in_play.append(card_played)
-        return cards_played
+    def play_card(self):
+        if 'King' or 'Prince' in Player.players_hand:
+            print("Countess card played!")
+            card_played = 'Countess'
+            return card_played
+
 
 
 
 class King(Card):
-    def __init__(self, value, card_type):
-        super().__init__(card_type)
+    """
+    When played, the King card allows you to trade hands with a player of your choice.
+    """
+    def __init__(self, value):
         self.__value = self.card_values['King']
-    #TODO: trade hands with an opponent of choice
-    def play_card(self, player, players, cards_played, opponents_hand, cards_in_play, opponent):
-        player.card_knowledge[opponent].append(opponents_hand)
-        opponent.card_knowledge[player].append(players_hand)
-        player.players_hand = opponents_hand
-        opponent.players_hand = players_hand
-        return players_hand, opponents_hand, cards_in_play, cards_played
+    def play_card(self):
+        opponent = choose_opponent(Player.opponents, Game.cards_in_play)
+        Player.card_knowledge[opponent].append(opponent.players_hand)
+        opponent.card_knowledge[Player].append(Player.players_hand)
+        Player.players_hand = opponent.players_hand
+        opponent.players_hand = Player.players_hand
+        return Player.players_hand, opponent.players_hand
 
-    pass
 
 
 class Prince(Card):
+    """
+    When the prince card is played, an opponent of your choice must discard their hand.
+    """
     def __init__(self, value, card_type):
-        super().__init__(card_type)
         self.__value = self.card_values['Prince']
-    #TODO: choose a player to discard his or her hand
-    def play_card(self, player, players, cards_played, opponents_hand, cards_in_play):
+    def play_card(self):
         print("Prince card played!")
         #reset opponents hand, and put their cards in the discard pile (cards_played?)
-        for card in opponents_hand:
-            opponents_hand.remove(card)
-            cards_played.append(card)
+        opponent = choose_opponent(Player.opponents, Game.cards_in_play)
+        for card in opponent.players_hand:
+            if card == 'Princess':
+                player_is_out_of_the_round(opponent, Game.players)
+            opponent.players_hand.remove(card)
+
         card_played = 'Prince'
-        update_cards_played(card_played, cards_played)
-        cards_in_play.append(card_played)
-
-
-
-    pass
+        return opponent.players_hand
 
 
 class Handmaid(Card):
-    def __init__(self, value, card_type):
-        super().__init__(card_type)
+    """ When you play the handmaid card, you cannot be chosen for any opponent's card actions during this round."""
+    def __init__(self):
         self.__value = self.card_values['Handmaid']
-    def play_card(self, player, players, cards_played, cards_in_play):
+    def play_card(self):
         card_played = 'Handmaid'
-        update_cards_played(card_played, cards_played)
-        cards_in_play.append(card_played)
+        return card_played
 
-    #TODO: make it so that they cannot be chosen as the opponent (for this round only)
-
-    pass
 
 
 class Baron(Card):
-    def __init__(self, value, card_type):
-        super().__init__(card_type)
+    """ Compare card values with an opponent. Whoever has the lower value is out of the round."""
+    def __init__(self):
         self.__value = self.card_values['Baron']
 
-    def play_card(self, Player.players_hand, opponent, opponents_hand, cards_in_play):
-    """ Compare card values with an opponent. If they have a lower value, they are out of the round
-    (double check that it's just the opponent and not whoever has the lower value is out of the round?)
-    """
+    def play_card(self):
+
+        opponent = choose_opponent(Player.opponents, Game.cards_in_play)
+        opponents_hand = opponent.players_hand
         opp_card = opponents_hand[0]
-        your_card = players_hand[0]
+        your_card = Player.players_hand[0]
         if your_card.value > opp_card.value:
-            player_is_out_of_the_round(opponent, players)
+            player_is_out_of_the_round(opponent, Player.players)
+        elif opp_card.value > your_card.value:
+            player_is_out_of_the_round(Player, Player.players)
             card_played = 'Baron'
-            update_cards_played(card_played, cards_played)
-            card_played = 'Prince'
-            update_cards_played(card_played, cards_played)
-            cards_in_play.append(card_played)
-
-    #TODO: how to add the opponent and players_hand from the PLayer class here? but also can't just switch order bc other things from cards needed in player class...
-
+            return Player.players
 
 
 
 class Priest(Card):
+    """ The Priest card allows you to look at an opponent's hand of your choice."""
     def __init__(self, value, card_type):
-        super().__init__(card_type)
         self.__value = self.card_values['Priest']
 
-    #TODO: encode player knowledge somehow? like AI that was used in chess sim Dr. W made (since you look at a hand)
+    def play_card(self):
+        opponent = choose_opponent(Player.opponents, Game.cards_in_play)
+        opponents_hand = opponent.players_hand
+        Player.card_knowledge[opponent].append(opponent.players_hand)
+        return Player.card_knowledge
 
-    pass
 
 
 class Guard(Card):
-    self = None
-    #this is because I am using it later in the players strategy class bit but don't think I am doing this right
-    #TODO: figure out the correct way to use self above?
+    """ When the guard card is played, the player guesses a card that they think is in an opponent of their choice's hand.
+    If they are correct, that opponent is out of the round. Otherwise, if their guess is incorrect, nothing happens and the game continues."""
+
     def __init__(self, __value):
         self.__value = self.card_values['Guard']
 
-    def play_card(self, guess, opponents_hand, opponent, cards_played, players):
-        for card in opponents_hand:
+    def play_card(self, guess):
+        opponent = choose_opponent(Player.opponents, Game.cards_in_play)
+        for card in opponent.players_hand:
             if card == guess:
-            players = player_is_out_of_the_round(opponent, players)
+                Player.players = player_is_out_of_the_round(opponent, Player.players)
             card_played = 'Guard'
-            update_cards_played(card_played, cards_played)
-            #TODO move update_cards_played to Card class instead of subclass
+            return Player.players
+
             #correct properties of another class instead of parameters for the current game state
 

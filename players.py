@@ -75,6 +75,13 @@ class Player:
         #   self.player_protected =True
         #   OR, PENDING CHANGES
         #   cardIndex.play_card(self)
+
+
+        ######
+        #from Becca: isn't cardTarget and opponent the same variable? or no?
+            #if so, then maybe the parameter should be opponent...
+            #I structured it so opponent is chosen from the list of opponents
+            #and opponents is a list of players - player in question
         #
         try:
             cardIndex.play_card(cardTarget)

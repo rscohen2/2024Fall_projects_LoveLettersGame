@@ -63,7 +63,7 @@ class Card:
     def value(self):
         return self.__value
 
-    def general_play_card(self):
+    def general_play_card(self, player, target):
         """
         This function updates the cards played in the Player and Game class, and also keeps track of cards_in_play using the Game class.
         :return:
@@ -81,7 +81,7 @@ class Princess(Card):
     #     super().__init__()
     #     self.__value = self.card_values['Princess']
 
-    def play_card(self):
+    def play_card(self, player, target):
         # Princess-specific play logic
         print("Princess card played!")
         # Trigger player elimination if the Princess is played or discarded
@@ -101,7 +101,7 @@ class Countess(Card):
     # def __init__(self, value, card_type):
     #     self.__value = self.card_values['Countess']
 
-    def play_card(self):
+    def play_card(self, player, target):
         if 'King' or 'Prince' in Player.players_hand:
             print("Countess card played!")
             card_played = 'Countess'
@@ -116,8 +116,8 @@ class King(Card):
     """
     # def __init__(self, value):
     #     self.__value = self.card_values['King']
-    def play_card(self):
-        opponent = choose_opponent(Player.opponents, Game.cards_in_play)
+    def play_card(self, player, target):
+        opponent = target
         Player.card_knowledge[opponent].append(opponent.players_hand)
         opponent.card_knowledge[Player].append(Player.players_hand)
         Player.players_hand = opponent.players_hand
@@ -132,7 +132,7 @@ class Prince(Card):
     """
     # def __init__(self, value, card_type):
     #     self.__value = self.card_values['Prince']
-    def play_card(self):
+    def play_card(self, player, target):
         print("Prince card played!")
         #reset opponents hand, and put their cards in the discard pile (cards_played?)
         opponent = choose_opponent(Player.opponents, Game.cards_in_play)
@@ -149,7 +149,7 @@ class Handmaid(Card):
     """ When you play the handmaid card, you cannot be chosen for any opponent's card actions during this round."""
     # def __init__(self):
     #     self.__value = self.card_values['Handmaid']
-    def play_card(self, target=None):
+    def play_card(self, player, target=None):
         card_played = 'Handmaid'
         return card_played
 
@@ -160,7 +160,7 @@ class Baron(Card):
     # def __init__(self):
     #     self.__value = self.card_values['Baron']
 
-    def play_card(self, target):
+    def play_card(self, player, target):
 
         opponent = choose_opponent(Player.opponents, Game.cards_in_play)
         opponents_hand = opponent.players_hand
@@ -180,7 +180,7 @@ class Priest(Card):
     # def __init__(self, value, card_type):
     #     self.__value = self.card_values['Priest']
 
-    def play_card(self):
+    def play_card(self, player, target):
         opponent = choose_opponent(Player.opponents, Game.cards_in_play)
         opponents_hand = opponent.players_hand
         Player.card_knowledge[opponent].append(opponent.players_hand)
@@ -195,7 +195,7 @@ class Guard(Card):
     # def __init__(self, __value):
     #     self.__value = self.card_values['Guard']
 
-    def play_card(self, guess):
+    def play_card(self, guess, target,player):
         opponent = choose_opponent(Player.opponents, Game.cards_in_play)
         for card in opponent.players_hand:
             if card == guess:

@@ -61,7 +61,9 @@ class Player:
             result = self.checkGuard()
             result = self.chooseRandomCard()
         return (result)
-    def playStrategy2(self):
+    def playStrategy2(self): # Just a placeholder for now
+        return(self.chooseRandomCard())
+    def playStrategy3(self): # Just a placeholder for now
         return(self.chooseRandomCard())
     def card_to_play(self):
         if self.checkCountessCondition() == False:

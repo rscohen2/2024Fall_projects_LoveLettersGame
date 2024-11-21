@@ -3,6 +3,40 @@ from players import *
 from game import *
 from players import Player
 
+# Comment from Sarah:
+# The Game class has a function for choose_opponent. This selects a target for the
+# card. As such, we should pass on the variable "cardTarget" to to all instances
+# of the Card classes where there's an opponent = choose_opponent section.
+#I.E.
+#
+#ORIGINAL
+#     def play_card(self):
+#         opponent = choose_opponent(Player.opponents, Game.cards_in_play)
+#
+#REVISED
+#
+#   def play_card(self, target):
+#       opponent = target
+#
+# Additionally, we could add a parameter for the player who is playing the
+# card.
+# I.E.
+#
+# ORIGINAL
+# def play_card(self):
+#        opponent = choose_opponent(Player.opponents, Game.cards_in_play)
+#        Player.card_knowledge[opponent].append(opponent.players_hand)
+#        opponent.card_knowledge[Player].append(Player.players_hand)
+#        Player.players_hand = opponent.players_hand
+#        opponent.players_hand = Player.players_hand
+#
+#
+# REVISED
+# def play_card(self, player, target):
+#       opponent = target
+#       tempHand = target.players_hand
+#       target.players_hand = player.players_hand
+#       player.players_hand = tempHand
 
 class Card:
     # Define card values within the Card class

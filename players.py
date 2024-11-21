@@ -29,11 +29,10 @@ class Player:
         self.opponents = Counter()
         self.choices = Counter()
         self.player = None
-        # self.players_hand = None
-        self.card_knowledge = None
-        self.card_played = None #TODO: Do we need this naming convention or can we call it card_selected for clarity?
-        self.player_remaining = True # when new player is created, they are remaining
-        self.player_protected = False # player becomes protected only after playing "handmaiden"
+        self.card_knowledge = {}
+        self.card_selected_to_play = None # Renamed this from card_played to card_selected_to_play, for clarity.
+        self.player_remaining = True
+        self.player_protected = False
 
 
     # TODO: We need a card index
@@ -61,22 +60,10 @@ class Player:
             cardSelected = self.playStrategy2()
         if self.name == "Player 3":
             cardSelected = self.playStrategy3()
-        self.card_played = cardSelected
+        self.card_selected_to_play = cardSelected
         return(cardSelected)
 
-    # Becca: I moved this here as I think that's what Andrew meant?
-    def choose_opponent(self, current_player):
-        available_opponent = []
-        for player in self.players:
-            if player != current_player and player.player_remaining and not player.player_protected:
-                available_opponent.append(player)
-
-        if available_opponent:
-            return random.choice(available_opponent) # TODO: maybe we can modify this later when we are going to consider card knowledge?
-
-        return None
-
-    def play_card(self, cardIndex, cardTarget):
+    def play_card(self, card_selected_to_play, target):
         #Depending on how we revise the parameters for cards, we will want to add
         #more logic here. I.E. if "Guard" in type(cardIndex) then take cardTarget
         #for first parameter and choose random name from list of cards for
@@ -98,11 +85,11 @@ class Player:
             #and opponents is a list of players - player in question
         #
         try:
-            cardIndex.play_card(cardTarget)
+            card_selected_to_play.play_card(target)
         except:
-            cardIndex.play_card()
-        self.players_hand = [card for card in self.players_hand if card != self.card_played]
-        self.card_played = None
+            card_selected_to_play.play_card()
+        self.players_hand = [card for card in self.players_hand if card != self.card_selected_to_play]
+        self.card_selected_to_play = None
 
     #TODO : incorporate the strategies into one function?
 '''

@@ -34,10 +34,10 @@ class Game:
     # TODO: I'm not sure if we need these class attributes (I feel like it is redundant)
     # current_deck = None
     # cards = None
-    # card_played = None
-    # cards_in_play = []
-    # players = None
-    # cards_played = None #  not sure about this
+    card_played = None
+    cards_in_play = []
+    players = None
+    cards_played = None #  not sure about this
 
     def __init__(self, players):
         self.players = self.create_players(players) # creating player objects

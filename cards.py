@@ -63,13 +63,14 @@ class Card:
     def value(self):
         return self.__value
 
-    def general_play_card(self, player, target):
+    def general_play_card(self, player):
         """
         This function updates the cards played in the Player and Game class, and also keeps track of cards_in_play using the Game class.
         :return:
         """
-        update_cards_played(Player.card_played, Game.cards_played)
+        Game.cards_played = update_cards_played(Player.card_played, Game.cards_played)
         Game.cards_in_play.append(Game.card_played)
+        return Game.cards_in_play, Game.cards_played
 
 
 class Princess(Card):
@@ -87,6 +88,7 @@ class Princess(Card):
         # Trigger player elimination if the Princess is played or discarded
         player_is_out_of_the_round(Player, Game.players)
         card_played = 'Princess'
+        Game.cards_in_play, Game.cards_played = self.general_play_card(self, player)
 
 
 

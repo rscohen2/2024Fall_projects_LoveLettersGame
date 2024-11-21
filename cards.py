@@ -68,7 +68,7 @@ class Card:
         This function updates the cards played in the Player and Game class, and also keeps track of cards_in_play using the Game class.
         :return:
         """
-        Game.cards_played = update_cards_played(Player.card_played, Game.cards_played)
+        Game.cards_played = update_cards_played(player.card_played, Game.cards_played)
         Game.cards_in_play.append(Game.card_played)
         return Game.cards_in_play, Game.cards_played
 
@@ -86,7 +86,7 @@ class Princess(Card):
         # Princess-specific play logic
         print("Princess card played!")
         # Trigger player elimination if the Princess is played or discarded
-        player_is_out_of_the_round(Player, Game.players)
+        player_is_out_of_the_round(player, Game.players)
         card_played = 'Princess'
         Game.cards_in_play, Game.cards_played = self.general_play_card(self, player)
 
@@ -104,7 +104,7 @@ class Countess(Card):
     #     self.__value = self.card_values['Countess']
 
     def play_card(self, player, target):
-        if 'King' or 'Prince' in Player.players_hand:
+        if 'King' or 'Prince' in player.players_hand:
             print("Countess card played!")
             card_played = 'Countess'
             return card_played
@@ -120,11 +120,11 @@ class King(Card):
     #     self.__value = self.card_values['King']
     def play_card(self, player, target):
         opponent = target
-        Player.card_knowledge[opponent].append(opponent.players_hand)
-        opponent.card_knowledge[Player].append(Player.players_hand)
-        Player.players_hand = opponent.players_hand
-        opponent.players_hand = Player.players_hand
-        return Player.players_hand, opponent.players_hand
+        player.card_knowledge[opponent].append(opponent.players_hand)
+        opponent.card_knowledge[Player].append(player.players_hand)
+        player.players_hand = opponent.players_hand
+        opponent.players_hand = player.players_hand
+        return player.players_hand, opponent.players_hand
 
 
 
@@ -137,7 +137,7 @@ class Prince(Card):
     def play_card(self, player, target):
         print("Prince card played!")
         #reset opponents hand, and put their cards in the discard pile (cards_played?)
-        opponent = choose_opponent(Player.opponents, Game.cards_in_play)
+        opponent = target
         for card in opponent.players_hand:
             if card == 'Princess':
                 player_is_out_of_the_round(opponent, Game.players)
@@ -164,16 +164,16 @@ class Baron(Card):
 
     def play_card(self, player, target):
 
-        opponent = choose_opponent(Player.opponents, Game.cards_in_play)
+        opponent = target
         opponents_hand = opponent.players_hand
         opp_card = opponents_hand[0]
-        your_card = Player.players_hand[0]
+        your_card = player.players_hand[0]
         if your_card.value > opp_card.value:
-            player_is_out_of_the_round(opponent, Player.players)
+            player_is_out_of_the_round(opponent, player.players)
         elif opp_card.value > your_card.value:
-            player_is_out_of_the_round(Player, Player.players)
+            player_is_out_of_the_round(player, player.players)
             card_played = 'Baron'
-            return Player.players
+            return player.players
 
 
 
@@ -183,10 +183,10 @@ class Priest(Card):
     #     self.__value = self.card_values['Priest']
 
     def play_card(self, player, target):
-        opponent = choose_opponent(Player.opponents, Game.cards_in_play)
+        opponent = target
         opponents_hand = opponent.players_hand
-        Player.card_knowledge[opponent].append(opponent.players_hand)
-        return Player.card_knowledge
+        player.card_knowledge[opponent].append(opponent.players_hand)
+        return player.card_knowledge
 
 
 
@@ -198,12 +198,12 @@ class Guard(Card):
     #     self.__value = self.card_values['Guard']
 
     def play_card(self, guess, target,player):
-        opponent = choose_opponent(Player.opponents, Game.cards_in_play)
+        opponent = target
         for card in opponent.players_hand:
             if card == guess:
-                Player.players = player_is_out_of_the_round(opponent, Player.players)
+                player.players = player_is_out_of_the_round(opponent, player.players)
             card_played = 'Guard'
-            return Player.players
+            return player.players
 
             #correct properties of another class instead of parameters for the current game state
 

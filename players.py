@@ -96,7 +96,7 @@ class Player:
             #if so, then maybe the parameter should be opponent...
             #I structured it so opponent is chosen from the list of opponents
             #and opponents is a list of players - player in question
-        #
+
         if "Baron" in type(card_selected_to_play):
             card_selected_to_play.play_card(self, target)
         elif "King" in type(card_selected_to_play):

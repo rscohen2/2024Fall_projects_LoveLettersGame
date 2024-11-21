@@ -71,9 +71,9 @@ class Player:
                 cardSelected = self.playStrategy2()
             if self.name == "Player 3":
                 cardSelected = self.playStrategy3()
-            self.card_selected_to_play = cardSelected
         else:
             cardSelected = [card for card in self.players_hand if "Countess" in type(card)][0]
+        self.card_selected_to_play = cardSelected
         return(cardSelected)
 
     def play_card(self, card_selected_to_play, target):

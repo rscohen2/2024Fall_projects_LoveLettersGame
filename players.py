@@ -8,12 +8,12 @@ class Player:
     """A competitor in the game."""
     # TODO: Leave these in? Put in the game class?
     players_hand = None
-    players = None # TODO: what is difference between this and all_players?
-    opponents = None
+    #players = None # TODO: what is difference between this and all_players?
+    #opponents = None # put choose_opponent in the player class?
     card_knowledge = None
     card_played = None
-    player_count = 0  # Initialize count of all players. # TODO: moved up to game class?
-    all_players = []  # automatically track all players # TODO: moved up to game class?
+    #player_count = 0  # Initialize count of all players. # TODO: moved up to game class?
+    #all_players = []  # automatically track all players # TODO: moved up to game class?
 
     def __init__(self, strategy, name):
         Player.player_count += 1 # TODO: add this to the game class

@@ -53,7 +53,7 @@ class Card:
     # chatgpt helped me figure out how to organize the values here and add them correctly to the classes below
 
     def __init__(self):
-        self.__value = None
+        self.__value = Card.card_values[self.__class__.__name__] #this line eliminates the need for individual init functions in each subclass
 
     # self.card_type = card_type
         # self.__value = value
@@ -77,9 +77,9 @@ class Princess(Card):
     The Princess card is the highest value card. If you play or discard the Princess card, you lose the game.
     If you have the Princess card in your hand at the end of the round, you could win since it has the highest value.
     """
-    def __init__(self):
-        super().__init__()
-        self.__value = self.card_values['Princess']
+    # def __init__(self):
+    #     super().__init__()
+    #     self.__value = self.card_values['Princess']
 
     def play_card(self):
         # Princess-specific play logic
@@ -98,8 +98,8 @@ class Countess(Card):
     """
     self = None
 
-    def __init__(self, value, card_type):
-        self.__value = self.card_values['Countess']
+    # def __init__(self, value, card_type):
+    #     self.__value = self.card_values['Countess']
 
     def play_card(self):
         if 'King' or 'Prince' in Player.players_hand:
@@ -114,8 +114,8 @@ class King(Card):
     """
     When played, the King card allows you to trade hands with a player of your choice.
     """
-    def __init__(self, value):
-        self.__value = self.card_values['King']
+    # def __init__(self, value):
+    #     self.__value = self.card_values['King']
     def play_card(self):
         opponent = choose_opponent(Player.opponents, Game.cards_in_play)
         Player.card_knowledge[opponent].append(opponent.players_hand)
@@ -130,8 +130,8 @@ class Prince(Card):
     """
     When the prince card is played, an opponent of your choice must discard their hand.
     """
-    def __init__(self, value, card_type):
-        self.__value = self.card_values['Prince']
+    # def __init__(self, value, card_type):
+    #     self.__value = self.card_values['Prince']
     def play_card(self):
         print("Prince card played!")
         #reset opponents hand, and put their cards in the discard pile (cards_played?)
@@ -147,9 +147,9 @@ class Prince(Card):
 
 class Handmaid(Card):
     """ When you play the handmaid card, you cannot be chosen for any opponent's card actions during this round."""
-    def __init__(self):
-        self.__value = self.card_values['Handmaid']
-    def play_card(self):
+    # def __init__(self):
+    #     self.__value = self.card_values['Handmaid']
+    def play_card(self, target=None):
         card_played = 'Handmaid'
         return card_played
 
@@ -157,10 +157,10 @@ class Handmaid(Card):
 
 class Baron(Card):
     """ Compare card values with an opponent. Whoever has the lower value is out of the round."""
-    def __init__(self):
-        self.__value = self.card_values['Baron']
+    # def __init__(self):
+    #     self.__value = self.card_values['Baron']
 
-    def play_card(self):
+    def play_card(self, target):
 
         opponent = choose_opponent(Player.opponents, Game.cards_in_play)
         opponents_hand = opponent.players_hand
@@ -177,8 +177,8 @@ class Baron(Card):
 
 class Priest(Card):
     """ The Priest card allows you to look at an opponent's hand of your choice."""
-    def __init__(self, value, card_type):
-        self.__value = self.card_values['Priest']
+    # def __init__(self, value, card_type):
+    #     self.__value = self.card_values['Priest']
 
     def play_card(self):
         opponent = choose_opponent(Player.opponents, Game.cards_in_play)
@@ -192,8 +192,8 @@ class Guard(Card):
     """ When the guard card is played, the player guesses a card that they think is in an opponent of their choice's hand.
     If they are correct, that opponent is out of the round. Otherwise, if their guess is incorrect, nothing happens and the game continues."""
 
-    def __init__(self, __value):
-        self.__value = self.card_values['Guard']
+    # def __init__(self, __value):
+    #     self.__value = self.card_values['Guard']
 
     def play_card(self, guess):
         opponent = choose_opponent(Player.opponents, Game.cards_in_play)

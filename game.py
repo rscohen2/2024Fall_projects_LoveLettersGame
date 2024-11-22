@@ -22,12 +22,15 @@ Remarks: I try to leave comments next to the actual codes, but I also leave impo
     6. Rough draft finished (11:35 Nov.20)
         --> there are still parts that need modification
         --> currently have a import issue in the test execution code at the bottom (not sure how to handle this yet)
+    7. (241121_Thursday) moved create_player outside the game class (Mr. Weible's recommendation)
+        --> accordingly, the self.players property also changed
 """
-
-from players import *
-from cards import *
+# TODO: used import as syntax (e.g., import pandas as pd) to solve the circular import problem (Mr. Weible's help)
+import players as p
+import cards as c
 import random
 from collections import Counter
+
 
 class Game:
 
@@ -40,14 +43,14 @@ class Game:
     cards_played = None #  not sure about this
 
     def __init__(self, players):
-        self.players = self.create_players(players) # creating player objects
+        self.players = players # creating player objects
         self.cards = [] # deck of cards
         self.remaining_cards = Counter() # Track remaining cards
         self.current_player_index = 0 # tracking turn for current player
         self.new_game()
         self.cards_played = [] # tracking played cards TODO: isn't this redundant with player.card_played?
         self.cards_in_play = [] # tracking cards currently in play TODO: not sure if we need this (maybe might need it when we are going to consider card memory/knowledge?)
-
+        # TODO: another property like self.card (for discarded pile) -> this will be even helpful for debugging purposes -> cards_played can be used for this (just give it another name)
 
     def new_game(self) -> None: # moved this to class function from normal function (outside the class)
         """
@@ -55,7 +58,7 @@ class Game:
         :return: None
         """
         # Shuffling the deck (deck object obtained)
-        self.cards = [Guard()] * 5 + [Priest()] * 2 + [Baron()] * 2 + [Handmaid()] * 2 + [Prince()] * 2 + [King()] + [Countess()] + [Princess()]
+        self.cards = [c.Guard()] * 5 + [c.Priest()] * 2 + [c.Baron()] * 2 + [c.Handmaid()] * 2 + [c.Prince()] * 2 + [c.King()] + [c.Countess()] + [c.Princess()]
         random.shuffle(self.cards)
 
         # this part keeps track of the remaining cards
@@ -70,21 +73,6 @@ class Game:
             player.player_remaining = True   # reset all players to be remained in the game
             player.player_protected = False  # reset the protection effect (via Handmaid card)
             player.card_played = None # reset played card TODO: should this be an empty list or None?
-
-
-    def create_players(self, players_names: list[str]) -> list[Player]:
-        """
-        Function that creates players objects based on their names
-        :param players_names:
-        :return: player objects
-        """
-        strategies = ["strategy_1", "strategy_2", "strategy_3"]
-        player_objects = []
-        for i, name in enumerate(players_names):
-            player = Player(name = name, strategy = strategies[i])
-            player_objects.append(player)
-
-        return player_objects
 
 
     def play_turn(self) -> None:
@@ -112,7 +100,7 @@ class Game:
     # I sort of merged and modified the original game_play_until_winner() and winner() into one function
     # Also I modified it as an instance function from class function
     # I didn't use the dictionary idea since I thought keeping track of remaining players list seemed more simple (implemented in self.track_remaining_players() function)
-    def play_until_winner(self) -> Player:
+    def play_until_winner(self) -> p.Player:
         """
         This function is designed to determine the winner of the game in two scenarios:
             1. Last player standing (i.e., other players got eliminated)
@@ -154,7 +142,8 @@ class Game:
 
 
     # moved to instance function
-    def choose_opponent(self, current_player: Player): # TODO: not sure how to type annotate this function (specifically the return value)
+    # this might have to be in players class
+    def choose_opponent(self, current_player: p.Player): # TODO: not sure how to type annotate this function (specifically the return value)
         """
         This function randomly selects opponent who are 1) remaining in the game and 2) is not protected by handmaid card
         :param current_player:
@@ -171,7 +160,7 @@ class Game:
         return None
 
 
-    def track_remaining_players(self) -> list[Player]:
+    def track_remaining_players(self) -> list[p.Player]:
         """
         This function tracks down the remaining players in the game
         :param self
@@ -186,7 +175,8 @@ class Game:
 
 
     # just modified a bit of our original winner() function
-    def get_player_with_highest_card(self, players: list[Player]) -> Player:
+    # players should be in a different name
+    def get_player_with_highest_card(self, players: list[p.Player]) -> p.Player:
         """
         This function determines the player with the highest card
         :return: player that has the card with the highest value
@@ -200,10 +190,31 @@ class Game:
 
         return player_with_highest_card
 
+
+# this function was originally under game class (moved here for more flexibility) - Mr.Weible's recommendation
+def create_players(player_names: list[str], strategies: list[str]) -> list[p.Player]:
+    """
+    Function that creates players objects based on their names
+    :param player_names:
+    :param strategies:
+    :return: player objects
+    """
+    player_objects = []
+    for i, name in enumerate(player_names):
+        strategy = strategies[i]
+        player_objects.append(p.Player(name=name, strategy=strategy))
+
+    return player_objects
+
 # this is just a simple execution code to see if game.py is working (not a monte carlo)
 if __name__ == "__main__":
-    player_names = [Player('playStrategy1', 'Sarah'), Player('playStrategy2','Becca'), Player('playStrategy3','Andrew')]
-    game = Game(player_names)
+
+    # this player creation part changed due to the create_players() function (moved outside the game class)
+    player_list = ["Sarah", "Becca", "Andrew"]
+    strategies = ["strategy_1", "strategy_2", "strategy_3"]
+    players = create_players(player_list, strategies)
+
+    game = Game(players)
 
     winner = game.play_until_winner()
 

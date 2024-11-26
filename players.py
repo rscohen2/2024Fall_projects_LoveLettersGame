@@ -1,5 +1,5 @@
-from random import random
-
+import random
+from collections import Counter
 from game import *
 from cards import *
 
@@ -16,8 +16,8 @@ class Player:
     #all_players = []  # automatically track all players # TODO: moved up to game class?
 
     def __init__(self, strategy, name):
-        Player.player_count += 1 # TODO: add this to the game class
-        Player.all_players.append(self) # TODO: add this to the game class
+        #self.player_count += 1 # TODO: add this to the game class
+        #self.all_players.append(self) # TODO: add this to the game class
         self.name = name
         self.strategy = strategy
         # self.randmax = None
@@ -40,7 +40,7 @@ class Player:
 
     def checkGuard(self):
         for card in self.players_hand:
-            if "Guard" in type(card):
+            if "Guard" in str(type(card)):
                 return(card)
     def checkCountessCondition(self):
         cardTypes = [type(i) for i in self.players_hand]
@@ -53,11 +53,11 @@ class Player:
             return False
 
     def chooseRandomCard(self):
-        card = self.players_hand[random.randint(0,len(self.players_hand))]
+        card = self.players_hand[random.randint(0,len(self.players_hand)-1)]
         return(card)
     def playStrategy1(self):
         result = ""
-        while len(result) == 0:
+        while len(str(result)) == 0:
             result = self.checkGuard()
             result = self.chooseRandomCard()
         return (result)
@@ -67,15 +67,16 @@ class Player:
         return(self.chooseRandomCard())
     def card_to_play(self):
         if self.checkCountessCondition() == False:
-            if self.name == "Player 1":
+            if self.strategy == "strategy_1":
                 cardSelected = self.playStrategy1()
-            if self.name == "Player 2":
+            if self.strategy == "strategy_2":
                 cardSelected = self.playStrategy2()
-            if self.name == "Player 3":
+            if self.strategy == "strategy_3":
                 cardSelected = self.playStrategy3()
         else:
             cardSelected = [card for card in self.players_hand if "Countess" in type(card)][0]
         self.card_selected_to_play = cardSelected
+        print(cardSelected)
         return(cardSelected)
 
     def play_card(self, card_selected_to_play, target):
@@ -98,21 +99,21 @@ class Player:
             #if so, then maybe the parameter should be opponent...
             #I structured it so opponent is chosen from the list of opponents
             #and opponents is a list of players - player in question
-
-        if "Baron" in type(card_selected_to_play):
-            card_selected_to_play.play_card(self, target)
-        elif "King" in type(card_selected_to_play):
-            card_selected_to_play.play_card(self, target)
-        elif "Handmaiden" in type(card_selected_to_play):
-            card_selected_to_play.play_card(self)
-        elif "Prince" in type(card_selected_to_play):
-            card_selected_to_play.play_card(target)
-        elif "Princess" in type(card_selected_to_play):
-            card_selected_to_play.play_card(self)
-        elif "Guard" in type(card_selected_to_play):
-            card_selected_to_play.play_card(target)
-        elif "Priest" in type(card_selected_to_play):
-            card_selected_to_play.play_card(target)
+        card_selected_to_play.play_card(self, target)
+        # if "Baron" in str(type(card_selected_to_play)):
+        #     card_selected_to_play.play_card(self, target)
+        # elif "King" in str(type(card_selected_to_play)):
+        #     card_selected_to_play.play_card(self, target)
+        # elif "Handmaiden" in str(type(card_selected_to_play)):
+        #     card_selected_to_play.play_card(self, target)
+        # elif "Prince" in str(type(card_selected_to_play)):
+        #     card_selected_to_play.play_card(self, target)
+        # elif "Princess" in str(type(card_selected_to_play)):
+        #     card_selected_to_play.play_card(self)
+        # elif "Guard" in str(type(card_selected_to_play)):
+        #     card_selected_to_play.play_card(target)
+        # elif "Priest" in str(type(card_selected_to_play)):
+        #     card_selected_to_play.play_card(target)
         self.players_hand = [card for card in self.players_hand if card != self.card_selected_to_play]
         self.card_selected_to_play = None
 

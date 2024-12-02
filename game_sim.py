@@ -8,6 +8,8 @@ if __name__ == '__main__':
     strategies = ["strategy_1", "strategy_2", "strategy_3"]
     players = create_players(player_list, strategies)
 
+    game = Game(players)
+
     # this is just a simple execution code to see if game.py is working (not a monte carlo)
 
     Andrew_win_count = 0

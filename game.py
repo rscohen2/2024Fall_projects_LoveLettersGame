@@ -77,6 +77,8 @@ class Game:
             self.draw_a_card(player)
             if len(player.players_hand) != 1:
                 print("potential error")
+            #it never stopped at the breakpoint above
+
             # player.card_knowledge = {} # I changed this to dictionary (it is None in the players class module) TODO: we don't need this yet
             player.player_remaining = True   # reset all players to be remained in the game
             player.player_protected = False  # reset the protection effect (via Handmaid card)
@@ -246,6 +248,9 @@ def run_the_sim(Sarah_win_count, Becca_win_count, Andrew_win_count):
     players = create_players(player_list, strategies)
 
     game = Game(players)
+
+    # new_game(game)
+
 
     winner = game.play_until_winner()
 

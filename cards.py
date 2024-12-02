@@ -1,6 +1,6 @@
-from players import *
+# from players import *
 from game import *
-
+# from players import Player
 # The logic for switching hands (when the King card is played) needs to be updated slightly,
 # Current:
 #         player.players_hand = opponent.players_hand
@@ -152,6 +152,7 @@ class Baron(Card):
             opp_card = opponents_hand[0]
         except IndexError:
             print(opponent.name, player.name)
+            print(player.players_hand)
             print('IndexError to review for debugging')
         your_card = player.players_hand[0]
         if your_card.value > opp_card.value:
@@ -161,7 +162,7 @@ class Baron(Card):
             player.player_remaining = False  # I think this is an easier way of indicating someone is out of the round
             # player_is_out_of_the_round(Player, Player.players)
             card_played = 'Baron'
-            return Player.players
+            return card_played
 
 
 

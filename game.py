@@ -224,6 +224,7 @@ def create_players(player_names: list[str], strategies: list[str]) -> list[p.Pla
         player_objects.append(p.Player(name=name, strategy=strategy))
 
     return player_objects
+def run_the_sim_multiple_times():
 
 # this is just a simple execution code to see if game.py is working (not a monte carlo)
 if __name__ == "__main__":

@@ -171,7 +171,7 @@ class Priest(Card):
         opponent = target
         opponents_hand = opponent.players_hand
         player.card_knowledge[opponent].append(opponent.players_hand)
-        return Player.card_knowledge
+        return player.card_knowledge
 
 
 

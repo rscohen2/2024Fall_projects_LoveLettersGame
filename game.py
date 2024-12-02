@@ -150,6 +150,7 @@ class Game:
             player.players_hand.append(card)
 
 
+
     # moved to instance function
     # this might have to be in players class
     def choose_opponent(self, current_player: p.Player): # TODO: not sure how to type annotate this function (specifically the return value)

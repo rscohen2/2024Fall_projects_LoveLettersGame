@@ -36,13 +36,14 @@ class Card:
     def value(self):
         return self.__value
 
-    def general_play_card(self):
-        """
-        This function updates the cards played in the Player and Game class, and also keeps track of cards_in_play using the Game class.
-        :return:
-        """
-        update_cards_played(Player.card_played, Game.cards_played)
-        Game.cards_in_play.append(Game.card_played)
+    # def general_play_card(self):
+    #     """
+    #     This function updates the cards played in the Player and Game class, and also keeps track of cards_in_play using the Game class.
+    #     :return:
+    #     """
+    #     # update_cards_played(Player.card_selected_to_play_, Game.cards_played)
+    #     ##I think this is already done in Andrews work
+    #     Game.cards_in_play.append(Game.card_played)
 
 
 class Princess(Card):
@@ -169,7 +170,7 @@ class Priest(Card):
         #opponent = choose_opponent(Player.opponents, Game.cards_in_play)
         opponent = target
         opponents_hand = opponent.players_hand
-        Player.card_knowledge[opponent].append(opponent.players_hand)
+        player.card_knowledge[opponent].append(opponent.players_hand)
         return Player.card_knowledge
 
 
@@ -189,7 +190,7 @@ class Guard(Card):
                 player.player_remaining = False #I think this is an easier way of indicating someone is out of the round
                 #Player.players = player_is_out_of_the_round(opponent, Player.players)
             card_played = 'Guard'
-            return Player.players
+            return player.player_remaining
 
             #correct properties of another class instead of parameters for the current game state
 

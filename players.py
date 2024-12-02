@@ -7,6 +7,8 @@ from cards import *
 class Player:
     """A competitor in the game."""
     # TODO: Leave these in? Put in the game class?
+    card_selected_to_play_ = None
+    #seems like it is suggesting we need this above??
     players_hand = None
     #players = None # TODO: what is difference between this and all_players?
     #opponents = None # put choose_opponent in the player class?

@@ -148,7 +148,10 @@ class Baron(Card):
         opponent = target
         #opponent = choose_opponent(Player.opponents, Game.cards_in_play)
         opponents_hand = opponent.players_hand
-        opp_card = opponents_hand[0]
+        try:
+            opp_card = opponents_hand[0]
+        except IndexError:
+            print('IndexError to review for debugging')
         your_card = player.players_hand[0]
         if your_card.value > opp_card.value:
             opponent.player_remaining = False  # I think this is an easier way of indicating someone is out of the round

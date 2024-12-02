@@ -42,10 +42,11 @@ class Player:
         for card in self.players_hand:
             if "Guard" in str(type(card)):
                 return(card)
+
     def checkCountessCondition(self):
         cardTypes = [type(i) for i in self.players_hand]
         if "Countess" in cardTypes:
-            if "Prince" in cardTypes:
+            if "Prince" in cardTypes and "Princess" not in cardTypes:
                 return True
             elif "King" in cardTypes:
                 return True
@@ -76,10 +77,10 @@ class Player:
         else:
             cardSelected = [card for card in self.players_hand if "Countess" in type(card)][0]
         self.card_selected_to_play = cardSelected
-        print(cardSelected)
+        #print(cardSelected)
         return(cardSelected)
 
-    def play_card(self, card_selected_to_play, target):
+    def play_card(self, card_selected_to_play, target, guess):
         #Depending on how we revise the parameters for cards, we will want to add
         #more logic here. I.E. if "Guard" in type(cardIndex) then take cardTarget
         #for first parameter and choose random name from list of cards for
@@ -99,7 +100,7 @@ class Player:
             #if so, then maybe the parameter should be opponent...
             #I structured it so opponent is chosen from the list of opponents
             #and opponents is a list of players - player in question
-        card_selected_to_play.play_card(self, target)
+        card_selected_to_play.play_card(self, target, guess)
         # if "Baron" in str(type(card_selected_to_play)):
         #     card_selected_to_play.play_card(self, target)
         # elif "King" in str(type(card_selected_to_play)):

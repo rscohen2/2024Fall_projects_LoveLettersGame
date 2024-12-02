@@ -25,6 +25,8 @@ Remarks: I try to leave comments next to the actual codes, but I also leave impo
     7. (241121_Thursday) moved create_player outside the game class (Mr. Weible's recommendation)
         --> accordingly, the self.players property also changed
 """
+from random import randint
+
 # TODO: used import as syntax (e.g., import pandas as pd) to solve the circular import problem (Mr. Weible's help)
 import players as p
 import cards as c
@@ -59,6 +61,7 @@ class Game:
         """
         # Shuffling the deck (deck object obtained)
         self.cards = [c.Guard()] * 5 + [c.Priest()] * 2 + [c.Baron()] * 2 + [c.Handmaid()] * 2 + [c.Prince()] * 2 + [c.King()] + [c.Countess()] + [c.Princess()]
+        self.allcards = [i for i in self.cards] # added "allcards" to keep a list of all the cards later for the guess
         random.shuffle(self.cards)
 
         # this part keeps track of the remaining cards
@@ -89,7 +92,13 @@ class Game:
             self.draw_a_card(player) # draw a card
             selected_card = player.card_to_play() # TODO: I changed the variable name card_index to selected_card since it seemed misleading
             target = self.choose_opponent(player) # randomly choose opponent
-            player.play_card(selected_card, target) # play the chosen card
+            if player.strategy == "strategy_1": #adding guess for strategy 1 (always guess Princess)
+                print(self.allcards)
+                guess = [i for i in self.allcards if "Princess" in str(type(i))][0]
+            else: # else if not strategy1, then the guess will be random from all the cards in the deck
+                guess = self.remaining_cards[randint(0,len(self.remaining_cards))]
+            print(guess)
+            player.play_card(selected_card, target, guess) # play the chosen card
 
         # to next player (make sure the order is properly circulating (e.g., 1 -> 2 -> 3 / 2 -> 3 -> 1 / 3 -> 1 -> 2)
         self.current_player_index += 1

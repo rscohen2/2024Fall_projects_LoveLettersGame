@@ -54,7 +54,7 @@ class Princess(Card):
     #     super().__init__()
     #     self.__value = self.card_values['Princess']
 
-    def play_card(self, player, target):
+    def play_card(self, player, target, guess):
         # Princess-specific play logic
         print("Princess card played!")
         # Trigger player elimination if the Princess is played or discarded
@@ -75,7 +75,7 @@ class Countess(Card):
     # def __init__(self, value, card_type):
     #     self.__value = self.card_values['Countess']
 
-    def play_card(self, player, target):
+    def play_card(self, player, target, guess):
         if 'King' or 'Prince' in Player.players_hand:
             print("Countess card played!")
             card_played = 'Countess'
@@ -90,7 +90,7 @@ class King(Card):
     """
     # def __init__(self, value):
     #     self.__value = self.card_values['King']
-    def play_card(self, player, target):
+    def play_card(self, player, target, guess):
         #opponent = choose_opponent(Player.opponents, Game.cards_in_play)
         opponent = target
         # Player.card_knowledge[opponent].append(opponent.players_hand)
@@ -112,7 +112,7 @@ class Prince(Card):
     """
     # def __init__(self, value, card_type):
     #     self.__value = self.card_values['Prince']
-    def play_card(self, player, target):
+    def play_card(self, player, target, guess):
         print("Prince card played!")
         #reset opponents hand, and put their cards in the discard pile (cards_played?)
         #opponent = choose_opponent(Player.opponents, Game.cards_in_play)
@@ -131,7 +131,7 @@ class Handmaid(Card):
     """ When you play the handmaid card, you cannot be chosen for any opponent's card actions during this round."""
     # def __init__(self):
     #     self.__value = self.card_values['Handmaid']
-    def play_card(self, player, target):
+    def play_card(self, player, target, guess):
         card_played = 'Handmaid'
         return card_played
 
@@ -142,7 +142,7 @@ class Baron(Card):
     # def __init__(self):
     #     self.__value = self.card_values['Baron']
 
-    def play_card(self, player, target):
+    def play_card(self, player, target, guess):
 
         opponent = target
         #opponent = choose_opponent(Player.opponents, Game.cards_in_play)
@@ -165,7 +165,7 @@ class Priest(Card):
     # def __init__(self, value, card_type):
     #     self.__value = self.card_values['Priest']
 
-    def play_card(self, player, target):
+    def play_card(self, player, target, guess):
         #opponent = choose_opponent(Player.opponents, Game.cards_in_play)
         opponent = target
         opponents_hand = opponent.players_hand

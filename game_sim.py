@@ -13,7 +13,7 @@ if __name__ == '__main__':
     Andrew_win_count = 0
     Sarah_win_count = 0
     Becca_win_count = 0
-    for i in range(1, 10000):
+    for i in range(1, 1000000):
         winner = run_the_sim(Sarah_win_count, Becca_win_count, Andrew_win_count)
         if winner == "Sarah":
             Sarah_win_count += 1

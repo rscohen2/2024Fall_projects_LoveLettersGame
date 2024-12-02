@@ -161,6 +161,7 @@ class Baron(Card):
                 return card_played
         except IndexError:
             print(opponent.name, player.name)
+            print(opponent.player_remaining)
             print(player.players_hand)
             print('IndexError to review for debugging')
 

@@ -95,9 +95,13 @@ class Game:
         3. play the card
         4. to the next player
         :return: None
+
+
         """
         player = self.players[self.current_player_index]
-        if player.player_remaining and not player.player_protected:
+        #if player.player_remaining and not player.player_protected:
+        if player.player_remaining:
+            #they should draw a card even if they have handmaid tho, so I changed this
             self.draw_a_card(player) # draw a card
             selected_card = player.card_to_play() # TODO: I changed the variable name card_index to selected_card since it seemed misleading
             target = self.choose_opponent(player) # randomly choose opponent

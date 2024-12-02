@@ -157,7 +157,7 @@ class Baron(Card):
             player.player_remaining = False  # I think this is an easier way of indicating someone is out of the round
             # player_is_out_of_the_round(Player, Player.players)
             card_played = 'Baron'
-            return player.players
+            return Player.players
 
 
 

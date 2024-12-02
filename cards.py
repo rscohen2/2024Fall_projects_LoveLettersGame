@@ -151,6 +151,7 @@ class Baron(Card):
         try:
             opp_card = opponents_hand[0]
         except IndexError:
+            print(opponent.name, player.name)
             print('IndexError to review for debugging')
         your_card = player.players_hand[0]
         if your_card.value > opp_card.value:

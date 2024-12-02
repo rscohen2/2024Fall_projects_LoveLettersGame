@@ -69,12 +69,14 @@ class Game:
         for card in self.cards: # card is each card (subclass) object
             self.remaining_cards[card.__class__.__name__] += 1 # didn't know how to access subclass names from other class object (referred to https://stackoverflow.com/questions/3314627/get-subclass-name)
 
-        #this part is meant to fix card_knowledge each time so the names are the key in the dict
 
 
         # resetting player status
         for player in self.players:
             player.players_hand = [] # empty player's hand
+            self.draw_a_card(player)
+            if len(player.players_hand) != 1:
+                print("potential error")
             # player.card_knowledge = {} # I changed this to dictionary (it is None in the players class module) TODO: we don't need this yet
             player.player_remaining = True   # reset all players to be remained in the game
             player.player_protected = False  # reset the protection effect (via Handmaid card)
@@ -86,6 +88,9 @@ class Game:
                 opponent.name: [] for opponent in self.players if opponent != player
             }
             #I gave chatgpt our prior code and error and asked what was wrong
+
+            #oh also here we need to deal cards when we start a new game!!
+
 
     def play_turn(self) -> None:
         """
@@ -101,8 +106,14 @@ class Game:
         player = self.players[self.current_player_index]
         #if player.player_remaining and not player.player_protected:
         if player.player_remaining:
+            if (len(player.players_hand)) != 1:
+                print('potential error?')
+            #this should be 1 above...
             #they should draw a card even if they have handmaid tho, so I changed this
             self.draw_a_card(player) # draw a card
+            # sanity check that the player should have 2 cards now
+            if (len(player.players_hand)) != 2:
+                print('error?')
             selected_card = player.card_to_play() # TODO: I changed the variable name card_index to selected_card since it seemed misleading
             target = self.choose_opponent(player) # randomly choose opponent
             if player.strategy == "strategy_1": #adding guess for strategy 1 (always guess Princess)

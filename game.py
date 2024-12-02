@@ -69,6 +69,9 @@ class Game:
         for card in self.cards: # card is each card (subclass) object
             self.remaining_cards[card.__class__.__name__] += 1 # didn't know how to access subclass names from other class object (referred to https://stackoverflow.com/questions/3314627/get-subclass-name)
 
+        #this part is meant to fix card_knowledge each time so the names are the key in the dict
+
+
         # resetting player status
         for player in self.players:
             player.players_hand = [] # empty player's hand
@@ -77,6 +80,12 @@ class Game:
             player.player_protected = False  # reset the protection effect (via Handmaid card)
             player.card_played = None # reset played card TODO: should this be an empty list or None?
 
+            # player.card_knowledge = {}
+            # player.card_knowledge.update(self.players.remove(player) : '')
+            player.card_knowledge = {
+                opponent.name: [] for opponent in self.players if opponent != player
+            }
+            #I gave chatgpt our prior code and error and asked what was wrong
 
     def play_turn(self) -> None:
         """

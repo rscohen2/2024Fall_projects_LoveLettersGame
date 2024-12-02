@@ -170,7 +170,7 @@ class Priest(Card):
         #opponent = choose_opponent(Player.opponents, Game.cards_in_play)
         opponent = target
         opponents_hand = opponent.players_hand
-        player.card_knowledge[opponent].append(opponent.players_hand)
+        player.card_knowledge[opponent.name].append(opponent.players_hand)
         return player.card_knowledge
 
 

@@ -1,6 +1,6 @@
 import random
 from collections import Counter
-from game import *
+# from game import *
 from cards import *
 
 
@@ -12,7 +12,7 @@ class Player:
     players_hand = None
     #players = None # TODO: what is difference between this and all_players?
     #opponents = None # put choose_opponent in the player class?
-    card_knowledge = None
+    card_knowledge = {}
     card_played = None
     #player_count = 0  # Initialize count of all players. # TODO: moved up to game class?
     #all_players = []  # automatically track all players # TODO: moved up to game class?

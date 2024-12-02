@@ -150,19 +150,19 @@ class Baron(Card):
         opponents_hand = opponent.players_hand
         try:
             opp_card = opponents_hand[0]
+            your_card = player.players_hand[0]
+            if your_card.value > opp_card.value:
+                opponent.player_remaining = False  # I think this is an easier way of indicating someone is out of the round
+                # player_is_out_of_the_round(opponent, Player.players)
+            elif opp_card.value > your_card.value:
+                player.player_remaining = False  # I think this is an easier way of indicating someone is out of the round
+                # player_is_out_of_the_round(Player, Player.players)
+                card_played = 'Baron'
+                return card_played
         except IndexError:
             print(opponent.name, player.name)
             print(player.players_hand)
             print('IndexError to review for debugging')
-        your_card = player.players_hand[0]
-        if your_card.value > opp_card.value:
-            opponent.player_remaining = False  # I think this is an easier way of indicating someone is out of the round
-            # player_is_out_of_the_round(opponent, Player.players)
-        elif opp_card.value > your_card.value:
-            player.player_remaining = False  # I think this is an easier way of indicating someone is out of the round
-            # player_is_out_of_the_round(Player, Player.players)
-            card_played = 'Baron'
-            return card_played
 
 
 

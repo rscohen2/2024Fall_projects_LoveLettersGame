@@ -224,11 +224,7 @@ def create_players(player_names: list[str], strategies: list[str]) -> list[p.Pla
         player_objects.append(p.Player(name=name, strategy=strategy))
 
     return player_objects
-def run_the_sim_multiple_times():
-
-# this is just a simple execution code to see if game.py is working (not a monte carlo)
-if __name__ == "__main__":
-
+def run_the_sim(Sarah_win_count, Becca_win_count, Andrew_win_count):
     # this player creation part changed due to the create_players() function (moved outside the game class)
     player_list = ["Sarah", "Becca", "Andrew"]
     strategies = ["strategy_1", "strategy_2", "strategy_3"]
@@ -240,8 +236,40 @@ if __name__ == "__main__":
 
     if winner:
         print(f"{winner.name} wins!")
+        # if winner.name == "Sarah":
+        #     Sarah_win_count += 1
+        # if winner.name == "Becca":
+        #     Becca_win_count += 1
+        # if winner.name == "Andrew":
+        #     Andrew_win_count += 1
+        return winner.name
     else:
         print("\nSomething went wrong with the code")
+
+
+
+# # this is just a simple execution code to see if game.py is working (not a monte carlo)
+# if __name__ == "__main__":
+#
+#     Andrew_win_count = 0
+#     Sarah_win_count = 0
+#     Becca_win_count = 0
+#     for i in range(1,1000):
+#         run_the_sim(Sarah_win_count, Becca_win_count, Andrew_win_count)
+#     print(f"Sarah_wins: {Sarah_win_count} Andrew_wins: {Andrew_win_count},'Becca_wins: {Becca_win_count}")
+    # this player creation part changed due to the create_players() function (moved outside the game class)
+    # player_list = ["Sarah", "Becca", "Andrew"]
+    # strategies = ["strategy_1", "strategy_2", "strategy_3"]
+    # players = create_players(player_list, strategies)
+    #
+    # game = Game(players)
+    #
+    # winner = game.play_until_winner()
+    #
+    # if winner:
+    #     print(f"{winner.name} wins!")
+    # else:
+    #     print("\nSomething went wrong with the code")
 
     # TODO: Currently getting the following error:
     # ImportError: cannot import name 'choose_opponent' from partially initialized module 'game' (most likely due to a circular import)

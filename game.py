@@ -117,6 +117,7 @@ class Game:
         player = self.players[self.current_player_index]
 
         #if player.player_remaining and not player.player_protected:
+        # make sure to skip eliminated players
         if not player.player_remaining:
             self.current_player_index = (self.current_player_index + 1) % len(self.players)
             return
@@ -129,24 +130,28 @@ class Game:
             # if (len(player.players_hand)) != 2:
             #     print('error?')
 
+        # resetting handmaid effect
         player.player_protected = False
         self.draw_a_card(player)
 
         selected_card = player.card_to_play() # TODO: I changed the variable name card_index to selected_card since it seemed misleading
-
-        target = None
-        if isinstance(selected_card, (c.Guard, c.Baron, c.King, c.Priest, c.Prince)):
-            target = self.choose_opponent(player)
 
         if not selected_card:
             print(f"{player.name} has no valid card to play.")
             self.current_player_index = (self.current_player_index + 1) % len(self.players)
             return
 
+        # choose opponent (guard, baron, king, priest, prince)
+        # Got help from ChapGPT for handling the AttributeError with NoneType
+        target = None
+        if isinstance(selected_card, (c.Guard, c.Baron, c.King, c.Priest, c.Prince)):
+            target = self.choose_opponent(player)
+
         # Guard card requires a guess
         guess = None
         if isinstance(selected_card, c.Guard) and target:
             guess = player.guess_card(self.get_remaining_card_list())
+
 
         if target is None and not isinstance(selected_card, (c.Handmaid, c.Countess, c.Princess)):
             print(f"No valid target for {player.name}. Turn skipped.")

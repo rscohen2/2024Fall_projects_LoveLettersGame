@@ -1,7 +1,7 @@
 import random
-from collections import Counter
 # from game import *
 from cards import *
+from collections import Counter
 
 
 class Player:
@@ -12,7 +12,7 @@ class Player:
     players_hand = None
     #players = None # TODO: what is difference between this and all_players?
     #opponents = None # put choose_opponent in the player class?
-    card_knowledge = {}
+    # card_knowledge = {}
     card_played = None
     #player_count = 0  # Initialize count of all players. # TODO: moved up to game class?
     #all_players = []  # automatically track all players # TODO: moved up to game class?
@@ -95,8 +95,6 @@ class Player:
         #   self.player_protected =True
         #   OR, PENDING CHANGES
         #   cardIndex.play_card(self)
-
-
         ######
         #from Becca: isn't cardTarget and opponent the same variable? or no?
             #if so, then maybe the parameter should be opponent...
@@ -119,6 +117,19 @@ class Player:
         #     card_selected_to_play.play_card(target)
         self.players_hand = [card for card in self.players_hand if card != self.card_selected_to_play]
         self.card_selected_to_play = None
+
+    # TODO: I added the guessing logic here in the player class
+    def guess_card(self, possible_cards):
+        if self.strategy == "strategy_1":
+            return "Princess"
+        else:
+            return random.choice(possible_cards)
+
+    # TODO: I added this function to make sure player's hands are being updated when playing a card
+    def remove_card(self, card):
+        if card in self.players_hand:
+            self.players_hand.remove(card)
+
 
     #TODO : incorporate the strategies into one function?
 '''

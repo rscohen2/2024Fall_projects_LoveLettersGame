@@ -1,4 +1,4 @@
-# from players import *
+from players import *
 from game import *
 # from players import Player
 # The logic for switching hands (when the King card is played) needs to be updated slightly,
@@ -134,6 +134,7 @@ class Handmaid(Card):
     #     self.__value = self.card_values['Handmaid']
     def play_card(self, player, target, guess):
         card_played = 'Handmaid'
+        player.player_protected = True # TODO: I added this part since we weren't implementing handmaid protection effect anywhere in our code
         return card_played
 
 

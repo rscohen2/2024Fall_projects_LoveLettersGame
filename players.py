@@ -65,6 +65,7 @@ class Player:
             result = self.chooseRandomCard()
         return (result)
     def playStrategy2(self): # Just a placeholder for now
+        #TODO finish coding strat 2 and 3
         return(self.chooseRandomCard())
     def playStrategy3(self): # Just a placeholder for now
         return(self.chooseRandomCard())

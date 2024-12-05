@@ -101,8 +101,11 @@ class King(Card):
         # return Player.players_hand, opponent.players_hand
         player.card_knowledge[opponent.name].append(opponent.players_hand)
         opponent.card_knowledge[player.name].append(player.players_hand)
-        player.players_hand = opponent.players_hand
+        # player.players_hand = opponent.players_hand
+        # opponent.players_hand = player.players_hand
+        tempHand = opponent.players_hand
         opponent.players_hand = player.players_hand
+        player.players_hand = tempHand
         return player.players_hand, opponent.players_hand
 
 

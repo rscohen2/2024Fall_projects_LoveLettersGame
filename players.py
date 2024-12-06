@@ -73,6 +73,7 @@ class Player:
         if self.checkCountessCondition() == False:
             if self.checkGuard() == True:
                 cardSelected = c.Guard
+                print("selected guard")
                 return cardSelected
             else:
                 cardSelected = self.chooseRandomCard()

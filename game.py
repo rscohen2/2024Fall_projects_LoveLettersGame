@@ -151,11 +151,11 @@ class Game:
         guess = None
         if isinstance(selected_card, c.Guard) and target:
             #TODO figure out how to fix this with the p.playStrategy1 to make this work
-            if p.strategy == 1:
+            if p.strategy == "strategy_1":
                 guess = c.Princess
-            if p.playStrategy2:
+            if p.strategy == "strategy_2":
                 guess = player.guess_card(self.get_remaining_card_list())
-            if p.playStrategy3:
+            if p.strategy == 'strategy_3':
                 result = self.chooseRandomCard()
 
         if target is None and not isinstance(selected_card, (c.Handmaid, c.Countess, c.Princess)):

@@ -69,10 +69,6 @@ class Player:
     def playStrategy3(self): # Just a placeholder for now
         return(self.chooseRandomCard())
 
-
-
-
-
     def card_to_play(self):
         if self.checkCountessCondition() == False:
             if self.strategy == "strategy_1":

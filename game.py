@@ -151,7 +151,7 @@ class Game:
         guess = None
         if isinstance(selected_card, c.Guard) and target:
             #TODO figure out how to fix this with the p.playStrategy1 to make this work
-            if p.playStrategy1:
+            if p.strategy == 1:
                 guess = c.Princess
             if p.playStrategy2:
                 guess = player.guess_card(self.get_remaining_card_list())

@@ -60,23 +60,31 @@ class Player:
     def chooseRandomCard(self):
         card = self.players_hand[random.randint(0,len(self.players_hand)-1)]
         return(card)
-    def playStrategy1(self, game_instance):
-        return c.Princess
-    def playStrategy2(self, game_instance): # Just a placeholder for now
-        #TODO finish coding strat 2 and 3... choosing card with most frequency left in deck
-        guess = max(game_instance.cards)
-        return guess
-    def playStrategy3(self): # Just a placeholder for now
-        return(self.chooseRandomCard())
+    # def playStrategy1(self, game_instance):
+    #     return c.Princess
+    # def playStrategy2(self, game_instance): # Just a placeholder for now
+    #     #TODO finish coding strat 2 and 3... choosing card with most frequency left in deck
+    #     guess = max(game_instance.cards)
+    #     return guess
+    # def playStrategy3(self): # Just a placeholder for now
+    #     return(self.chooseRandomCard())
 
     def card_to_play(self):
         if self.checkCountessCondition() == False:
-            if self.strategy == "strategy_1":
-                cardSelected = self.playStrategy1()
-            if self.strategy == "strategy_2":
-                cardSelected = self.playStrategy2()
-            if self.strategy == "strategy_3":
-                cardSelected = self.playStrategy3()
+            if self.checkGuard() == True:
+                cardSelected = c.Guard
+                return cardSelected
+            else:
+                cardSelected = self.chooseRandomCard()
+                return cardSelected
+
+        # if self.strategy == "strategy_1":
+            #     cardSelected = self.playStrategy1()
+            # if self.strategy == "strategy_2":
+            #     cardSelected = self.playStrategy2()
+            # if self.strategy == "strategy_3":
+            #     cardSelected = self.playStrategy3()
+
         else:
             cardSelected = [card for card in self.players_hand if "Countess" in type(card)][0]
         self.card_selected_to_play = cardSelected
@@ -123,7 +131,9 @@ class Player:
     def guess_card(self, possible_cards):
         if self.strategy == "strategy_1":
             return "Princess"
-        else:
+        elif self.strategy == "strategy_2":
+            return max(possible_cards)
+        elif self.strategy == "strategy_3":
             return random.choice(possible_cards)
 
     # TODO: I added this function to make sure player's hands are being updated when playing a card

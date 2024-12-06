@@ -4,6 +4,7 @@ from cards import *
 from collections import Counter
 
 
+
 class Player:
     """A competitor in the game."""
     # TODO: Leave these in? Put in the game class?
@@ -63,9 +64,13 @@ class Player:
         while len(str(result)) == 0:
             result = self.checkGuard()
             result = self.chooseRandomCard()
+        #TODO: actually implement the guess correctly for each of these?
+            guess = 'Princess'
         return (result)
     def playStrategy2(self): # Just a placeholder for now
         #TODO finish coding strat 2 and 3... choosing card with most frequency left in deck
+        # from game import Game.cards
+        # guess = cards.max()
         return(self.chooseRandomCard())
     def playStrategy3(self): # Just a placeholder for now
         return(self.chooseRandomCard())

@@ -150,8 +150,13 @@ class Game:
         # Guard card requires a guess
         guess = None
         if isinstance(selected_card, c.Guard) and target:
-            guess = player.guess_card(self.get_remaining_card_list())
-
+            #TODO figure out how to fix this with the p.playStrategy1 to make this work
+            if p.playStrategy1:
+                guess = c.Princess
+            if p.playStrategy2:
+                guess = player.guess_card(self.get_remaining_card_list())
+            if p.playStrategy3:
+                result = self.chooseRandomCard()
 
         if target is None and not isinstance(selected_card, (c.Handmaid, c.Countess, c.Princess)):
             print(f"No valid target for {player.name}. Turn skipped.")

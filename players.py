@@ -17,6 +17,7 @@ class Player:
     card_played = None
     #player_count = 0  # Initialize count of all players. # TODO: moved up to game class?
     #all_players = []  # automatically track all players # TODO: moved up to game class?
+    strategy = None
 
     def __init__(self, strategy, name):
         #self.player_count += 1 # TODO: add this to the game class
@@ -59,21 +60,19 @@ class Player:
     def chooseRandomCard(self):
         card = self.players_hand[random.randint(0,len(self.players_hand)-1)]
         return(card)
-    def playStrategy1(self):
-        result = ""
-        while len(str(result)) == 0:
-            result = self.checkGuard()
-            result = self.chooseRandomCard()
-        #TODO: actually implement the guess correctly for each of these?
-            guess = 'Princess'
-        return (result)
-    def playStrategy2(self): # Just a placeholder for now
+    def playStrategy1(self, game_instance):
+        return c.Princess
+    def playStrategy2(self, game_instance): # Just a placeholder for now
         #TODO finish coding strat 2 and 3... choosing card with most frequency left in deck
-        # from game import Game.cards
-        # guess = cards.max()
-        return(self.chooseRandomCard())
+        guess = max(game_instance.cards)
+        return guess
     def playStrategy3(self): # Just a placeholder for now
         return(self.chooseRandomCard())
+
+
+
+
+
     def card_to_play(self):
         if self.checkCountessCondition() == False:
             if self.strategy == "strategy_1":
@@ -255,3 +254,5 @@ class Player:
 #         # pre-calculate and store these values for randomization of turns:
 #         # r, p, s = self.strategy
 #         # self.randmax = r + p + s '''
+
+

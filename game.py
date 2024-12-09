@@ -74,6 +74,7 @@ class Game:
         Starts a new game by resetting (shuffling) card and player status
         :return: None
         """
+        print("========================Starting a new game!========================")
         self.cards = Game.initialize_deck()  # get a shuffled deck
 
         # this part keeps track of the remaining cards
@@ -140,6 +141,9 @@ class Game:
             self.current_player_index = (self.current_player_index + 1) % len(self.players)
             return
 
+        # print who played which card
+        print(f"{player.name} played the {selected_card.__class__.__name__} card!")
+
         # choose opponent (guard, baron, king, priest, prince)
         # Got help from ChapGPT for handling the AttributeError with NoneType
         target = None
@@ -178,13 +182,13 @@ class Game:
         """
         available_opponent = []
         for player in self.players:
-            if player != current_player and player.player_remaining and not player.player_protected:
-            # if player != current_player and player.player_remaining and not player.player_protected and len(player.players_hand) > 0:
+            # if player != current_player and player.player_remaining and not player.player_protected:
+            if player != current_player and player.player_remaining and not player.player_protected and len(player.players_hand) > 0:
                 available_opponent.append(player)
 
         # if len(available_opponent) > 0:
         if available_opponent:
-            return random.choice(available_opponent)  # TODO: maybe we can modify this later when we are going to consider card knowledge?
+            return random.choice(available_opponent)
 
         print(f"No available opponents to target for {current_player.name}. Turn skip.")
         return None
@@ -243,13 +247,17 @@ class Game:
 
         # Case 1: Only one player remains
         if len(remaining_players) == 1:
-            return remaining_players[0].name
+            winner = remaining_players[0].name
+            print(f"Winner of this round: {winner}!")  # Announce the winner
+            return winner
 
         # Case 2: Deck is out, compare hands
         winners, highest_card_value = Game.get_player_with_highest_card(remaining_players)
 
         if len(winners) == 1:
-            return winners[0].name  # Single winner
+            winner = winners[0].name
+            print(f"Winner of this round: {winner} with the highest card value ({highest_card_value})!")  # Announce the winner
+            return winner  # Single winner
         else:
             self.tie_games += 1  # Increment tie counter
             print(f"Tie game! Players with highest card value ({highest_card_value}): {[player.name for player in winners]}")

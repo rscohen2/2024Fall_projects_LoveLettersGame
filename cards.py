@@ -140,7 +140,10 @@ class Prince(Card):
             if card.__class__.__name__ == "Princess":
                 target.player_remaining = False
                 print(f"{target.name} eliminated by discarding the Princess!")
-
+            # else:
+            #     target.players_hand = game.draw_a_card(target)
+        # if player.game.cards:
+        #     player.game.draw_a_card(target)
 
 class Handmaid(Card):
     """ When you play the handmaid card, you cannot be chosen for any opponent's card actions during this round."""

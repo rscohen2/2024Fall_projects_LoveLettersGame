@@ -133,13 +133,39 @@ class Player:
         self.card_selected_to_play = None
 
     # TODO: I added the guessing logic here in the player class
-    def guess_card(self, possible_cards):
+    def guess_card(self, possible_cards, wholeDeck):
         if self.strategy == "strategy_1":
             return "Princess"
         elif self.strategy == "strategy_2":
-            return max(possible_cards)
+            for card in possible_cards:
+                if card.__class__.__name__ == "Guard":
+                    possible_cards.remove(card)
+            for card in self.players_hand:
+                print("card is", card)
+                possible_cards.remove(card)
+                #for i in possible_cards:
+                #possible_cards = Counter(list(possible_cards))
+                # maxValueGuess = max(possible_cards.elements())
+                # cardName = maxValueGuess.__class__.__name__
+                return max(possible_cards, key=possible_cards.count)
+            # print(self.players_hand)
+            # print([card for card in self.players_hand])
+            #return max(possible_cards.remove([card for card in self.players_hand]))
         elif self.strategy == "strategy_3":
-            return random.choice(possible_cards)
+            for card in possible_cards:
+                if card.__class__.__name__ == "Guard":
+                    possible_cards.remove(card)
+            for card in self.players_hand:
+                possible_cards.remove(card)
+                randomPick = random.choice(possible_cards)
+                print(randomPick.__class__.__name__)
+                return randomPick.__class__.__name__
+            #return random.choice(possible_cards.remove([card for card in self.players_hand]))
+        elif self.strategy == "strategy_4":
+            for card in wholeDeck:
+                if card.__class__.__name__ == "Guard":
+                    wholeDeck.remove(card)
+            return random.choice(wholeDeck)
 
     # TODO: I added this function to make sure player's hands are being updated when playing a card
     def remove_card(self, card):

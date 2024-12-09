@@ -6,8 +6,8 @@ def run_the_sim(game):
 
 if __name__ == '__main__':
 
-    player_list = ["Sarah", "Becca", "Andrew"]
-    strategies = ["strategy_1", "strategy_2", "strategy_3"]
+    player_list = ["Sarah", "Becca", "Andrew", "newPlayer"]
+    strategies = ["strategy_1", "strategy_2", "strategy_3", "strategy_4"]
 
     # Create players and a single Game instance
     players = create_players(player_list, strategies)

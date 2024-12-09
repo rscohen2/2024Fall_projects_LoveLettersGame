@@ -80,7 +80,8 @@ class Game:
         # this part keeps track of the remaining cards
         self.remaining_cards = Counter()
         for card in self.cards: # card is each card (subclass) object
-            card_name = card.__class__.__name__  # didn't know how to access subclass names from other class object (referred to https://stackoverflow.com/questions/3314627/get-subclass-name)
+            #card_name = card.__class__.__name__  # didn't know how to access subclass names from other class object (referred to https://stackoverflow.com/questions/3314627/get-subclass-name)
+            card_name = card
             self.remaining_cards[card_name] += 1
 
         self.reset_players()  # Reset all player statuses
@@ -156,7 +157,8 @@ class Game:
         # Guard card requires a guess
         guess = None
         if isinstance(selected_card, c.Guard) and target:
-            guess = player.guess_card(self.get_remaining_card_list())
+            wholeDeck = Game.initialize_deck()  # need a second variable because self.cards is updated throughout game
+            guess = player.guess_card(self.get_remaining_card_list(), wholeDeck)
 
         # if target is None and not isinstance(selected_card, (c.Handmaid, c.Countess, c.Princess)):
         #     print(f"No valid target for {player.name}. Turn skipped.")
@@ -200,7 +202,7 @@ class Game:
         for player in self.players:
             if player.player_remaining:
                 for card in player.players_hand:
-                    remaining_cards.append(card.__class__.__name__)
+                    remaining_cards.append(card)
 
         return remaining_cards
 

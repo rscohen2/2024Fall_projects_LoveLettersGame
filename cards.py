@@ -56,15 +56,18 @@ class Princess(Card):
     #     self.__value = self.card_values['Princess']
 
     def play_card(self, player, target, guess):
-        # Princess-specific play logic
-        print("Princess card played!")
-        # Trigger player elimination if the Princess is played or discarded
-        player.player_remaining = False  # I think this is an easier way of indicating someone is out of the round
-        #player_is_out_of_the_round(Player, Game.players)
-        card_played = 'Princess'
+        # # Princess-specific play logic
+        # # print("Princess card played!")
+        # # Trigger player elimination if the Princess is played or discarded
+        # player.player_remaining = False  # I think this is an easier way of indicating someone is out of the round
+        # #player_is_out_of_the_round(Player, Game.players)
+        # card_played = 'Princess'
 
-
-
+        # TODO: NEWLY MODIFIED
+        # print("Princess card played!")
+        player.players_hand.clear()  # Explicitly clear the hand
+        player.player_remaining = False
+        print(f"{player.name} eliminated for discarding the Princess!")
 
 
 class Countess(Card):
@@ -78,7 +81,7 @@ class Countess(Card):
 
     def play_card(self, player, target, guess):
         if 'King' or 'Prince' in Player.players_hand:
-            print("Countess card played!")
+            # print("Countess card played!")
             card_played = 'Countess'
             return card_played
 
@@ -92,6 +95,7 @@ class King(Card):
     # def __init__(self, value):
     #     self.__value = self.card_values['King']
     def play_card(self, player, target, guess):
+        # print("King card played!")
         #opponent = choose_opponent(Player.opponents, Game.cards_in_play)
         opponent = target
         # Player.card_knowledge[opponent].append(opponent.players_hand)
@@ -117,18 +121,25 @@ class Prince(Card):
     # def __init__(self, value, card_type):
     #     self.__value = self.card_values['Prince']
     def play_card(self, player, target, guess):
-        print("Prince card played!")
-        #reset opponents hand, and put their cards in the discard pile (cards_played?)
-        #opponent = choose_opponent(Player.opponents, Game.cards_in_play)
-        opponent = target
-        for card in opponent.players_hand:
-            if card == 'Princess':
-                player.player_remaining = False #I think this is an easier way of indicating someone is out of the round
-                #player_is_out_of_the_round(opponent, Game.players)
-            opponent.players_hand.remove(card)
-
-        card_played = 'Prince'
-        return opponent.players_hand
+        # # print("Prince card played!")
+        # #reset opponents hand, and put their cards in the discard pile (cards_played?)
+        # #opponent = choose_opponent(Player.opponents, Game.cards_in_play)
+        # opponent = target
+        # for card in opponent.players_hand:
+        #     if card == 'Princess':
+        #         player.player_remaining = False #I think this is an easier way of indicating someone is out of the round
+        #         #player_is_out_of_the_round(opponent, Game.players)
+        #     opponent.players_hand.remove(card)
+        #
+        # card_played = 'Prince'
+        # return opponent.players_hand
+        # TODO: NEWLY MODIFIED
+        # print("Prince card played!")
+        for card in target.players_hand[:]:  # it seems that an Index out of range error was happening here. Asked ChatGPT what the problem is an it suggested iteration through slicing
+            target.players_hand.remove(card)
+            if card.__class__.__name__ == "Princess":
+                target.player_remaining = False
+                print(f"{target.name} eliminated by discarding the Princess!")
 
 
 class Handmaid(Card):
@@ -136,6 +147,7 @@ class Handmaid(Card):
     # def __init__(self):
     #     self.__value = self.card_values['Handmaid']
     def play_card(self, player, target, guess):
+        # print("Handmaid card played!")
         card_played = 'Handmaid'
         player.player_protected = True # TODO: I added this part since we weren't implementing handmaid protection effect anywhere in our code
         return card_played
@@ -149,25 +161,40 @@ class Baron(Card):
 
     def play_card(self, player, target, guess):
 
-        opponent = target
-        #opponent = choose_opponent(Player.opponents, Game.cards_in_play)
-        opponents_hand = opponent.players_hand
-        try:
-            opp_card = opponents_hand[0]
-            your_card = player.players_hand[0]
-            if your_card.value > opp_card.value:
-                opponent.player_remaining = False  # I think this is an easier way of indicating someone is out of the round
-                # player_is_out_of_the_round(opponent, Player.players)
-            elif opp_card.value > your_card.value:
-                player.player_remaining = False  # I think this is an easier way of indicating someone is out of the round
-                # player_is_out_of_the_round(Player, Player.players)
-                card_played = 'Baron'
-                return card_played
-        except IndexError:
-            print(opponent.name, player.name)
-            print(opponent.player_remaining)
-            print(player.players_hand)
-            print('IndexError to review for debugging')
+        # opponent = target
+        # #opponent = choose_opponent(Player.opponents, Game.cards_in_play)
+        # opponents_hand = opponent.players_hand
+        # try:
+        #     opp_card = opponents_hand[0]
+        #     your_card = player.players_hand[0]
+        #     if your_card.value > opp_card.value:
+        #         opponent.player_remaining = False  # I think this is an easier way of indicating someone is out of the round
+        #         # player_is_out_of_the_round(opponent, Player.players)
+        #     elif opp_card.value > your_card.value:
+        #         player.player_remaining = False  # I think this is an easier way of indicating someone is out of the round
+        #         # player_is_out_of_the_round(Player, Player.players)
+        #         card_played = 'Baron'
+        #         return card_played
+        # except IndexError:
+        #     print(opponent.name, player.name)
+        #     print(opponent.player_remaining)
+        #     print(player.players_hand)
+        #     print('IndexError to review for debugging')
+        # TODO: NEWLY MODIFIED
+        # print("Baron card played!")
+        # Check whether both players have cards in hand
+        if not target.players_hand or not player.players_hand:
+            print(f"Cannot play Baron: {target.name} or {player.name} has no cards.")
+            return
+
+        opp_card = target.players_hand[0]
+        your_card = player.players_hand[0]
+        if your_card.value > opp_card.value:
+            target.player_remaining = False # target eliminated
+            print(f"{target.name} eliminated in a Baron comparison!")
+        elif opp_card.value > your_card.value:
+            player.player_remaining = False # player emliminated
+            print(f"{player.name} eliminated in a Baron comparison!")
 
 
 
@@ -177,6 +204,7 @@ class Priest(Card):
     #     self.__value = self.card_values['Priest']
 
     def play_card(self, player, target, guess):
+        # print("Priest card played!")
         #opponent = choose_opponent(Player.opponents, Game.cards_in_play)
         opponent = target
         opponents_hand = opponent.players_hand
@@ -193,14 +221,24 @@ class Guard(Card):
     #     self.__value = self.card_values['Guard']
 
     def play_card(self, player, target, guess):
-        #opponent = choose_opponent(Player.opponents, Game.cards_in_play)
-        opponent = target
-        for card in opponent.players_hand:
-            if card == guess:
-                player.player_remaining = False #I think this is an easier way of indicating someone is out of the round
-                #Player.players = player_is_out_of_the_round(opponent, Player.players)
-            card_played = 'Guard'
-            return player.player_remaining
+        # #opponent = choose_opponent(Player.opponents, Game.cards_in_play)
+        # opponent = target
+        # for card in opponent.players_hand:
+        #     if card == guess:
+        #         player.player_remaining = False #I think this is an easier way of indicating someone is out of the round
+        #         #Player.players = player_is_out_of_the_round(opponent, Player.players)
+        #     card_played = 'Guard'
+        #     return player.player_remaining
+        #
+        #     #correct properties of another class instead of parameters for the current game state
+        # TODO: NEWLY MODIFIED
+        # print("Guard card played!")
+        for card in target.players_hand:
+            if card.__class__.__name__ == guess:
+                print(f"{player.name} guessed correctly! {target.name} had the {guess} card.")
+                target.player_remaining = False  # Eliminate the target
+                return
 
-            #correct properties of another class instead of parameters for the current game state
+        # If no match, the guess is incorrect
+        print(f"{player.name} guessed wrong! {target.name} does not have the {guess} card.")
 

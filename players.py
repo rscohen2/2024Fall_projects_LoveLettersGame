@@ -71,10 +71,14 @@ class Player:
 
     def card_to_play(self):
         if self.checkCountessCondition() == False:
-            if self.checkGuard() == True:
-                cardSelected = c.Guard
+            guardCard = self.checkGuard()
+            if guardCard:
                 print("selected guard")
-                return cardSelected
+                return guardCard
+            # if self.checkGuard() == True:
+            #     cardSelected = c.Guard
+            #     print("selected guard")
+            #     return cardSelected
             else:
                 cardSelected = self.chooseRandomCard()
                 return cardSelected

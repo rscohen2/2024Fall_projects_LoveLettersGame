@@ -95,6 +95,8 @@ class King(Card):
     # def __init__(self, value):
     #     self.__value = self.card_values['King']
     def play_card(self, player, target, guess, game=None):
+        # discard the played King card
+        player.players_hand.remove(self)
         # print("King card played!")
         #opponent = choose_opponent(Player.opponents, Game.cards_in_play)
         opponent = target

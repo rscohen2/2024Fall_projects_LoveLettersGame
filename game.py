@@ -165,7 +165,8 @@ class Game:
         #     self.current_player_index = (self.current_player_index + 1) % len(self.players)
         #     return
 
-        selected_card.play_card(player, target, guess)
+        # selected_card.play_card(player, target, guess)
+        selected_card.play_card(player, target, guess, game=self)
         player.remove_card(selected_card)
 
         # to next player (make sure the order is properly circulating (e.g., 1 -> 2 -> 3 / 2 -> 3 -> 1 / 3 -> 1 -> 2)

@@ -55,7 +55,7 @@ class Princess(Card):
     #     super().__init__()
     #     self.__value = self.card_values['Princess']
 
-    def play_card(self, player, target, guess):
+    def play_card(self, player, target, guess, game=None):
         # # Princess-specific play logic
         # # print("Princess card played!")
         # # Trigger player elimination if the Princess is played or discarded
@@ -79,7 +79,7 @@ class Countess(Card):
     # def __init__(self, value, card_type):
     #     self.__value = self.card_values['Countess']
 
-    def play_card(self, player, target, guess):
+    def play_card(self, player, target, guess, game=None):
         if 'King' or 'Prince' in Player.players_hand:
             # print("Countess card played!")
             card_played = 'Countess'
@@ -94,7 +94,7 @@ class King(Card):
     """
     # def __init__(self, value):
     #     self.__value = self.card_values['King']
-    def play_card(self, player, target, guess):
+    def play_card(self, player, target, guess, game=None):
         # print("King card played!")
         #opponent = choose_opponent(Player.opponents, Game.cards_in_play)
         opponent = target
@@ -120,7 +120,7 @@ class Prince(Card):
     """
     # def __init__(self, value, card_type):
     #     self.__value = self.card_values['Prince']
-    def play_card(self, player, target, guess):
+    def play_card(self, player, target, guess, game=None):
         # # print("Prince card played!")
         # #reset opponents hand, and put their cards in the discard pile (cards_played?)
         # #opponent = choose_opponent(Player.opponents, Game.cards_in_play)
@@ -140,16 +140,21 @@ class Prince(Card):
             if card.__class__.__name__ == "Princess":
                 target.player_remaining = False
                 print(f"{target.name} eliminated by discarding the Princess!")
+                return
             # else:
             #     target.players_hand = game.draw_a_card(target)
         # if player.game.cards:
         #     player.game.draw_a_card(target)
+        # target draw a new card
+        if game and game.cards:
+            game.draw_a_card(target)
+            print(f"{target.name} redrew a card.")
 
 class Handmaid(Card):
     """ When you play the handmaid card, you cannot be chosen for any opponent's card actions during this round."""
     # def __init__(self):
     #     self.__value = self.card_values['Handmaid']
-    def play_card(self, player, target, guess):
+    def play_card(self, player, target, guess, game=None):
         # print("Handmaid card played!")
         card_played = 'Handmaid'
         player.player_protected = True # TODO: I added this part since we weren't implementing handmaid protection effect anywhere in our code
@@ -162,7 +167,7 @@ class Baron(Card):
     # def __init__(self):
     #     self.__value = self.card_values['Baron']
 
-    def play_card(self, player, target, guess):
+    def play_card(self, player, target, guess, game=None):
 
         # opponent = target
         # #opponent = choose_opponent(Player.opponents, Game.cards_in_play)
@@ -206,7 +211,7 @@ class Priest(Card):
     # def __init__(self, value, card_type):
     #     self.__value = self.card_values['Priest']
 
-    def play_card(self, player, target, guess):
+    def play_card(self, player, target, guess, game=None):
         # print("Priest card played!")
         #opponent = choose_opponent(Player.opponents, Game.cards_in_play)
         opponent = target
@@ -223,7 +228,7 @@ class Guard(Card):
     # def __init__(self, __value):
     #     self.__value = self.card_values['Guard']
 
-    def play_card(self, player, target, guess):
+    def play_card(self, player, target, guess, game=None):
         # #opponent = choose_opponent(Player.opponents, Game.cards_in_play)
         # opponent = target
         # for card in opponent.players_hand:

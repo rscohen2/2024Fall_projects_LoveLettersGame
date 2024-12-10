@@ -146,9 +146,8 @@ class Prince(Card):
         # if player.game.cards:
         #     player.game.draw_a_card(target)
         # target draw a new card
-        if game and game.cards:
-            game.draw_a_card(target)
-            print(f"{target.name} redrew a card.")
+        game.draw_a_card(target)
+        print(f"{target.name} redrew a card.")
 
 class Handmaid(Card):
     """ When you play the handmaid card, you cannot be chosen for any opponent's card actions during this round."""

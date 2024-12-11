@@ -16,9 +16,10 @@ if __name__ == '__main__':
     # for win and tie counts
     win_counts = {player: 0 for player in player_list}
     tie_count = 0
+    num_games = 1000
 
     # Run simulations
-    for i in range(0, 1000):
+    for i in range(0, num_games):
         winner = run_the_sim(game)
 
         if winner in win_counts:
@@ -33,6 +34,7 @@ if __name__ == '__main__':
     for player, count in win_counts.items():
         print(f"{player} wins: {count}")
     print(f"Tie games: {tie_count}")
+
 
     #TODO: instead of just winner list count number of times each player wins and graph stat convergence etc
 

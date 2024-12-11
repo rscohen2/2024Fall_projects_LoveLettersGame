@@ -134,38 +134,51 @@ class Player:
 
     # TODO: I added the guessing logic here in the player class
     def guess_card(self, possible_cards, wholeDeck):
+        # added for filtering out Guard card in the possible card list
+        possible_cards_without_guards = []
+        for card in possible_cards:
+            if card.__class__.__name__ != "Guard":
+                possible_cards_without_guards.append(card)
+        possible_cards = possible_cards_without_guards
+
         if self.strategy == "strategy_1":
             return "Princess"
         elif self.strategy == "strategy_2":
-            for card in possible_cards:
-                if card.__class__.__name__ == "Guard":
-                    possible_cards.remove(card)
+            # for card in possible_cards:
+            #     if card.__class__.__name__ == "Guard":
+            #         possible_cards.remove(card)
             for card in self.players_hand:
                 print("card is", card)
-                possible_cards.remove(card)
+                if card in possible_cards:
+                    possible_cards.remove(card)
                 #for i in possible_cards:
                 #possible_cards = Counter(list(possible_cards))
                 # maxValueGuess = max(possible_cards.elements())
                 # cardName = maxValueGuess.__class__.__name__
+                print(f"Possible cards: {[possible_cards]}") # added for debugging purpose
                 return max(possible_cards, key=possible_cards.count)
             # print(self.players_hand)
             # print([card for card in self.players_hand])
             #return max(possible_cards.remove([card for card in self.players_hand]))
         elif self.strategy == "strategy_3":
-            for card in possible_cards:
-                if card.__class__.__name__ == "Guard":
-                    possible_cards.remove(card)
+            # for card in possible_cards:
+            #     if card.__class__.__name__ == "Guard":
+            #         possible_cards.remove(card)
             for card in self.players_hand:
-                possible_cards.remove(card)
+                if card in possible_cards:
+                    possible_cards.remove(card)
                 randomPick = random.choice(possible_cards)
                 print(randomPick.__class__.__name__)
                 return randomPick.__class__.__name__
             #return random.choice(possible_cards.remove([card for card in self.players_hand]))
         elif self.strategy == "strategy_4":
+            whole_deck_without_guards = []
             for card in wholeDeck:
-                if card.__class__.__name__ == "Guard":
-                    wholeDeck.remove(card)
-            return random.choice(wholeDeck)
+                # if card.__class__.__name__ == "Guard":
+                #     wholeDeck.remove(card)
+                if card.__class__.__name__ != "Guard":
+                    whole_deck_without_guards.append(card)
+            return random.choice(whole_deck_without_guards).__class__.__name__
 
     # TODO: I added this function to make sure player's hands are being updated when playing a card
     def remove_card(self, card):

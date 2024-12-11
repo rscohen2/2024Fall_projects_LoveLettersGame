@@ -80,8 +80,16 @@ def aggregate_normalized_result(normalized_result):
         player2_results.append(player2)
         player3_results.append(player3)
         player4_results.append(player4)
+        player_results = (player1_results, player2_results, player3_results, player4_results)
         # ties_results.append(ties)
-        return player1_results, player2_results, player3_results, player4_results
+        return player_results
+
+def sum_player_results(player_results):
+    player_result_sum = 0
+    for i in range(len(player_results)):
+        player_result = player_results[i]
+        player_result_sum += int(player_result[0])
+    return player_result_sum
 
 
 normalized_results = []
@@ -96,9 +104,10 @@ df['normalized_result'] = ""
 for i in range(1, 100):
     normalized_result = run_multiple_sims(i)
     aggregated_normalized_result = aggregate_normalized_result(normalized_result)
+    player_results_sum = sum_player_results(aggregated_normalized_result)
     # normalized_results.append(normalized_result)
     df.at[i,'i'] = i
-    df.at[i,'normalized_result'] = str(aggregated_normalized_result)
+    df.at[i,'normalized_result'] = str(player_results_sum)
 
 # print(normalized_results)
 

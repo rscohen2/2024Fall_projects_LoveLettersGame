@@ -32,9 +32,9 @@ The player will guess a random card from the cards still in play.
 The player will guess a random card from the entire deck.
 
 Our Hypotheses
-1. Hypothesis 1: Strategy one performs the worst
-2. Hypothesis 2: Strategy 2 will beat randomly choosing from all cards in play (Strategy 3)
-3. Hypothesis 3: Randomly choosing from all cards in play (Strategy 3) should outperform Strategy 4 which includes the whole deck, and thus cards no longer in play.
+1. Hypothesis 1: Strategy one performs the worst since there is only one Princess card in the deck, and thus it is likely this guess will be incorrect and thus a bad strategy for guessing, resulting in less wins.
+2. Hypothesis 2: Strategy 2 will beat randomly choosing from all cards in play (Strategy 3). This is because this strategy utilizes the frequency of cards left in the deck, which we expect should lead to more correct guesses and thus wins.
+3. Hypothesis 3: Randomly choosing from all cards in play (Strategy 3) should outperform Strategy 4 which includes the whole deck, and thus cards no longer in play. Therefore, Strategy 4 has the potential to guess a card no longer in play, and is more likely to make an incorrect guess (as compared to Stategy 3 which only considers cards still in play) and have less wins.
 
 Discussion/Results
 

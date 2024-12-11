@@ -196,16 +196,24 @@ class Game:
         print(f"No available opponents to target for {current_player.name}. Turn skip.")
         return None
 
-
     # Added this function to properly get the remaining card list
     def get_remaining_card_list(self):
-        remaining_cards = list(self.remaining_cards.elements())
+        # remaining_cards = list(self.remaining_cards.elements())
+        remaining_cards = Counter(self.remaining_cards)  # copy the current deck state
         for player in self.players:
             if player.player_remaining:
+                # remaining_cards.extend(player.players_hand)
                 for card in player.players_hand:
-                    remaining_cards.append(card)
+                    card_name = card.__class__.__name__
+                    remaining_cards[card_name] -= 1
 
-        return remaining_cards
+        # convert back to a list representation for compatibility with strategies
+        remaining_cards_list = []
+        for card_name, count in remaining_cards.items():
+            if count > 0:
+                remaining_cards_list.extend([card_name] * count)
+
+        return remaining_cards_list
 
     # just modified a bit of our original winner() function
     # players should be in a different name

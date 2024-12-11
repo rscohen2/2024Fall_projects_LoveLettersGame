@@ -109,6 +109,8 @@ for i in range(1, 100):
     df.at[i,'i'] = i
     df.at[i,'normalized_result'] = str(player_results_sum)
 
+
+
 # print(normalized_results)
 
 

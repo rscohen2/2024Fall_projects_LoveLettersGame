@@ -97,10 +97,9 @@ for i in range(1, 100):
     normalized_result = run_multiple_sims(i)
     aggregated_normalized_result = aggregate_normalized_result(normalized_result)
     # normalized_results.append(normalized_result)
-    df.loc['i'] = i
-    df.loc['normalized_result'] = str(aggregated_normalized_result)
+    df.at[i,'i'] = i
+    df.at[i,'normalized_result'] = str(aggregated_normalized_result)
 
 # print(normalized_results)
-
 
 

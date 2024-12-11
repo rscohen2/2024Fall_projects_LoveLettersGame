@@ -1,3 +1,8 @@
+"""
+deprecated attempt to normalize results
+"""
+
+
 import matplotlib.pyplot as plt
 from game import *
 

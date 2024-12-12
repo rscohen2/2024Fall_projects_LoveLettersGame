@@ -33,7 +33,14 @@ class Player:
         it will be returned (and therefore, played). This is the case for all player strategies.
 
         :param self: Player in the game
-        :return: True or False (depending on whether the Guard card is in the hand
+        :return: Guard card object if Guard in the hand
+
+        >>> player = Player("Player1", "strategy_1")
+        >>> player.players_hand = [Guard()]
+        >>> result = player.checkGuard()
+        >>> "Guard" in str(type(result))
+        True
+
         """
         for card in self.players_hand:
             if "Guard" in str(type(card)):
@@ -48,13 +55,30 @@ class Player:
         :param self: Player in the game
         :return: True or False (depending on if the Countess is in the player's hand and the
         King and/or Prince is also in the player's hand)
+
+        >>> player = Player("Player1", "strategy_1")
+        >>> player.players_hand = [Countess(), King()]
+        >>> player.checkCountessCondition()
+        True
+
+        >>> player.players_hand = [Countess(), Prince()]
+        >>> player.checkCountessCondition()
+        True
+
+        >>> player.players_hand = [Countess(), Princess()]
+        >>> player.checkCountessCondition()
+        False
+
         """
-        cardTypes = [type(i) for i in self.players_hand]
+        #cardTypes = [type(i) for i in self.players_hand]
+        cardTypes = [card.__class__.__name__ for card in self.players_hand]
         if "Countess" in cardTypes:
             if "Prince" in cardTypes and "Princess" not in cardTypes:
                 return True
             elif "King" in cardTypes:
                 return True
+            else:
+                return False
         else:
             return False
 
@@ -73,26 +97,40 @@ class Player:
         """
         This strategy decides on a card to play. It first checks on whether the Countess Condition
         is true (which would mean the Countess must be played), and then checks for the Guard Card
-        (which would mean the Guard must be played). If neither of those are True, then it plays
+        (which would mean the Guard must be played). If one of those are true, it returns the
+         card for that condition. If neither of those are True, then it plays
         a random card.
 
         :param self: Player in the game
         :return: Countess card object, Guard card object, or random card object
+
+        >>> player = Player("Player1", "strategy_1")
+        >>> guard_card = Guard()
+        >>> countess_card = Countess()
+        >>> player.players_hand = [guard_card]
+        >>> result = player.card_to_play()
+        >>> "Guard" in str(type(result))
+        True
+
         """
-        if self.checkCountessCondition() == False:
+
+        if not self.checkCountessCondition():
             guardCard = self.checkGuard()
             if guardCard:
-                print("selected guard")
                 return guardCard
             else:
                 cardSelected = self.chooseRandomCard()
                 return cardSelected
         else:
-            cardSelected = [card for card in self.players_hand if "Countess" in type(card)][0]
+            countessCardList = [card for card in self.players_hand if "Countess" in card.__class__.__name__]
+            if countessCardList:
+                cardSelected = countessCardList[0]
+            else:
+                cardSelected = self.chooseRandomCard()
         self.card_selected_to_play = cardSelected
         return(cardSelected)
 
- # TODO: Not sure if we actually need the function directly below? I think it might be redundant with one in the game class.
+ # TODO: Not sure if we actually need the function directly below? I think it might be redundant with the one in the card class.
     # def play_card(self, card_selected_to_play, target, guess):
     #     """
     #     This function plays the card that is selected to play by the player and updates

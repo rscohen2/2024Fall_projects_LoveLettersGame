@@ -28,6 +28,9 @@ class Card:
     def __init__(self):
         self.__value = Card.card_values[self.__class__.__name__] #this line eliminates the need for individual init functions in each subclass
 
+    def __str__(self):
+        return str(self.__class__.__name__)
+
     # self.card_type = card_type
         # self.__value = value
         # self.player = None

@@ -31,7 +31,6 @@ Remarks: I try to leave comments next to the actual codes, but I also leave impo
 import players as p
 import cards as c
 import random
-from collections import Counter
 
 
 class Game:
@@ -39,13 +38,10 @@ class Game:
     def __init__(self, players):
         self.players = players # creating player objects
         self.cards = [] # deck of cards
-        self.remaining_cards = Counter() # Track remaining cards
         self.current_player_index = 0 # tracking turn for current player
         self.tie_games = 0 # we should also track tie games (same value cards)
         self.new_game()
-        # self.cards_played = [] # tracking played cards TODO: isn't this redundant with player.card_played?
-        # self.cards_in_play = [] # tracking cards currently in play TODO: not sure if we need this (maybe might need it when we are going to consider card memory/knowledge?)
-        # TODO: another property like self.card (for discarded pile) -> this will be even helpful for debugging purposes -> cards_played can be used for this (just give it another name)
+
 
     @staticmethod # pycharm's suggestion
     def initialize_deck() -> list:
@@ -55,8 +51,9 @@ class Game:
         """
         # deck = [c.Guard()] * 5 + [c.Priest()] * 2 + [c.Baron()] * 2 + [c.Handmaid()] * 2 + [c.Prince()] * 2 + [
         #     c.King()] + [c.Countess()] + [c.Princess()]
-        # Made the below update just in case the above way of calling the deck was making multiple clones of the same card object? I wasn't sure..
-        deck = [c.Guard() for _ in range(5)] + [c.Priest() for _ in range(2)] +[c.Baron() for _ in range(2)] +[c.Handmaid() for _ in range(2)] +[c.Prince() for _ in range(2)] +[c.King()] + [c.Countess()] + [c.Princess()]
+        deck = [c.Guard() for _ in range(5)] + [c.Priest() for _ in range(2)] + [c.Baron() for _ in range(2)] + [
+            c.Handmaid() for _ in range(2)] + [c.Prince() for _ in range(2)] + [c.King()] + [c.Countess()] + [
+                   c.Princess()]
         random.shuffle(deck)
         return deck
 
@@ -77,21 +74,12 @@ class Game:
         :return: None
         """
         self.cards = Game.initialize_deck()  # get a shuffled deck
-
-        # this part keeps track of the remaining cards
-        self.remaining_cards = Counter()
-        for card in self.cards: # card is each card (subclass) object
-            #card_name = card.__class__.__name__  # didn't know how to access subclass names from other class object (referred to https://stackoverflow.com/questions/3314627/get-subclass-name)
-            card_name = card
-            self.remaining_cards[card_name] += 1
-
         self.reset_players()  # Reset all player statuses
 
         for player in self.players:
             self.draw_a_card(player)
 
         self.current_player_index = 0
-
 
     # moved to instance function
     def draw_a_card(self, player):
@@ -103,10 +91,6 @@ class Game:
         if len(player.players_hand) < 2 and self.cards: # I modified this line to ensure there are only 2 or less cards in player's hand
             card = self.cards.pop() # removes drawn card from deck (i.e., deck decreases)
             player.players_hand.append(card)
-
-            card_name = card.__class__.__name__
-            if self.remaining_cards[card_name] > 0:
-                self.remaining_cards[card_name] -= 1
 
 
     def play_turn(self) -> None:
@@ -136,7 +120,7 @@ class Game:
         player.player_protected = False
         self.draw_a_card(player)
 
-        selected_card = player.card_to_play() # TODO: I changed the variable name card_index to selected_card since it seemed misleading
+        selected_card = player.card_to_play()
 
         if not selected_card:
             print(f"{player.name} has no valid card to play.")
@@ -162,7 +146,7 @@ class Game:
 
         # selected_card.play_card(player, target, guess)
         selected_card.play_card(player, target, guess, game=self)
-        self.remove_card_from_remaining(selected_card)
+        # self.remove_card_from_remaining(selected_card)
         player.remove_card(selected_card)
 
         # to next player (make sure the order is properly circulating (e.g., 1 -> 2 -> 3 / 2 -> 3 -> 1 / 3 -> 1 -> 2)
@@ -172,18 +156,11 @@ class Game:
 
         self.clear_eliminated_players_hands()
 
-    def remove_card_from_remaining(self, card):
-        card_name = card.__class__.__name__
-        if self.remaining_cards[card_name] > 0:
-            self.remaining_cards[card_name] -= 1
-
     # added to make sure eliminated players discard their card
     def clear_eliminated_players_hands(self):
         for player in self.players:
             if not player.player_remaining:
-                for card in player.players_hand:
-                    self.remove_card_from_remaining(card)  # update remaining cards
-                player.players_hand = []
+                player.players_hand = []  # clear eliminated player's hand
 
 
     def choose_opponent(self, current_player):
@@ -207,23 +184,18 @@ class Game:
 
     # Added this function to properly get the remaining card list
     def get_remaining_card_list(self):
-        # remaining_cards = list(self.remaining_cards.elements())
-        remaining_cards = Counter(self.remaining_cards)  # copy the current deck state
+        """
+        Function that returns cards in play (cards remaining in deck and players' hand)
+        :return:
+        """
+        # remaining_cards_in_deck = Counter(self.remaining_cards_in_deck)  # copy the current deck state
+        remaining_cards_list = [card.__class__.__name__ for card in self.cards]
 
-        # for player in self.players:
-        #     if player.player_remaining:
-        #         for card in player.players_hand:
-        #             card_name = card.__class__.__name__
-        #             if remaining_cards[card_name] > 0:
-        #                 remaining_cards[card_name] -= 1
-        #TODO : I commented this out bc I think we DO want current hands included?
-
-        # convert back to a list representation for compatibility with strategies
-        remaining_cards_list = []
-        for card_name, count in remaining_cards.items():
-            if count > 0:
-                for card in range(count):
-                    remaining_cards_list.append(card_name)
+        # Add the cards currently in each player's hand
+        for player in self.players:
+            if player.player_remaining:
+                remaining_cards_list.extend([card.__class__.__name__ for card in player.players_hand])
+        #TODO : I commented this out bc I think we DO want current hands included? -> Thank you for pointing this out. I fixed the code to make sure it contains the players' hand
 
         return remaining_cards_list
 

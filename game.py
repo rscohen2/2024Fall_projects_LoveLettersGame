@@ -145,7 +145,6 @@ class Game:
         # print who played which card
         print(f"{player.name} played the {selected_card.__class__.__name__} card!")
 
-        # choose opponent (guard, baron, king, priest, prince)
         # Got help from ChapGPT for handling the AttributeError with NoneType
         target = None
         if isinstance(selected_card, (c.Guard, c.Baron, c.King, c.Priest, c.Prince)):
@@ -160,13 +159,9 @@ class Game:
             wholeDeck = Game.initialize_deck()  # need a second variable because self.cards is updated throughout game
             guess = player.guess_card(self.get_remaining_card_list(), wholeDeck)
 
-        # if target is None and not isinstance(selected_card, (c.Handmaid, c.Countess, c.Princess)):
-        #     print(f"No valid target for {player.name}. Turn skipped.")
-        #     self.current_player_index = (self.current_player_index + 1) % len(self.players)
-        #     return
-
         # selected_card.play_card(player, target, guess)
         selected_card.play_card(player, target, guess, game=self)
+        self.remove_card_from_remaining(selected_card)
         player.remove_card(selected_card)
 
         # to next player (make sure the order is properly circulating (e.g., 1 -> 2 -> 3 / 2 -> 3 -> 1 / 3 -> 1 -> 2)
@@ -174,9 +169,22 @@ class Game:
         if self.current_player_index >= len(self.players):
             self.current_player_index = 0
 
+        self.clear_eliminated_players_hands()
 
-    # moved to instance function
-    # this might have to be in players class
+    def remove_card_from_remaining(self, card):
+        card_name = card.__class__.__name__
+        if self.remaining_cards[card_name] > 0:
+            self.remaining_cards[card_name] -= 1
+
+    # added to make sure eliminated players discard their card
+    def clear_eliminated_players_hands(self):
+        for player in self.players:
+            if not player.player_remaining:
+                for card in player.players_hand:
+                    self.remove_card_from_remaining(card)  # update remaining cards
+                player.players_hand = []
+
+
     def choose_opponent(self, current_player):
         """
         This function randomly selects opponent who are 1) remaining in the game and 2) is not protected by handmaid card
@@ -200,23 +208,24 @@ class Game:
     def get_remaining_card_list(self):
         # remaining_cards = list(self.remaining_cards.elements())
         remaining_cards = Counter(self.remaining_cards)  # copy the current deck state
+
         for player in self.players:
             if player.player_remaining:
-                # remaining_cards.extend(player.players_hand)
                 for card in player.players_hand:
                     card_name = card.__class__.__name__
-                    remaining_cards[card_name] -= 1
+                    if remaining_cards[card_name] > 0:
+                        remaining_cards[card_name] -= 1
 
         # convert back to a list representation for compatibility with strategies
         remaining_cards_list = []
         for card_name, count in remaining_cards.items():
             if count > 0:
-                remaining_cards_list.extend([card_name] * count)
+                for card in range(count):
+                    remaining_cards_list.append(card_name)
 
         return remaining_cards_list
 
-    # just modified a bit of our original winner() function
-    # players should be in a different name
+
     @staticmethod # pycharm's suggestion
     def get_player_with_highest_card(players: list) -> tuple:
         """
@@ -312,25 +321,3 @@ def create_players(player_names: list[str], strategies: list[str]) -> list:
         player_objects.append(p.Player(name=name, strategy=strategy))
 
     return player_objects
-
-# def run_the_sim(Sarah_win_count, Becca_win_count, Andrew_win_count):
-#     # this player creation part changed due to the create_players() function (moved outside the game class)
-#     player_list = ["Sarah", "Becca", "Andrew"]
-#     strategies = ["strategy_1", "strategy_2", "strategy_3"]
-#     players = create_players(player_list, strategies)
-#
-#     game = Game(players) # initialize game
-#     # try:
-#     #     winner = game.play_until_winner()
-#     # except Exception as e:
-#     #     print(f"Error during simulation: {str(e)}")
-#     #     return "Error"
-#
-#     winner = game.play_until_winner()
-#
-#     # Log the winner
-#     if winner != "Tie":
-#         print(f"{winner} wins!")
-#     else:
-#         print("It's a tie!")
-#     return winner

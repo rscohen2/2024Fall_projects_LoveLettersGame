@@ -8,22 +8,6 @@ Description: Module for game class. In charge of the following behaviors:
     - controls the turns
     - determines winner
     - etc.
-
-Remarks: I try to leave comments next to the actual codes, but I also leave important notes here
-
-    1. I'm moving most of the functions inside the class as an instance method
-        --> sorry, this is simply just because I found this more easier
-    2. I'm trying to merge or even get rid of unnecessary functions
-    3. Parts that I thought need significant attention is commented with a TODO
-        --> this doesn't mean that all the TODOs are urgent
-    4. Needs more work based on each others' class logic
-        --> for instance, I might use or need attributes and/or functions from different classes
-    5. I think I'm about 60% done with my rough draft (not FINAL DRAFT) as of 6:30pm Nov.19 Tuesday
-    6. Rough draft finished (11:35 Nov.20)
-        --> there are still parts that need modification
-        --> currently have a import issue in the test execution code at the bottom (not sure how to handle this yet)
-    7. (241121_Thursday) moved create_player outside the game class (Mr. Weible's recommendation)
-        --> accordingly, the self.players property also changed
 """
 # from random import randint
 
@@ -34,6 +18,10 @@ import random
 
 
 class Game:
+    """
+    doctstring for a class
+    also able to put test
+    """
 
     def __init__(self, players):
         self.players = players # creating player objects
@@ -145,7 +133,6 @@ class Game:
             card = self.cards.pop() # removes drawn card from deck (i.e., deck decreases)
             player.players_hand.append(card)
 
-    # TODO: DoctTest not working as expected
     def play_turn(self) -> None:
         """
         This function represents an individual player's turn as follows:
@@ -159,17 +146,16 @@ class Game:
         >>> player_1 = Player("strategy_1", "Sarah")
         >>> player_2 = Player("strategy_2", "Becca")
         >>> game = Game([player_1, player_2])
-        >>> game.cards = [Guard(), Priest()]
-        >>> player_1.players_hand = ["Guard"]
+        >>> game.cards = [Guard(), Priest(), Princess()]
+        >>> player_1.players_hand = [Guard()]
         >>> player_2.players_hand = []
         >>> player_1.player_remaining = True
         >>> player_2.player_remaining = True
         >>> game.play_turn()
         Sarah played the Guard card!
+        No available opponents to target for Sarah. Turn skip.
         >>> len(game.cards) # checking if drawing a card results the deck to decrease one card
-        1
-        >>> len(player_1.players_hand) # check if the player successfully drew a card
-        1
+        2
         >>> game.current_player_index # check if the turn progressed to the next player
         1
         """

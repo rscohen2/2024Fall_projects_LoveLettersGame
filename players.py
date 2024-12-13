@@ -171,7 +171,10 @@ class Player:
                 if card in possible_cards:
                     possible_cards.remove(card)
                 print(f"Possible cards: {[possible_cards]}") # added for debugging purpose
-                return max(possible_cards, key=possible_cards.count)
+                print(max(possible_cards, key=possible_cards.count)) #also for debugging
+                guess = max(possible_cards, key=possible_cards.count)
+                return guess.__class__.__name__
+                # return max(possible_cards, key=possible_cards.count)
         elif self.strategy == "strategy_3":
             for card in self.players_hand:
                 if card in possible_cards:

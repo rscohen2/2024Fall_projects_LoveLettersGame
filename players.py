@@ -7,7 +7,7 @@ from collections import Counter
 
 class Player:
     """A competitor in the game."""
-    card_selected_to_play_ = None
+    # card_selected_to_play_ = None
     #seems like it is suggesting we need this above??
     players_hand = None
     # card_knowledge = {}

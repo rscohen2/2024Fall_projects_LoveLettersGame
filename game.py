@@ -53,8 +53,10 @@ class Game:
         Initializes and shuffles the deck with the standard Love Letter composition.
         Returns the shuffled deck.
         """
-        deck = [c.Guard()] * 5 + [c.Priest()] * 2 + [c.Baron()] * 2 + [c.Handmaid()] * 2 + [c.Prince()] * 2 + [
-            c.King()] + [c.Countess()] + [c.Princess()]
+        # deck = [c.Guard()] * 5 + [c.Priest()] * 2 + [c.Baron()] * 2 + [c.Handmaid()] * 2 + [c.Prince()] * 2 + [
+        #     c.King()] + [c.Countess()] + [c.Princess()]
+        # Made the below update just in case the above way of calling the deck was making multiple clones of the same card object? I wasn't sure..
+        deck = [c.Guard() for _ in range(5)] + [c.Priest() for _ in range(2)] +[c.Baron() for _ in range(2)] +[c.Handmaid() for _ in range(2)] +[c.Prince() for _ in range(2)] +[c.King()] + [c.Countess()] + [c.Princess()]
         random.shuffle(deck)
         return deck
 

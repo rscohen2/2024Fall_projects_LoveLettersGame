@@ -146,6 +146,7 @@ class Player:
     #     self.players_hand = [card for card in self.players_hand if card != self.card_selected_to_play]
     #     self.card_selected_to_play = None
 
+
     def guess_card(self, possible_cards, wholeDeck):
         """
         This function is used to decide what the player's card guess will be, when they
@@ -157,6 +158,10 @@ class Player:
         :param wholeDeck: a list of the whole deck of card objects
         :return: a string card name, as the guess
         """
+
+        def getCardValue(card):
+            return Card.card_values[card]
+
         possible_cards_without_guards = []
         for card in possible_cards:
             if card != "Guard":
@@ -165,6 +170,7 @@ class Player:
 
         if self.strategy == "strategy_1":
             return "Princess"
+
         elif self.strategy == "strategy_2":
             for card in self.players_hand:
                 if card in possible_cards:
@@ -176,6 +182,7 @@ class Player:
                 guess = random.choice(cards_withMaxCount)
                 return guess
                 # return max(possible_cards, key=possible_cards.count)
+
         elif self.strategy == "strategy_3":
             for card in self.players_hand:
                 print("player's hand card is:", card)
@@ -184,12 +191,23 @@ class Player:
                 randomPick = random.choice(possible_cards)
                 print(randomPick)
                 return randomPick
+
         elif self.strategy == "strategy_4":
             whole_deck_without_guards = []
             for card in wholeDeck:
                 if card.__class__.__name__ != "Guard":
                     whole_deck_without_guards.append(card)
             return random.choice(whole_deck_without_guards).__class__.__name__
+
+        elif self.strategy == "strategy_5":
+            for card in self.players_hand:
+                if card in possible_cards:
+                    possible_cards.remove(card)
+                maxCount = max(possible_cards.count(card) for card in possible_cards)
+                cards_withMaxCount = [card for card in possible_cards if possible_cards.count(card) == maxCount]
+                sorted_max = sorted(cards_withMaxCount, key=getCardValue, reverse=True)
+                guess = sorted_max[0]
+                return guess
 
     def remove_card(self, card):
         """

@@ -167,16 +167,18 @@ class Player:
             return "Princess"
         elif self.strategy == "strategy_2":
             for card in self.players_hand:
-                print("card is", card)
                 if card in possible_cards:
                     possible_cards.remove(card)
-                print(f"Possible cards: {[possible_cards]}") # added for debugging purpose
-                print(max(possible_cards, key=possible_cards.count)) #also for debugging
-                guess = max(possible_cards, key=possible_cards.count)
+                # print(f"Possible cards: {[possible_cards]}") # added for debugging purpose
+                # print(max(possible_cards, key=possible_cards.count)) #also for debugging
+                maxCount = max(possible_cards.count(card) for card in possible_cards)
+                cards_withMaxCount = [card for card in possible_cards if possible_cards.count(card) == maxCount]
+                guess = random.choice(cards_withMaxCount)
                 return guess
                 # return max(possible_cards, key=possible_cards.count)
         elif self.strategy == "strategy_3":
             for card in self.players_hand:
+                print("player's hand card is:", card)
                 if card in possible_cards:
                     possible_cards.remove(card)
                 randomPick = random.choice(possible_cards)

@@ -159,7 +159,7 @@ class Player:
         """
         possible_cards_without_guards = []
         for card in possible_cards:
-            if card.__class__.__name__ != "Guard":
+            if card != "Guard":
                 possible_cards_without_guards.append(card)
         possible_cards = possible_cards_without_guards
 
@@ -173,15 +173,15 @@ class Player:
                 print(f"Possible cards: {[possible_cards]}") # added for debugging purpose
                 print(max(possible_cards, key=possible_cards.count)) #also for debugging
                 guess = max(possible_cards, key=possible_cards.count)
-                return guess.__class__.__name__
+                return guess
                 # return max(possible_cards, key=possible_cards.count)
         elif self.strategy == "strategy_3":
             for card in self.players_hand:
                 if card in possible_cards:
                     possible_cards.remove(card)
                 randomPick = random.choice(possible_cards)
-                print(randomPick.__class__.__name__)
-                return randomPick.__class__.__name__
+                print(randomPick)
+                return randomPick
         elif self.strategy == "strategy_4":
             whole_deck_without_guards = []
             for card in wholeDeck:

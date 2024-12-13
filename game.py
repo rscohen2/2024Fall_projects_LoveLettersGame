@@ -76,7 +76,6 @@ class Game:
         Starts a new game by resetting (shuffling) card and player status
         :return: None
         """
-        print("========================Starting a new game!========================")
         self.cards = Game.initialize_deck()  # get a shuffled deck
 
         # this part keeps track of the remaining cards

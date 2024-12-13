@@ -1,7 +1,7 @@
 from game import *
 
 def run_the_sim(game):
-
+    print("========================Starting a new game!========================")
     return game.play_until_winner()
 
 if __name__ == '__main__':
@@ -16,7 +16,7 @@ if __name__ == '__main__':
     # for win and tie counts
     win_counts = {player: 0 for player in player_list}
     tie_count = 0
-    num_games = 1000
+    num_games = 10000
 
     # Run simulations
     for i in range(0, num_games):

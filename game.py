@@ -47,7 +47,21 @@ class Game:
     def initialize_deck() -> list:
         """
         Initializes and shuffles the deck with the standard Love Letter composition.
-        Returns the shuffled deck.
+        Deck consists of the following cards (number of cards):
+        - Guard (5)
+        - Priest (2)
+        - Baron (2)
+        - Handmaid (2)
+        - Prince (2)
+        - King (1)
+        - Countess (1)
+        - Princess (1)
+
+        :return: list of shuffled cards
+
+        >>> deck = Game.initialize_deck()
+        >>> len(deck)
+        16
         """
         # deck = [c.Guard()] * 5 + [c.Priest()] * 2 + [c.Baron()] * 2 + [c.Handmaid()] * 2 + [c.Prince()] * 2 + [
         #     c.King()] + [c.Countess()] + [c.Princess()]
@@ -57,8 +71,25 @@ class Game:
         random.shuffle(deck)
         return deck
 
-    # added a new instance method (separated the player reset function as its own method from new_game())
+    # separated the player reset function as its own method from new_game()
     def reset_players(self):
+        """
+        This function rests the state (players_hand, player_remaining, player_protected, and card knowledge) of all players in the game
+
+        >>> from players import *
+        >>> player_1 = Player("strategy_3", "Andrew")
+        >>> player_1.players_hand = ["Baron"]
+        >>> player_1.player_remaining = False
+        >>> player_1.player_protected = True
+        >>> game = Game([player_1])
+        >>> game.reset_players()
+        >>> player_1.players_hand
+        []
+        >>> player_1.player_remaining
+        True
+        >>> player_1.player_protected
+        False
+        """
         for player in self.players:
             player.players_hand = []
             player.player_remaining = True
@@ -70,8 +101,19 @@ class Game:
 
     def new_game(self) -> None: # moved this to class function from normal function (outside the class)
         """
-        Starts a new game by resetting (shuffling) card and player status
-        :return: None
+        Starts a new game by resetting (shuffling) card and player status in the following sequence:
+        1. Initialize new shuffled deck (initialize_deck())
+        2. Reset all player status (reset_players())
+        3. Deal one card to each player
+        4. Reset current player index to 0 (to the first player)
+
+        >>> from players import *
+        >>> player_1 = Player("strategy_3", "Andrew")
+        >>> player_2 = Player("strategy_1", "Sarah")
+        >>> game = Game([player_1, player_2])
+        >>> game.new_game()
+        >>> len(game.cards) # checking if the dealing of one card is done
+        14
         """
         self.cards = Game.initialize_deck()  # get a shuffled deck
         self.reset_players()  # Reset all player statuses
@@ -85,32 +127,59 @@ class Game:
     def draw_a_card(self, player):
         """
         This function draws a card from the current deck
-        :param player:
-        :return: None
+        :param player: the current player
+
+        >>> from players import *
+        >>> from cards import *
+        >>> player_1 = Player("strategy_3", "Andrew")
+        >>> game = Game([player_1])
+        >>> game.cards = [Guard(), King(), Prince(), Princess()] # manual deck
+        >>> player_1.players_hand = []
+        >>> game.draw_a_card(player_1)
+        >>> len(game.cards) # checking if drawing a card results the deck to decrease one card
+        3
+        >>> len(player_1.players_hand) # check if the player successfully drew a card
+        1
         """
         if len(player.players_hand) < 2 and self.cards: # I modified this line to ensure there are only 2 or less cards in player's hand
             card = self.cards.pop() # removes drawn card from deck (i.e., deck decreases)
             player.players_hand.append(card)
 
-
+    # TODO: DoctTest not working as expected
     def play_turn(self) -> None:
         """
         This function represents an individual player's turn as follows:
         1. draw a card
         2. choose card to play
         3. play the card
-        4. to the next player
-        :return: None
+        4. progress to the next player
 
+        >>> from players import *
+        >>> from cards import *
+        >>> player_1 = Player("strategy_1", "Sarah")
+        >>> player_2 = Player("strategy_2", "Becca")
+        >>> game = Game([player_1, player_2])
+        >>> game.cards = [Guard(), Priest()]
+        >>> player_1.players_hand = ["Guard"]
+        >>> player_2.players_hand = []
+        >>> player_1.player_remaining = True
+        >>> player_2.player_remaining = True
+        >>> game.play_turn()
+        Sarah played the Guard card!
+        >>> len(game.cards) # checking if drawing a card results the deck to decrease one card
+        1
+        >>> len(player_1.players_hand) # check if the player successfully drew a card
+        1
+        >>> game.current_player_index # check if the turn progressed to the next player
+        1
         """
-        # added to determine winner when deck is empty (the previous version kept returning an error when a player tried to guess a card when the deck is already empty)
+        # added to determine winner when deck is empty
         if not self.cards:
             print("We're out of cards! Compare cards with each other.")
             return
 
         player = self.players[self.current_player_index]
 
-        #if player.player_remaining and not player.player_protected:
         # make sure to skip eliminated players
         if not player.player_remaining:
             self.current_player_index = (self.current_player_index + 1) % len(self.players)
@@ -144,9 +213,7 @@ class Game:
             wholeDeck = Game.initialize_deck()  # need a second variable because self.cards is updated throughout game
             guess = player.guess_card(self.get_remaining_card_list(), wholeDeck)
 
-        # selected_card.play_card(player, target, guess)
         selected_card.play_card(player, target, guess, game=self)
-        # self.remove_card_from_remaining(selected_card)
         player.remove_card(selected_card)
 
         # to next player (make sure the order is properly circulating (e.g., 1 -> 2 -> 3 / 2 -> 3 -> 1 / 3 -> 1 -> 2)

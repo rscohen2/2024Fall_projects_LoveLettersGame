@@ -209,12 +209,13 @@ class Game:
         # remaining_cards = list(self.remaining_cards.elements())
         remaining_cards = Counter(self.remaining_cards)  # copy the current deck state
 
-        for player in self.players:
-            if player.player_remaining:
-                for card in player.players_hand:
-                    card_name = card.__class__.__name__
-                    if remaining_cards[card_name] > 0:
-                        remaining_cards[card_name] -= 1
+        # for player in self.players:
+        #     if player.player_remaining:
+        #         for card in player.players_hand:
+        #             card_name = card.__class__.__name__
+        #             if remaining_cards[card_name] > 0:
+        #                 remaining_cards[card_name] -= 1
+        #TODO : I commented this out bc I think we DO want current hands included?
 
         # convert back to a list representation for compatibility with strategies
         remaining_cards_list = []

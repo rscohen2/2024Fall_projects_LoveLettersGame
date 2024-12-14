@@ -9,18 +9,21 @@ Description: Module for game class. In charge of the following behaviors:
     - determines winner
     - etc.
 """
-# from random import randint
-
-# TODO: used import as syntax (e.g., import pandas as pd) to solve the circular import problem (Mr. Weible's help)
+# used import as syntax (e.g., import pandas as pd) to solve the circular import problem (Mr. Weible's help)
 import players as p
 import cards as c
 import random
-
+from numba import jit
 
 class Game:
     """
-    doctstring for a class
-    also able to put test
+    This Game Class represents the game state of the Love Letter card game and manages the following behaviors:
+      - Initializing and shuffling the deck
+      - Managing player and their states
+      - Controlling turns and enforcing game rules
+      - Determining the winner (or tie) of the game
+
+    # TODO: add valid doctest for game class
     """
 
     def __init__(self, players):
@@ -219,21 +222,20 @@ class Game:
     def choose_opponent(self, current_player):
         """
         This function randomly selects opponent who are 1) remaining in the game and 2) is not protected by handmaid card
-        :param current_player:
+        :param current_player: The player whose turn it is
         :return: opponent player or None
         """
         available_opponent = []
         for player in self.players:
-            # if player != current_player and player.player_remaining and not player.player_protected:
             if player != current_player and player.player_remaining and not player.player_protected and len(player.players_hand) > 0:
                 available_opponent.append(player)
 
-        # if len(available_opponent) > 0:
         if available_opponent:
             return random.choice(available_opponent)
 
         print(f"No available opponents to target for {current_player.name}. Turn skip.")
         return None
+
 
     # Added this function to properly get the remaining card list
     def get_remaining_card_list(self):
@@ -241,7 +243,6 @@ class Game:
         Function that returns cards in play (cards remaining in deck and players' hand)
         :return:
         """
-        # remaining_cards_in_deck = Counter(self.remaining_cards_in_deck)  # copy the current deck state
         remaining_cards_list = [card.__class__.__name__ for card in self.cards]
 
         # Add the cards currently in each player's hand
@@ -312,11 +313,11 @@ class Game:
 
 
     def count_remaining_players(self):
-        count = 0
-        for player in self.players:
-            if player.player_remaining:
-                count += 1
-        return count
+        """
+        Check Numba helper function (count_remaining_players_numba())
+        """
+        player_statuses = [player.player_remaining for player in self.players]
+        return count_remaining_players_numba(player_statuses)
 
 
     def track_remaining_players(self) -> list:
@@ -333,7 +334,6 @@ class Game:
         return remaining_players
 
 
-# this function was originally under game class (moved here for more flexibility) - Mr.Weible's recommendation
 def create_players(player_names: list[str], strategies: list[str]) -> list:
     """
     Function that creates players objects based on their names
@@ -348,3 +348,18 @@ def create_players(player_names: list[str], strategies: list[str]) -> list:
         player_objects.append(p.Player(name=name, strategy=strategy))
 
     return player_objects
+
+
+@jit(nopython=True)
+def count_remaining_players_numba(player_statuses):
+    """
+    Count the number of players who are still in the game.
+
+    :param player_statuses: List of booleans representing if players are still in the game.
+    :return: Count of remaining players.
+    """
+    count = 0
+    for status in player_statuses:
+        if status:
+            count += 1
+    return count

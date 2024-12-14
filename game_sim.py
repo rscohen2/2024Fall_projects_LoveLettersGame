@@ -1,4 +1,3 @@
-import random
 from game import *
 
 def run_the_sim(game):

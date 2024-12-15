@@ -109,7 +109,7 @@ if __name__ == '__main__':
     # Modify the below parameters to process different types of simulations (experiments)
     player_list = ["Sarah", "Becca", "Andrew", "newPlayer", "player5"]
     num_games = 10000 # set number of simulations
-    experiment_type = 1      # Options: {"Experiment_1": 0, "Experiment_2": 1, "Experiment_3": 2}
+    experiment_type = 0      # Options: {"Experiment_1": 0, "Experiment_2": 1, "Experiment_3": 2}
 
     if experiment_type == 0:
         # Experiment 1: Vanilla Experiment (fixed order + different strategy)

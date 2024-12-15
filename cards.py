@@ -1,15 +1,5 @@
 from players import *
 from game import *
-# from players import Player
-# The logic for switching hands (when the King card is played) needs to be updated slightly,
-# Current:
-#         player.players_hand = opponent.players_hand
-#         opponent.players_hand = player.players_hand
-#
-# Suggested update (or something like this):
-#       tempHand = opponent.players_hand
-#       opponent.players_hand = player.players_hand
-#       player.players_hand = tempHand
 
 class Card:
     # Define card values within the Card class
@@ -24,7 +14,7 @@ class Card:
         'Guard': 1}
 
     # chatgpt helped me figure out how to organize the values here and add them correctly to the classes below
-
+    #cleaning code
     def __init__(self):
         self.__value = Card.card_values[self.__class__.__name__] #this line eliminates the need for individual init functions in each subclass
 

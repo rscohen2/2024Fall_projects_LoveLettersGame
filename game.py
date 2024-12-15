@@ -1,14 +1,8 @@
 """
 IS 597PR Final Project (Love Letter Card Game)
-
-Description: Module for game class. In charge of the following behaviors:
-    - manages the whole game (start & end of game)
-    - manages the deck (shuffling, card distribution)
-    - in charge of creating and tracking player objects
-    - controls the turns
-    - determines winner
-    - etc.
+This module includes the "Game" class for the Love Letter Card Game.
 """
+
 # used import as syntax (e.g., import pandas as pd) to solve the circular import problem (Mr. Weible's help)
 import players as p
 import cards as c
@@ -22,15 +16,13 @@ class Game:
       - Managing player and their states
       - Controlling turns and enforcing game rules
       - Determining the winner (or tie) of the game
-
-    # TODO: add valid doctest for game class
     """
 
     def __init__(self, players):
         self.players = players # creating player objects
         self.cards = [] # deck of cards
         self.current_player_index = 0 # tracking turn for current player
-        self.tie_games = 0 # we should also track tie games (same value cards)
+        self.tie_games = 0 # tracking tie games
         self.new_game()
 
 
@@ -54,15 +46,13 @@ class Game:
         >>> len(deck)
         16
         """
-        # deck = [c.Guard()] * 5 + [c.Priest()] * 2 + [c.Baron()] * 2 + [c.Handmaid()] * 2 + [c.Prince()] * 2 + [
-        #     c.King()] + [c.Countess()] + [c.Princess()]
         deck = [c.Guard() for _ in range(5)] + [c.Priest() for _ in range(2)] + [c.Baron() for _ in range(2)] + [
             c.Handmaid() for _ in range(2)] + [c.Prince() for _ in range(2)] + [c.King()] + [c.Countess()] + [
                    c.Princess()]
         random.shuffle(deck)
         return deck
 
-    # separated the player reset function as its own method from new_game()
+
     def reset_players(self):
         """
         This function rests the state (players_hand, player_remaining, player_protected, and card knowledge) of all players in the game
@@ -90,7 +80,8 @@ class Game:
                 if opponent != player:
                     player.card_knowledge[opponent.name] = []
 
-    def new_game(self) -> None: # moved this to class function from normal function (outside the class)
+
+    def new_game(self) -> None:
         """
         Starts a new game by resetting (shuffling) card and player status in the following sequence:
         1. Initialize new shuffled deck (initialize_deck())
@@ -114,7 +105,7 @@ class Game:
 
         self.current_player_index = 0
 
-    # moved to instance function
+
     def draw_a_card(self, player):
         """
         This function draws a card from the current deck
@@ -135,6 +126,7 @@ class Game:
         if len(player.players_hand) < 2 and self.cards: # I modified this line to ensure there are only 2 or less cards in player's hand
             card = self.cards.pop() # removes drawn card from deck (i.e., deck decreases)
             player.players_hand.append(card)
+
 
     def play_turn(self) -> None:
         """
@@ -164,7 +156,7 @@ class Game:
         """
         # added to determine winner when deck is empty
         if not self.cards:
-            print("We're out of cards! Compare cards with each other.")
+            # print("We're out of cards!") # for debugging
             return
 
         player = self.players[self.current_player_index]
@@ -181,7 +173,6 @@ class Game:
         selected_card = player.card_to_play()
 
         if not selected_card:
-            print(f"{player.name} has no valid card to play.")
             self.current_player_index = (self.current_player_index + 1) % len(self.players)
             return
 
@@ -224,6 +215,22 @@ class Game:
         This function randomly selects opponent who are 1) remaining in the game and 2) is not protected by handmaid card
         :param current_player: The player whose turn it is
         :return: opponent player or None
+
+        >>> from players import *
+        >>> player_1 = Player("strategy_1", "Sarah")
+        >>> player_2 = Player("strategy_2", "Becca")
+        >>> player_3 = Player("strategy_3", "Andrew")
+        >>> game = Game([player_1, player_2, player_3])
+
+        >>> player_1.player_remaining = True
+        >>> player_2.player_remaining = True
+        >>> player_3.player_remaining = False  # Eliminated
+        >>> player_1.player_protected = False
+        >>> player_2.player_protected = True  # Protected
+
+        >>> opponent = game.choose_opponent(player_1) # doctest: +ELLIPSIS
+        >>> opponent is None
+        True
         """
         available_opponent = []
         for player in self.players:
@@ -233,15 +240,28 @@ class Game:
         if available_opponent:
             return random.choice(available_opponent)
 
-        print(f"No available opponents to target for {current_player.name}. Turn skip.")
+        # print(f"No available opponents to target for {current_player.name}. Turn skip.") # for debugging
         return None
 
 
-    # Added this function to properly get the remaining card list
-    def get_remaining_card_list(self):
+    def get_remaining_card_list(self) -> list[str]:
         """
         Function that returns cards in play (cards remaining in deck and players' hand)
-        :return:
+        :return: a list of cards currently in play
+
+        >>> from players import *
+        >>> from cards import *
+        >>> player_1 = Player("strategy_1", "Sarah")
+        >>> player_2 = Player("strategy_2", "Becca")
+        >>> game = Game([player_1, player_2])
+
+        >>> game.cards = [Guard(), Priest()]  # Remaining deck
+        >>> player_1.player_remaining = True
+        >>> player_1.players_hand = [Princess()]
+        >>> player_2.player_remaining = False
+        >>> player_2.players_hand = [Guard()]
+        >>> game.get_remaining_card_list()
+        ['Guard', 'Priest', 'Princess']
         """
         remaining_cards_list = [card.__class__.__name__ for card in self.cards]
 
@@ -249,7 +269,6 @@ class Game:
         for player in self.players:
             if player.player_remaining:
                 remaining_cards_list.extend([card.__class__.__name__ for card in player.players_hand])
-        #TODO : I commented this out bc I think we DO want current hands included? -> Thank you for pointing this out. I fixed the code to make sure it contains the players' hand
 
         return remaining_cards_list
 
@@ -305,9 +324,9 @@ class Game:
         if len(winners) == 1:
             winner = winners[0].name
             print(f"Winner of this round: {winner} with the highest card value ({highest_card_value})!")  # Announce the winner
-            return winner  # Single winner
+            return winner
         else:
-            self.tie_games += 1  # Increment tie counter
+            self.tie_games += 1
             print(f"Tie game! Players with highest card value ({highest_card_value}): {[player.name for player in winners]}")
             return "Tie"
 

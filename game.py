@@ -1,65 +1,76 @@
 """
 IS 597PR Final Project (Love Letter Card Game)
-
-Description: Module for game class. In charge of the following behaviors:
-    - manages the whole game (start & end of game)
-    - manages the deck (shuffling, card distribution)
-    - in charge of creating and tracking player objects
-    - controls the turns
-    - determines winner
-    - etc.
-
-Remarks: I try to leave comments next to the actual codes, but I also leave important notes here
-
-    1. I'm moving most of the functions inside the class as an instance method
-        --> sorry, this is simply just because I found this more easier
-    2. I'm trying to merge or even get rid of unnecessary functions
-    3. Parts that I thought need significant attention is commented with a TODO
-        --> this doesn't mean that all the TODOs are urgent
-    4. Needs more work based on each others' class logic
-        --> for instance, I might use or need attributes and/or functions from different classes
-    5. I think I'm about 60% done with my rough draft (not FINAL DRAFT) as of 6:30pm Nov.19 Tuesday
-    6. Rough draft finished (11:35 Nov.20)
-        --> there are still parts that need modification
-        --> currently have a import issue in the test execution code at the bottom (not sure how to handle this yet)
-    7. (241121_Thursday) moved create_player outside the game class (Mr. Weible's recommendation)
-        --> accordingly, the self.players property also changed
+This module includes the "Game" class for the Love Letter Card Game.
 """
-# from random import randint
 
-# TODO: used import as syntax (e.g., import pandas as pd) to solve the circular import problem (Mr. Weible's help)
+# used import as syntax (e.g., import pandas as pd) to solve the circular import problem (Mr. Weible's help)
 import players as p
 import cards as c
 import random
-from collections import Counter
-
+from numba import jit
 
 class Game:
+    """
+    This Game Class represents the game state of the Love Letter card game and manages the following behaviors:
+      - Initializing and shuffling the deck
+      - Managing player and their states
+      - Controlling turns and enforcing game rules
+      - Determining the winner (or tie) of the game
+    """
 
     def __init__(self, players):
         self.players = players # creating player objects
         self.cards = [] # deck of cards
-        self.remaining_cards = Counter() # Track remaining cards
         self.current_player_index = 0 # tracking turn for current player
-        self.tie_games = 0 # we should also track tie games (same value cards)
+        self.tie_games = 0 # tracking tie games
         self.new_game()
-        # self.cards_played = [] # tracking played cards TODO: isn't this redundant with player.card_played?
-        # self.cards_in_play = [] # tracking cards currently in play TODO: not sure if we need this (maybe might need it when we are going to consider card memory/knowledge?)
-        # TODO: another property like self.card (for discarded pile) -> this will be even helpful for debugging purposes -> cards_played can be used for this (just give it another name)
+
 
     @staticmethod # pycharm's suggestion
     def initialize_deck() -> list:
         """
         Initializes and shuffles the deck with the standard Love Letter composition.
-        Returns the shuffled deck.
+        Deck consists of the following cards (number of cards):
+        - Guard (5)
+        - Priest (2)
+        - Baron (2)
+        - Handmaid (2)
+        - Prince (2)
+        - King (1)
+        - Countess (1)
+        - Princess (1)
+
+        :return: list of shuffled cards
+
+        >>> deck = Game.initialize_deck()
+        >>> len(deck)
+        16
         """
-        deck = [c.Guard()] * 5 + [c.Priest()] * 2 + [c.Baron()] * 2 + [c.Handmaid()] * 2 + [c.Prince()] * 2 + [
-            c.King()] + [c.Countess()] + [c.Princess()]
+        deck = [c.Guard() for _ in range(5)] + [c.Priest() for _ in range(2)] + [c.Baron() for _ in range(2)] + [
+            c.Handmaid() for _ in range(2)] + [c.Prince() for _ in range(2)] + [c.King()] + [c.Countess()] + [
+                   c.Princess()]
         random.shuffle(deck)
         return deck
 
-    # added a new instance method (separated the player reset function as its own method from new_game())
+
     def reset_players(self):
+        """
+        This function rests the state (players_hand, player_remaining, player_protected, and card knowledge) of all players in the game
+
+        >>> from players import *
+        >>> player_1 = Player("strategy_3", "Andrew")
+        >>> player_1.players_hand = ["Baron"]
+        >>> player_1.player_remaining = False
+        >>> player_1.player_protected = True
+        >>> game = Game([player_1])
+        >>> game.reset_players()
+        >>> player_1.players_hand
+        []
+        >>> player_1.player_remaining
+        True
+        >>> player_1.player_protected
+        False
+        """
         for player in self.players:
             player.players_hand = []
             player.player_remaining = True
@@ -69,21 +80,24 @@ class Game:
                 if opponent != player:
                     player.card_knowledge[opponent.name] = []
 
-    def new_game(self) -> None: # moved this to class function from normal function (outside the class)
+
+    def new_game(self) -> None:
         """
-        Starts a new game by resetting (shuffling) card and player status
-        :return: None
+        Starts a new game by resetting (shuffling) card and player status in the following sequence:
+        1. Initialize new shuffled deck (initialize_deck())
+        2. Reset all player status (reset_players())
+        3. Deal one card to each player
+        4. Reset current player index to 0 (to the first player)
+
+        >>> from players import *
+        >>> player_1 = Player("strategy_3", "Andrew")
+        >>> player_2 = Player("strategy_1", "Sarah")
+        >>> game = Game([player_1, player_2])
+        >>> game.new_game()
+        >>> len(game.cards) # checking if the dealing of one card is done
+        14
         """
-        print("========================Starting a new game!========================")
         self.cards = Game.initialize_deck()  # get a shuffled deck
-
-        # this part keeps track of the remaining cards
-        self.remaining_cards = Counter()
-        for card in self.cards: # card is each card (subclass) object
-            #card_name = card.__class__.__name__  # didn't know how to access subclass names from other class object (referred to https://stackoverflow.com/questions/3314627/get-subclass-name)
-            card_name = card
-            self.remaining_cards[card_name] += 1
-
         self.reset_players()  # Reset all player statuses
 
         for player in self.players:
@@ -92,20 +106,26 @@ class Game:
         self.current_player_index = 0
 
 
-    # moved to instance function
     def draw_a_card(self, player):
         """
         This function draws a card from the current deck
-        :param player:
-        :return: None
+        :param player: the current player
+
+        >>> from players import *
+        >>> from cards import *
+        >>> player_1 = Player("strategy_3", "Andrew")
+        >>> game = Game([player_1])
+        >>> game.cards = [Guard(), King(), Prince(), Princess()] # manual deck
+        >>> player_1.players_hand = []
+        >>> game.draw_a_card(player_1)
+        >>> len(game.cards) # checking if drawing a card results the deck to decrease one card
+        3
+        >>> len(player_1.players_hand) # check if the player successfully drew a card
+        1
         """
         if len(player.players_hand) < 2 and self.cards: # I modified this line to ensure there are only 2 or less cards in player's hand
             card = self.cards.pop() # removes drawn card from deck (i.e., deck decreases)
             player.players_hand.append(card)
-
-            card_name = card.__class__.__name__
-            if self.remaining_cards[card_name] > 0:
-                self.remaining_cards[card_name] -= 1
 
 
     def play_turn(self) -> None:
@@ -114,18 +134,33 @@ class Game:
         1. draw a card
         2. choose card to play
         3. play the card
-        4. to the next player
-        :return: None
+        4. progress to the next player
 
+        >>> from players import *
+        >>> from cards import *
+        >>> player_1 = Player("strategy_1", "Sarah")
+        >>> player_2 = Player("strategy_2", "Becca")
+        >>> game = Game([player_1, player_2])
+        >>> game.cards = [Guard(), Priest(), Princess()]
+        >>> player_1.players_hand = [Guard()]
+        >>> player_2.players_hand = []
+        >>> player_1.player_remaining = True
+        >>> player_2.player_remaining = True
+        >>> game.play_turn()
+        Sarah played the Guard card!
+        No available opponents to target for Sarah. Turn skip.
+        >>> len(game.cards) # checking if drawing a card results the deck to decrease one card
+        2
+        >>> game.current_player_index # check if the turn progressed to the next player
+        1
         """
-        # added to determine winner when deck is empty (the previous version kept returning an error when a player tried to guess a card when the deck is already empty)
+        # added to determine winner when deck is empty
         if not self.cards:
-            print("We're out of cards! Compare cards with each other.")
+            # print("We're out of cards!") # for debugging
             return
 
         player = self.players[self.current_player_index]
 
-        #if player.player_remaining and not player.player_protected:
         # make sure to skip eliminated players
         if not player.player_remaining:
             self.current_player_index = (self.current_player_index + 1) % len(self.players)
@@ -135,17 +170,15 @@ class Game:
         player.player_protected = False
         self.draw_a_card(player)
 
-        selected_card = player.card_to_play() # TODO: I changed the variable name card_index to selected_card since it seemed misleading
+        selected_card = player.card_to_play()
 
         if not selected_card:
-            print(f"{player.name} has no valid card to play.")
             self.current_player_index = (self.current_player_index + 1) % len(self.players)
             return
 
         # print who played which card
         print(f"{player.name} played the {selected_card.__class__.__name__} card!")
 
-        # choose opponent (guard, baron, king, priest, prince)
         # Got help from ChapGPT for handling the AttributeError with NoneType
         target = None
         if isinstance(selected_card, (c.Guard, c.Baron, c.King, c.Priest, c.Prince)):
@@ -160,12 +193,6 @@ class Game:
             wholeDeck = Game.initialize_deck()  # need a second variable because self.cards is updated throughout game
             guess = player.guess_card(self.get_remaining_card_list(), wholeDeck)
 
-        # if target is None and not isinstance(selected_card, (c.Handmaid, c.Countess, c.Princess)):
-        #     print(f"No valid target for {player.name}. Turn skipped.")
-        #     self.current_player_index = (self.current_player_index + 1) % len(self.players)
-        #     return
-
-        # selected_card.play_card(player, target, guess)
         selected_card.play_card(player, target, guess, game=self)
         player.remove_card(selected_card)
 
@@ -174,46 +201,128 @@ class Game:
         if self.current_player_index >= len(self.players):
             self.current_player_index = 0
 
+        self.clear_eliminated_players_hands()
 
-    # moved to instance function
-    # this might have to be in players class
+
+    def clear_eliminated_players_hands(self):
+        """
+        Clears the hand of all players who have been eliminated.
+
+        >>> from players import *
+        >>> player_1 = Player("strategy_1", "Sarah")
+        >>> player_2 = Player("strategy_2", "Becca")
+        >>> player_3 = Player("strategy_3", "Andrew")
+        >>> game = Game([player_1, player_2, player_3])
+
+        >>> player_1.players_hand = ['Guard']
+        >>> player_2.players_hand = ['Prince']
+        >>> player_3.players_hand = ['Priest']
+        >>> player_1.player_remaining = True
+        >>> player_2.player_remaining = False
+        >>> player_3.player_remaining = False
+
+        >>> game.clear_eliminated_players_hands()
+        >>> player_1.players_hand == []
+        False
+        >>> player_2.players_hand == []
+        True
+        >>> player_3.players_hand == []
+        True
+        """
+        for player in self.players:
+            if not player.player_remaining:
+                player.players_hand = []  # clear eliminated player's hand
+
+
     def choose_opponent(self, current_player):
         """
         This function randomly selects opponent who are 1) remaining in the game and 2) is not protected by handmaid card
-        :param current_player:
+
+        :param current_player: The player whose turn it is
         :return: opponent player or None
+
+        >>> from players import *
+        >>> player_1 = Player("strategy_1", "Sarah")
+        >>> player_2 = Player("strategy_2", "Becca")
+        >>> player_3 = Player("strategy_3", "Andrew")
+        >>> game = Game([player_1, player_2, player_3])
+
+        >>> player_1.player_remaining = True
+        >>> player_2.player_remaining = True
+        >>> player_3.player_remaining = False  # Eliminated
+        >>> player_1.player_protected = False
+        >>> player_2.player_protected = True  # Protected
+
+        >>> opponent = game.choose_opponent(player_1) # doctest: +ELLIPSIS
+        >>> opponent is None
+        True
         """
         available_opponent = []
         for player in self.players:
-            # if player != current_player and player.player_remaining and not player.player_protected:
             if player != current_player and player.player_remaining and not player.player_protected and len(player.players_hand) > 0:
                 available_opponent.append(player)
 
-        # if len(available_opponent) > 0:
         if available_opponent:
             return random.choice(available_opponent)
 
-        print(f"No available opponents to target for {current_player.name}. Turn skip.")
+        # print(f"No available opponents to target for {current_player.name}. Turn skip.") # for debugging
         return None
 
 
-    # Added this function to properly get the remaining card list
-    def get_remaining_card_list(self):
-        remaining_cards = list(self.remaining_cards.elements())
+    def get_remaining_card_list(self) -> list[str]:
+        """
+        Function that returns cards in play (cards remaining in deck and players' hand)
+
+        :return: a list of cards currently in play
+
+        >>> from players import *
+        >>> from cards import *
+        >>> player_1 = Player("strategy_1", "Sarah")
+        >>> player_2 = Player("strategy_2", "Becca")
+        >>> game = Game([player_1, player_2])
+
+        >>> game.cards = [Guard(), Priest()]  # Remaining deck
+        >>> player_1.player_remaining = True
+        >>> player_1.players_hand = [Princess()]
+        >>> player_2.player_remaining = False
+        >>> player_2.players_hand = [Guard()]
+        >>> game.get_remaining_card_list()
+        ['Guard', 'Priest', 'Princess']
+        """
+        remaining_cards_list = [card.__class__.__name__ for card in self.cards]
+
+        # Add the cards currently in each player's hand
         for player in self.players:
             if player.player_remaining:
-                for card in player.players_hand:
-                    remaining_cards.append(card)
+                remaining_cards_list.extend([card.__class__.__name__ for card in player.players_hand])
 
-        return remaining_cards
+        return remaining_cards_list
 
-    # just modified a bit of our original winner() function
-    # players should be in a different name
+
     @staticmethod # pycharm's suggestion
     def get_player_with_highest_card(players: list) -> tuple:
         """
         This function determines the player with the highest card
-        :return: player that has the card with the highest value
+
+        :param players: list of player objects
+        :return: at tuple that contains player object & highest card value (int)
+
+        >>> from players import Player
+        >>> from cards import Guard, Princess, Baron
+
+        >>> player_1 = Player("strategy_1", "Sarah")
+        >>> player_2 = Player("strategy_2", "Becca")
+        >>> player_3 = Player("strategy_3", "Andrew")
+
+        >>> player_1.players_hand = [Princess()] # Highest value
+        >>> player_2.players_hand = [Baron()]
+        >>> player_3.players_hand = [Guard()]
+        >>> players = [player_1, player_2, player_3]
+        >>> winners, highest_card_value = Game.get_player_with_highest_card(players)
+        >>> [winner.name for winner in winners]
+        ['Sarah']
+        >>> highest_card_value
+        9
         """
         highest_card_value = 0
         winners = []
@@ -260,25 +369,25 @@ class Game:
         if len(winners) == 1:
             winner = winners[0].name
             print(f"Winner of this round: {winner} with the highest card value ({highest_card_value})!")  # Announce the winner
-            return winner  # Single winner
+            return winner
         else:
-            self.tie_games += 1  # Increment tie counter
+            self.tie_games += 1
             print(f"Tie game! Players with highest card value ({highest_card_value}): {[player.name for player in winners]}")
             return "Tie"
 
 
     def count_remaining_players(self):
-        count = 0
-        for player in self.players:
-            if player.player_remaining:
-                count += 1
-        return count
+        """
+        Check Numba helper function (count_remaining_players_numba())
+        """
+        player_statuses = [player.player_remaining for player in self.players]
+        return count_remaining_players_numba(player_statuses)
 
 
     def track_remaining_players(self) -> list:
         """
         This function tracks down the remaining players in the game
-        :param self
+
         :return: list of remaining players
         """
         remaining_players = []
@@ -289,13 +398,32 @@ class Game:
         return remaining_players
 
 
-# this function was originally under game class (moved here for more flexibility) - Mr.Weible's recommendation
 def create_players(player_names: list[str], strategies: list[str]) -> list:
     """
     Function that creates players objects based on their names
-    :param player_names:
-    :param strategies:
-    :return: player objects
+
+    :param player_names: list of player names
+    :param strategies: list of strategies
+    :return: list of player objects
+
+    >>> from players import *
+    >>> player_names = ["Sarah", "Becca", "Andrew"]
+    >>> strategies = ["strategy_1", "strategy_2", "strategy_3"]
+    >>> players = create_players(player_names, strategies)
+    >>> len(players)
+    3
+    >>> players[0].name
+    'Sarah'
+    >>> players[0].strategy
+    'strategy_1'
+    >>> players[1].name
+    'Becca'
+    >>> players[1].strategy
+    'strategy_2'
+    >>> players[2].name
+    'Andrew'
+    >>> players[2].strategy
+    'strategy_3'
     """
     player_objects = []
     for i in range(len(player_names)):
@@ -305,24 +433,17 @@ def create_players(player_names: list[str], strategies: list[str]) -> list:
 
     return player_objects
 
-# def run_the_sim(Sarah_win_count, Becca_win_count, Andrew_win_count):
-#     # this player creation part changed due to the create_players() function (moved outside the game class)
-#     player_list = ["Sarah", "Becca", "Andrew"]
-#     strategies = ["strategy_1", "strategy_2", "strategy_3"]
-#     players = create_players(player_list, strategies)
-#
-#     game = Game(players) # initialize game
-#     # try:
-#     #     winner = game.play_until_winner()
-#     # except Exception as e:
-#     #     print(f"Error during simulation: {str(e)}")
-#     #     return "Error"
-#
-#     winner = game.play_until_winner()
-#
-#     # Log the winner
-#     if winner != "Tie":
-#         print(f"{winner} wins!")
-#     else:
-#         print("It's a tie!")
-#     return winner
+
+@jit(nopython=True)
+def count_remaining_players_numba(player_statuses):
+    """
+    Count the number of players who are still in the game.
+
+    :param player_statuses: List of booleans representing if players are still in the game.
+    :return: Count of remaining players.
+    """
+    count = 0
+    for status in player_statuses:
+        if status:
+            count += 1
+    return count

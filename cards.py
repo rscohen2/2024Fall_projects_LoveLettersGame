@@ -14,7 +14,6 @@ class Card:
         'Guard': 1}
 
     # chatgpt helped me figure out how to organize the values here and add them correctly to the classes below
-    #cleaning code
     def __init__(self):
         self.__value = Card.card_values[self.__class__.__name__] #this line eliminates the need for individual init functions in each subclass
 

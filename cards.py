@@ -26,10 +26,17 @@ class Princess(Card):
     """
     The Princess card is the highest value card. If you play or discard the Princess card, you lose the game.
     If you have the Princess card in your hand at the end of the round, you could win since it has the highest value.
+    >>> player_1 = Player("strategy_3", "Sarah")
+    >>> play_card(Princess(), player_1, target=None, guess=None, game=None)
+    >>> player_2 = Player("strategy_2", "Becca")
+    >>> player_3 = Player("strategy_3", "Andrew")
+    >>> game = Game([player_1, player_2, player_3])
+    >>> player_1.player_remaining
+    False
     """
 
 
-    def play_card(self, player, target, guess, game=None):
+    def play_card(self, player, target=None, guess=None, game=None):
         player.players_hand.clear()  # Explicitly clear the hand
         player.player_remaining = False
         print(f"{player.name} eliminated for discarding the Princess!")

@@ -36,6 +36,8 @@ def experiment_fix_order(player_list, strategies, num_games):
         print(f"{player} wins: {count}")
     print(f"Tie games: {tie_count}")
 
+    return win_counts, tie_count
+
 
 def experiment_random_order(player_list, strategies, num_games):
     """
@@ -67,6 +69,8 @@ def experiment_random_order(player_list, strategies, num_games):
         print(f"{player} wins: {count}")
     print(f"Tie games: {tie_count}")
 
+    return win_counts, tie_count
+
 
 def experiment_fix_order_same_strategy(player_list, strategy, num_games):
     """
@@ -97,13 +101,15 @@ def experiment_fix_order_same_strategy(player_list, strategy, num_games):
         print(f"{player} wins: {count}")
     print(f"Tie games: {tie_count}")
 
+    return win_counts, tie_count
+
 
 if __name__ == '__main__':
 
     # Modify the below parameters to process different types of simulations (experiments)
     player_list = ["Sarah", "Becca", "Andrew", "newPlayer", "player5"]
     num_games = 10000 # set number of simulations
-    experiment_type = 0 # Options: {"Experiment_1": 0, "Experiment_2": 1, "Experiment_3": 2}
+    experiment_type = 1      # Options: {"Experiment_1": 0, "Experiment_2": 1, "Experiment_3": 2}
 
     if experiment_type == 0:
         # Experiment 1: Vanilla Experiment (fixed order + different strategy)

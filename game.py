@@ -203,8 +203,32 @@ class Game:
 
         self.clear_eliminated_players_hands()
 
-    # added to make sure eliminated players discard their card
+
     def clear_eliminated_players_hands(self):
+        """
+        Clears the hand of all players who have been eliminated.
+
+        >>> from players import *
+        >>> player_1 = Player("strategy_1", "Sarah")
+        >>> player_2 = Player("strategy_2", "Becca")
+        >>> player_3 = Player("strategy_3", "Andrew")
+        >>> game = Game([player_1, player_2, player_3])
+
+        >>> player_1.players_hand = ['Guard']
+        >>> player_2.players_hand = ['Prince']
+        >>> player_3.players_hand = ['Priest']
+        >>> player_1.player_remaining = True
+        >>> player_2.player_remaining = False
+        >>> player_3.player_remaining = False
+
+        >>> game.clear_eliminated_players_hands()
+        >>> player_1.players_hand == []
+        False
+        >>> player_2.players_hand == []
+        True
+        >>> player_3.players_hand == []
+        True
+        """
         for player in self.players:
             if not player.player_remaining:
                 player.players_hand = []  # clear eliminated player's hand
@@ -213,6 +237,7 @@ class Game:
     def choose_opponent(self, current_player):
         """
         This function randomly selects opponent who are 1) remaining in the game and 2) is not protected by handmaid card
+
         :param current_player: The player whose turn it is
         :return: opponent player or None
 
@@ -247,6 +272,7 @@ class Game:
     def get_remaining_card_list(self) -> list[str]:
         """
         Function that returns cards in play (cards remaining in deck and players' hand)
+
         :return: a list of cards currently in play
 
         >>> from players import *
@@ -277,7 +303,26 @@ class Game:
     def get_player_with_highest_card(players: list) -> tuple:
         """
         This function determines the player with the highest card
-        :return: player that has the card with the highest value
+
+        :param players: list of player objects
+        :return: at tuple that contains player object & highest card value (int)
+
+        >>> from players import Player
+        >>> from cards import Guard, Princess, Baron
+
+        >>> player_1 = Player("strategy_1", "Sarah")
+        >>> player_2 = Player("strategy_2", "Becca")
+        >>> player_3 = Player("strategy_3", "Andrew")
+
+        >>> player_1.players_hand = [Princess()] # Highest value
+        >>> player_2.players_hand = [Baron()]
+        >>> player_3.players_hand = [Guard()]
+        >>> players = [player_1, player_2, player_3]
+        >>> winners, highest_card_value = Game.get_player_with_highest_card(players)
+        >>> [winner.name for winner in winners]
+        ['Sarah']
+        >>> highest_card_value
+        9
         """
         highest_card_value = 0
         winners = []
@@ -342,7 +387,7 @@ class Game:
     def track_remaining_players(self) -> list:
         """
         This function tracks down the remaining players in the game
-        :param self
+
         :return: list of remaining players
         """
         remaining_players = []
@@ -356,9 +401,29 @@ class Game:
 def create_players(player_names: list[str], strategies: list[str]) -> list:
     """
     Function that creates players objects based on their names
-    :param player_names:
-    :param strategies:
-    :return: player objects
+
+    :param player_names: list of player names
+    :param strategies: list of strategies
+    :return: list of player objects
+
+    >>> from players import *
+    >>> player_names = ["Sarah", "Becca", "Andrew"]
+    >>> strategies = ["strategy_1", "strategy_2", "strategy_3"]
+    >>> players = create_players(player_names, strategies)
+    >>> len(players)
+    3
+    >>> players[0].name
+    'Sarah'
+    >>> players[0].strategy
+    'strategy_1'
+    >>> players[1].name
+    'Becca'
+    >>> players[1].strategy
+    'strategy_2'
+    >>> players[2].name
+    'Andrew'
+    >>> players[2].strategy
+    'strategy_3'
     """
     player_objects = []
     for i in range(len(player_names)):

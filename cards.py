@@ -104,7 +104,18 @@ class Handmaid(Card):
 
 
 class Baron(Card):
-    """ Compare card values with an opponent. Whoever has the lower value is out of the round."""
+    """ Compare card values with an opponent. Whoever has the lower value is out of the round.
+    >>> from players import *
+    >>> player_1 = Player("strategy_3", "Sarah")
+    >>> player_2 = Player("strategy_2", "Becca")
+    >>> player_3 = Player("strategy_3", "Andrew")
+    >>> game = Game([player_1, player_2, player_3])
+    >>> opponent = player_2
+    >>> player_1.players_hand = [Prince(), Princess()]
+    >>> Baron.play_card(Baron(), player_1, target=opponent, guess=None, game=None)
+    Becca eliminated in a Baron comparison!
+
+    """
 
 
     def play_card(self, player, target, guess, game=None):

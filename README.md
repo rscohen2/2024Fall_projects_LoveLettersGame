@@ -7,6 +7,9 @@ IS597 - Fall 2024
 
 Monte Carlo Simulation for the card game Love Letters: To run the game simulation, access game_sim.py and run this file.
 
+[The official rules for the card game can be found here:] (https://github.com/rscohen2/2024Fall_projects_LoveLettersGame/blob/main/ll-rulebook.pdf)
+
+
 <h2>Game Overview</h2>
 
 <h3>Premise:</h3> The premise of the game love letters is to be the last remaining player in the game, allowing you to deliver your letter to the princess over other suitors! In the case that the deck runs out before there is one remaining player, the player with the highest value card is the winner.

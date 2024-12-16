@@ -7,7 +7,7 @@ IS597 - Fall 2024
 
 Monte Carlo Simulation for the card game Love Letters: To run the game simulation, access game_sim.py and run this file.
 
-[The official rules for the card game can be found here:] (https://github.com/rscohen2/2024Fall_projects_LoveLettersGame/blob/main/ll-rulebook.pdf)
+[The official rules for the card game can be found here] (https://github.com/rscohen2/2024Fall_projects_LoveLettersGame/blob/main/ll-rulebook.pdf)
 
 
 <h2>Game Overview</h2>

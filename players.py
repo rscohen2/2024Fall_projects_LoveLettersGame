@@ -7,10 +7,7 @@ from collections import Counter
 
 class Player:
     """A competitor in the game."""
-    # card_selected_to_play_ = None
-    #seems like it is suggesting we need this above??
     players_hand = None
-    # card_knowledge = {}
     card_played = None
     strategy = None
 
@@ -22,7 +19,7 @@ class Player:
         self.choices = Counter()
         self.player = None
         self.card_knowledge = {}
-        self.card_selected_to_play = None # Renamed this from card_played to card_selected_to_play, for clarity.
+        self.card_selected_to_play = None
         self.player_remaining = True
         self.player_protected = False
 
@@ -130,22 +127,6 @@ class Player:
         self.card_selected_to_play = cardSelected
         return(cardSelected)
 
- # TODO: Not sure if we actually need the function directly below? I think it might be redundant with the one in the card class.
-    # def play_card(self, card_selected_to_play, target, guess):
-    #     """
-    #     This function plays the card that is selected to play by the player and updates
-    #     the player's hand to remove that played card. It also resets the player's
-    #     card_selected_to_play variable.
-    #
-    #     :param card_selected_to_play: card object that is selected to play
-    #     :param target: player object that is selected as opponent (random)
-    #     :param guess: card object that is selected based on guess_card() function
-    #     :return:
-    #     """
-    #     card_selected_to_play.play_card(self, target, guess)
-    #     self.players_hand = [card for card in self.players_hand if card != self.card_selected_to_play]
-    #     self.card_selected_to_play = None
-
 
     def guess_card(self, possible_cards, wholeDeck):
         """
@@ -175,13 +156,10 @@ class Player:
             for card in self.players_hand:
                 if card in possible_cards:
                     possible_cards.remove(card)
-                # print(f"Possible cards: {[possible_cards]}") # added for debugging purpose
-                # print(max(possible_cards, key=possible_cards.count)) #also for debugging
                 maxCount = max(possible_cards.count(card) for card in possible_cards)
                 cards_withMaxCount = [card for card in possible_cards if possible_cards.count(card) == maxCount]
                 guess = random.choice(cards_withMaxCount)
                 return guess
-                # return max(possible_cards, key=possible_cards.count)
 
         elif self.strategy == "strategy_3":
             for card in self.players_hand:

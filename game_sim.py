@@ -107,7 +107,7 @@ def experiment_fix_order_same_strategy(player_list, strategy, num_games):
 if __name__ == '__main__':
 
     # Modify the below parameters to process different types of simulations (experiments)
-    player_list = ["Sarah", "Becca", "Andrew", "newPlayer", "player5"]
+    player_list = ["Sarah", "Becca", "Andrew", "Terri", "Hailey"]
     num_games = 10000 # set number of simulations
     experiment_type = 0      # Options: {"Experiment_1": 0, "Experiment_2": 1, "Experiment_3": 2}
 

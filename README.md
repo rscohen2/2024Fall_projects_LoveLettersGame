@@ -54,12 +54,12 @@ randomized. In both cases, Strategy 5 achieves the top performance:
 
 ![GRAPH 1](Photo_1.png)
 
-[GRAPH 2]
+![GRAPH 2](Photo_2.png)
 
 To balance this validation, we also ensure that win distribution would be equal if all players
 were to use the same strategy:
 
-[GRAPH 3]
+![GRAPH 3](Photo_3.png)
 
 <h3>Future Directions</h3>
 

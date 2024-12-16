@@ -163,11 +163,9 @@ class Player:
 
         elif self.strategy == "strategy_3":
             for card in self.players_hand:
-                print("player's hand card is:", card)
                 if card in possible_cards:
                     possible_cards.remove(card)
                 randomPick = random.choice(possible_cards)
-                print(randomPick)
                 return randomPick
 
         elif self.strategy == "strategy_4":

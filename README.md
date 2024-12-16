@@ -13,7 +13,7 @@ Monte Carlo Simulation for the card game Love Letters: To run the game simulatio
 
 <h3>Simulation Design: What we randomized</h3>
 
-Shuffling the deck
+Shuffling the deck <br>
 Drawing the card
 Dealing card in the beginning of the game
 Choosing target for card effects

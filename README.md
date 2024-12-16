@@ -14,10 +14,10 @@ Monte Carlo Simulation for the card game Love Letters: To run the game simulatio
 <h3>Simulation Design: What we randomized</h3>
 
 Shuffling the deck <br>
-Drawing the card
-Dealing card in the beginning of the game
-Choosing target for card effects
-Guess when playing the Guard card (strategy 2, 3, & 5)
+Drawing the card <br>
+Dealing card in the beginning of the game <br>
+Choosing target for card effects <br>
+Guess when playing the Guard card (strategy 2, 3, & 5) <br>
 
 <h3>Strategy Overview</h3> 
 Each of these strategies take place when the player draws a guard, and is based on how they decide what card to guess.
@@ -39,9 +39,9 @@ Of the cards with the maximum count that are still in play, the player will gues
 
 <h3>Our Hypotheses</h3>
 
-Hypothesis 1: Strategy one performs the worst since there is only one Princess card in the deck, and thus it is likely this guess will be incorrect and thus a bad strategy for guessing, resulting in less wins.
-Hypothesis 2: Strategy 2 will beat randomly choosing from all cards in play (Strategy 3). This is because this strategy utilizes the frequency of cards left in the deck, which we expect should lead to more correct guesses and thus wins.
-Hypothesis 3: Randomly choosing from all cards in play (Strategy 3) should outperform Strategy 4 which includes the whole deck, and thus cards no longer in play. Therefore, Strategy 4 has the potential to guess a card no longer in play, and is more likely to make an incorrect guess (as compared to Stategy 3 which only considers cards still in play) and have less wins.
+Hypothesis 1: Strategy one performs the worst since there is only one Princess card in the deck, and thus it is likely this guess will be incorrect and thus a bad strategy for guessing, resulting in less wins. <br>
+Hypothesis 2: Strategy 2 will beat randomly choosing from all cards in play (Strategy 3). This is because this strategy utilizes the frequency of cards left in the deck, which we expect should lead to more correct guesses and thus wins. <br>
+Hypothesis 3: Randomly choosing from all cards in play (Strategy 3) should outperform Strategy 4 which includes the whole deck, and thus cards no longer in play. Therefore, Strategy 4 has the potential to guess a card no longer in play, and is more likely to make an incorrect guess (as compared to Stategy 3 which only considers cards still in play) and have less wins. <br>
 
 <h3>Discussion/Results</h3>
 
